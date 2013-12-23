@@ -1,4 +1,6 @@
 Projektmanagement::Application.routes.draw do
+  resources :projektes
+
   get "users/show"
   devise_for :users
   resources :users 

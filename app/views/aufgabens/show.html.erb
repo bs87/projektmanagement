@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Aufgabenname:</strong>
+  <%= @aufgaben.Aufgabenname %>
+</p>
+
+<p>
+  <strong>Aufgabenbeschreibung:</strong>
+  <%= @aufgaben.Aufgabenbeschreibung %>
+</p>
+
+<p>
+  <strong>Aufgabenebene:</strong>
+  <%= @aufgaben.Aufgabenebene %>
+</p>
+
+<p>
+  <strong>Projektid:</strong>
+  <%= @aufgaben.ProjektID %>
+</p>
+
+<p>
+  <strong>Arbeitspaket arbeitspaketid:</strong>
+  <%= @aufgaben.Arbeitspaket_ArbeitspaketID %>
+</p>
+
+<%= link_to 'Edit', edit_aufgaben_path(@aufgaben) %> |
+<%= link_to 'Back', aufgabens_path %>

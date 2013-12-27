@@ -1,0 +1,37 @@
+<%= form_for(@verantwortlichkeiten) do |f| %>
+  <% if @verantwortlichkeiten.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@verantwortlichkeiten.errors.count, "error") %> prohibited this verantwortlichkeiten from being saved:</h2>
+
+      <ul>
+      <% @verantwortlichkeiten.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :ArbeitspaketID %><br>
+    <%= f.text_field :ArbeitspaketID %>
+  </div>
+  <div class="field">
+    <%= f.label :RessourceID %><br>
+    <%= f.text_field :RessourceID %>
+  </div>
+  <div class="field">
+    <%= f.label :Intensitaet %><br>
+    <%= f.text_field :Intensitaet %>
+  </div>
+  <div class="field">
+    <%= f.label :Beschreibung %><br>
+    <%= f.text_field :Beschreibung %>
+  </div>
+  <div class="field">
+    <%= f.label :Ressourcen_RessourcenID %><br>
+    <%= f.text_field :Ressourcen_RessourcenID %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

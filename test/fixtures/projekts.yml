@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Projektname: MyString
+  Projektleiter: 1
+  Projektstart: MyString
+  Projektende: MyString
+  Projektbeschreibung: MyString
+  Roadstops_RoadstopsID: 1
+  Aufgaben_AufgabenID: 1
+
+two:
+  Projektname: MyString
+  Projektleiter: 1
+  Projektstart: MyString
+  Projektende: MyString
+  Projektbeschreibung: MyString
+  Roadstops_RoadstopsID: 1
+  Aufgaben_AufgabenID: 1

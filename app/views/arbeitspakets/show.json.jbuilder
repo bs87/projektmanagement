@@ -1,0 +1,1 @@
+json.extract! @arbeitspaket, :id, :Arbeitspaketname, :Arbeitspaketbeschreibung, :Arbeitspaketverantwortlicher, :Arbeitspaketbeginn, :Arbeitspaketdauer, :Arbeitspaketende, :Arbeitspaketnummer, :Arbeitspaketziel, :Arbeitspaketeingangsdokumente, :Arbeitspaketausgangsdokumente, :AufgabenID, :Verantwortlichkeiten_ArbeitsID, :Verantwortlichkeiten_RessourceID, :created_at, :updated_at

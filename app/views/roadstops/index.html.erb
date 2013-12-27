@@ -1,0 +1,31 @@
+<h1>Listing roadstops</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Roadstopspart</th>
+      <th>Roadstopsdate</th>
+      <th>Projektid</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @roadstops.each do |roadstop| %>
+      <tr>
+        <td><%= roadstop.Roadstopspart %></td>
+        <td><%= roadstop.Roadstopsdate %></td>
+        <td><%= roadstop.ProjektID %></td>
+        <td><%= link_to 'Show', roadstop %></td>
+        <td><%= link_to 'Edit', edit_roadstop_path(roadstop) %></td>
+        <td><%= link_to 'Destroy', roadstop, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Roadstop', new_roadstop_path %>

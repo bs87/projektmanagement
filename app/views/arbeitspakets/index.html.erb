@@ -1,0 +1,51 @@
+<h1>Listing arbeitspakets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Arbeitspaketname</th>
+      <th>Arbeitspaketbeschreibung</th>
+      <th>Arbeitspaketverantwortlicher</th>
+      <th>Arbeitspaketbeginn</th>
+      <th>Arbeitspaketdauer</th>
+      <th>Arbeitspaketende</th>
+      <th>Arbeitspaketnummer</th>
+      <th>Arbeitspaketziel</th>
+      <th>Arbeitspaketeingangsdokumente</th>
+      <th>Arbeitspaketausgangsdokumente</th>
+      <th>Aufgabenid</th>
+      <th>Verantwortlichkeiten arbeitsid</th>
+      <th>Verantwortlichkeiten ressourceid</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @arbeitspakets.each do |arbeitspaket| %>
+      <tr>
+        <td><%= arbeitspaket.Arbeitspaketname %></td>
+        <td><%= arbeitspaket.Arbeitspaketbeschreibung %></td>
+        <td><%= arbeitspaket.Arbeitspaketverantwortlicher %></td>
+        <td><%= arbeitspaket.Arbeitspaketbeginn %></td>
+        <td><%= arbeitspaket.Arbeitspaketdauer %></td>
+        <td><%= arbeitspaket.Arbeitspaketende %></td>
+        <td><%= arbeitspaket.Arbeitspaketnummer %></td>
+        <td><%= arbeitspaket.Arbeitspaketziel %></td>
+        <td><%= arbeitspaket.Arbeitspaketeingangsdokumente %></td>
+        <td><%= arbeitspaket.Arbeitspaketausgangsdokumente %></td>
+        <td><%= arbeitspaket.AufgabenID %></td>
+        <td><%= arbeitspaket.Verantwortlichkeiten_ArbeitsID %></td>
+        <td><%= arbeitspaket.Verantwortlichkeiten_RessourceID %></td>
+        <td><%= link_to 'Show', arbeitspaket %></td>
+        <td><%= link_to 'Edit', edit_arbeitspaket_path(arbeitspaket) %></td>
+        <td><%= link_to 'Destroy', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Arbeitspaket', new_arbeitspaket_path %>

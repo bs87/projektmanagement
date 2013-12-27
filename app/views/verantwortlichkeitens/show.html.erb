@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Arbeitspaketid:</strong>
+  <%= @verantwortlichkeiten.ArbeitspaketID %>
+</p>
+
+<p>
+  <strong>Ressourceid:</strong>
+  <%= @verantwortlichkeiten.RessourceID %>
+</p>
+
+<p>
+  <strong>Intensitaet:</strong>
+  <%= @verantwortlichkeiten.Intensitaet %>
+</p>
+
+<p>
+  <strong>Beschreibung:</strong>
+  <%= @verantwortlichkeiten.Beschreibung %>
+</p>
+
+<p>
+  <strong>Ressourcen ressourcenid:</strong>
+  <%= @verantwortlichkeiten.Ressourcen_RessourcenID %>
+</p>
+
+<%= link_to 'Edit', edit_verantwortlichkeiten_path(@verantwortlichkeiten) %> |
+<%= link_to 'Back', verantwortlichkeitens_path %>

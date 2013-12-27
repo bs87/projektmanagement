@@ -1,0 +1,36 @@
+  [1m[36m (686.4ms)[0m  [1mDROP DATABASE IF EXISTS `projekt`[0m
+  [1m[35m (0.3ms)[0m  CREATE DATABASE `projekt` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`
+  [1m[36m (573.8ms)[0m  [1mCREATE TABLE `projektes` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `status` varchar(255), `kosten` float, `projektstart` date, `projektende` date, `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (502.6ms)[0m  CREATE TABLE `roles` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `resource_id` int(11), `resource_type` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (557.4ms)[0m  [1mCREATE INDEX `index_roles_on_name_and_resource_type_and_resource_id` USING btree ON `roles` (`name`, `resource_type`, `resource_id`) [0m
+  [1m[35m (659.7ms)[0m  CREATE INDEX `index_roles_on_name` USING btree ON `roles` (`name`) 
+  [1m[36m (342.4ms)[0m  [1mCREATE TABLE `users` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `email` varchar(255) DEFAULT '' NOT NULL, `encrypted_password` varchar(255) DEFAULT '' NOT NULL, `reset_password_token` varchar(255), `reset_password_sent_at` datetime, `remember_created_at` datetime, `sign_in_count` int(11) DEFAULT 0 NOT NULL, `current_sign_in_at` datetime, `last_sign_in_at` datetime, `current_sign_in_ip` varchar(255), `last_sign_in_ip` varchar(255), `created_at` datetime, `updated_at` datetime, `vorname` varchar(255), `nachname` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (424.4ms)[0m  CREATE UNIQUE INDEX `index_users_on_email` USING btree ON `users` (`email`) 
+  [1m[36m (559.0ms)[0m  [1mCREATE UNIQUE INDEX `index_users_on_reset_password_token` USING btree ON `users` (`reset_password_token`) [0m
+  [1m[35m (320.7ms)[0m  CREATE TABLE `users_roles` (`user_id` int(11), `role_id` int(11)) ENGINE=InnoDB
+  [1m[36m (502.7ms)[0m  [1mCREATE INDEX `index_users_roles_on_user_id_and_role_id` USING btree ON `users_roles` (`user_id`, `role_id`) [0m
+  [1m[35m (320.2ms)[0m  CREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB
+  [1m[36m (492.9ms)[0m  [1mCREATE UNIQUE INDEX `unique_schema_migrations` ON `schema_migrations` (`version`) [0m
+  [1m[35m (0.6ms)[0m  SELECT version FROM `schema_migrations`
+  [1m[36m (42.2ms)[0m  [1mINSERT INTO `schema_migrations` (version) VALUES ('20131223095725')[0m
+  [1m[35m (33.1ms)[0m  INSERT INTO `schema_migrations` (version) VALUES ('20131217210229')
+  [1m[36m (33.0ms)[0m  [1mINSERT INTO `schema_migrations` (version) VALUES ('20131223085140')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (937.3ms)[0m  [1mDROP DATABASE IF EXISTS `projekt`[0m
+  [1m[35m (0.3ms)[0m  CREATE DATABASE `projekt` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`
+  [1m[36m (350.0ms)[0m  [1mCREATE TABLE `projektes` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `status` varchar(255), `kosten` float, `projektstart` date, `projektende` date, `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (333.5ms)[0m  CREATE TABLE `roles` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `resource_id` int(11), `resource_type` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (536.0ms)[0m  [1mCREATE INDEX `index_roles_on_name_and_resource_type_and_resource_id` USING btree ON `roles` (`name`, `resource_type`, `resource_id`) [0m
+  [1m[35m (691.1ms)[0m  CREATE INDEX `index_roles_on_name` USING btree ON `roles` (`name`) 
+  [1m[36m (333.3ms)[0m  [1mCREATE TABLE `users` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `email` varchar(255) DEFAULT '' NOT NULL, `encrypted_password` varchar(255) DEFAULT '' NOT NULL, `reset_password_token` varchar(255), `reset_password_sent_at` datetime, `remember_created_at` datetime, `sign_in_count` int(11) DEFAULT 0 NOT NULL, `current_sign_in_at` datetime, `last_sign_in_at` datetime, `current_sign_in_ip` varchar(255), `last_sign_in_ip` varchar(255), `created_at` datetime, `updated_at` datetime, `vorname` varchar(255), `nachname` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (446.2ms)[0m  CREATE UNIQUE INDEX `index_users_on_email` USING btree ON `users` (`email`) 
+  [1m[36m (537.1ms)[0m  [1mCREATE UNIQUE INDEX `index_users_on_reset_password_token` USING btree ON `users` (`reset_password_token`) [0m
+  [1m[35m (356.1ms)[0m  CREATE TABLE `users_roles` (`user_id` int(11), `role_id` int(11)) ENGINE=InnoDB
+  [1m[36m (502.1ms)[0m  [1mCREATE INDEX `index_users_roles_on_user_id_and_role_id` USING btree ON `users_roles` (`user_id`, `role_id`) [0m
+  [1m[35m (327.0ms)[0m  CREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB
+  [1m[36m (481.2ms)[0m  [1mCREATE UNIQUE INDEX `unique_schema_migrations` ON `schema_migrations` (`version`) [0m
+  [1m[35m (0.3ms)[0m  SELECT version FROM `schema_migrations`
+  [1m[36m (32.6ms)[0m  [1mINSERT INTO `schema_migrations` (version) VALUES ('20131223095725')[0m
+  [1m[35m (33.3ms)[0m  INSERT INTO `schema_migrations` (version) VALUES ('20131217210229')
+  [1m[36m (33.4ms)[0m  [1mINSERT INTO `schema_migrations` (version) VALUES ('20131223085140')[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`

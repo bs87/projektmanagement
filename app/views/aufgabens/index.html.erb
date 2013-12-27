@@ -1,0 +1,35 @@
+<h1>Listing aufgabens</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aufgabenname</th>
+      <th>Aufgabenbeschreibung</th>
+      <th>Aufgabenebene</th>
+      <th>Projektid</th>
+      <th>Arbeitspaket arbeitspaketid</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @aufgabens.each do |aufgaben| %>
+      <tr>
+        <td><%= aufgaben.Aufgabenname %></td>
+        <td><%= aufgaben.Aufgabenbeschreibung %></td>
+        <td><%= aufgaben.Aufgabenebene %></td>
+        <td><%= aufgaben.ProjektID %></td>
+        <td><%= aufgaben.Arbeitspaket_ArbeitspaketID %></td>
+        <td><%= link_to 'Show', aufgaben %></td>
+        <td><%= link_to 'Edit', edit_aufgaben_path(aufgaben) %></td>
+        <td><%= link_to 'Destroy', aufgaben, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Aufgaben', new_aufgaben_path %>

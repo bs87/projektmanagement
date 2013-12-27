@@ -4716,3 +4716,110 @@ Started GET "/assets/startsite.css?body=1" for 127.0.0.1 at 2013-12-23 11:03:39 
 
 
 Started GET "/assets/users.css?body=1" for 127.0.0.1 at 2013-12-23 11:03:39 +0100
+  [1m[36mActiveRecord::SchemaMigration Load (12.7ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateRessourcens (20131227185733)
+  [1m[35m (387.1ms)[0m  CREATE TABLE `Ressourcens` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `Ressourcename` varchar(45), `Ressourcebeschreibung` varchar(45), `Ressourceart` varchar(45), `Ressourcekuerzel` varchar(45), `Ressourcegenerisch` tinyint(1), `Ressourcemax` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20131227185733')
+  [1m[36m (57.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVerantwortlichkeitens (20131227190427)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateVerantwortlichkeitens (20131227190427)
+  [1m[35m (447.4ms)[0m  CREATE TABLE `Verantwortlichkeitens` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `ArbeitspaketID` int(11), `RessourceID` varchar(45), `Intensitaet` int(11), `Beschreibung` varchar(45), `Ressourcen_RessourcenID` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20131227190427')
+  [1m[36m (90.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateArbeitspakets (20131227190948)
+  [1m[35m (457.2ms)[0m  CREATE TABLE `Arbeitspakets` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `Arbeitspaketname` varchar(45), `Arbeitspaketbeschreibung` varchar(45), `Arbeitspaketverantwortlicher` int(11), `Arbeitspaketbeginn` int(11), `Arbeitspaketdauer` int(11), `Arbeitspaketende` int(11), `Arbeitspaketnummer` int(11), `Arbeitspaketziel` varchar(45), `Arbeitspaketeingangsdokumente` varchar(45), `Arbeitspaketausgangsdokumente` varchar(45), `AufgabenID` int(11), `Verantwortlichkeiten_ArbeitsID` int(11), `Verantwortlichkeiten_RessourceID` varchar(45), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20131227190948')
+  [1m[36m (53.2ms)[0m  [1mCOMMIT[0m
+Migrating to CreateAufgabens (20131227191158)
+  [1m[35m (378.4ms)[0m  CREATE TABLE `Aufgabens` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `Aufgabenname` varchar(45), `Aufgabenbeschreibung` varchar(45), `Aufgabenebene` int(11), `ProjektID` varchar(45), `Arbeitspaket_ArbeitspaketID` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20131227191158')
+  [1m[36m (41.8ms)[0m  [1mCOMMIT[0m
+Migrating to CreateRoadstops (20131227191539)
+  [1m[35m (367.6ms)[0m  CREATE TABLE `Roadstops` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `Roadstopspart` varchar(45), `Roadstopsdate` int(11), `ProjektID` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20131227191539')
+  [1m[36m (53.4ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateProjekts (20131227204008)
+  [1m[35m (388.4ms)[0m  CREATE TABLE `projekts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `Projektname` varchar(255), `Projektleiter` int(11), `Projektstart` varchar(255), `Projektende` varchar(255), `Projektbeschreibung` varchar(255), `Roadstops_RoadstopsID` int(11), `Aufgaben_AufgabenID` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20131227204008')
+  [1m[36m (47.3ms)[0m  [1mCOMMIT[0m
+Migrating to AddprojektidarbeitspakettoUsers (20131227204214)
+  [1m[35m (1194.5ms)[0m  ALTER TABLE `users` ADD `Projekt_ProjektID` int(11)
+  [1m[36m (895.2ms)[0m  [1mALTER TABLE `users` ADD `Arbeitspaket_ArbeitspaketID` int(11)[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20131227204214')[0m
+  [1m[35m (31.2ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateProjekts (20131227204609)
+  [1m[35m (0.5ms)[0m  CREATE TABLE `projekts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `Projektname` varchar(255), `Projektleiter` int(11), `Projektstart` varchar(255), `Projektende` varchar(255), `Projektbeschreibung` varchar(255), `Roadstops_RoadstopsID` int(11), `Aufgaben_AufgabenID` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+Mysql2::Error: Table 'projekts' already exists: CREATE TABLE `projekts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `Projektname` varchar(255), `Projektleiter` int(11), `Projektstart` varchar(255), `Projektende` varchar(255), `Projektbeschreibung` varchar(255), `Roadstops_RoadstopsID` int(11), `Aufgaben_AufgabenID` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateProjekts (20131227204609)
+  [1m[35m (381.6ms)[0m  CREATE TABLE `projekts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `Projektname` varchar(255), `Projektleiter` int(11), `Projektstart` varchar(255), `Projektende` varchar(255), `Projektbeschreibung` varchar(255), `Roadstops_RoadstopsID` int(11), `Aufgaben_AufgabenID` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20131227204609')
+  [1m[36m (91.7ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`

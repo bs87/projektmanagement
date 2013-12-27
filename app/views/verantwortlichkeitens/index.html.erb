@@ -1,0 +1,35 @@
+<h1>Listing verantwortlichkeitens</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Arbeitspaketid</th>
+      <th>Ressourceid</th>
+      <th>Intensitaet</th>
+      <th>Beschreibung</th>
+      <th>Ressourcen ressourcenid</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @verantwortlichkeitens.each do |verantwortlichkeiten| %>
+      <tr>
+        <td><%= verantwortlichkeiten.ArbeitspaketID %></td>
+        <td><%= verantwortlichkeiten.RessourceID %></td>
+        <td><%= verantwortlichkeiten.Intensitaet %></td>
+        <td><%= verantwortlichkeiten.Beschreibung %></td>
+        <td><%= verantwortlichkeiten.Ressourcen_RessourcenID %></td>
+        <td><%= link_to 'Show', verantwortlichkeiten %></td>
+        <td><%= link_to 'Edit', edit_verantwortlichkeiten_path(verantwortlichkeiten) %></td>
+        <td><%= link_to 'Destroy', verantwortlichkeiten, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Verantwortlichkeiten', new_verantwortlichkeiten_path %>

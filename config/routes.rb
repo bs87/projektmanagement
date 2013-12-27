@@ -1,5 +1,15 @@
 Projektmanagement::Application.routes.draw do
-  resources :projektes
+  resources :projekts
+
+  resources :roadstops
+
+  resources :aufgabens
+
+  resources :arbeitspakets
+
+  resources :verantwortlichkeitens
+
+  resources :ressourcens
 
   get "users/show"
   devise_for :users

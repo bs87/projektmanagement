@@ -1,0 +1,37 @@
+<%= form_for(@aufgaben) do |f| %>
+  <% if @aufgaben.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@aufgaben.errors.count, "error") %> prohibited this aufgaben from being saved:</h2>
+
+      <ul>
+      <% @aufgaben.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :Aufgabenname %><br>
+    <%= f.text_field :Aufgabenname %>
+  </div>
+  <div class="field">
+    <%= f.label :Aufgabenbeschreibung %><br>
+    <%= f.text_field :Aufgabenbeschreibung %>
+  </div>
+  <div class="field">
+    <%= f.label :Aufgabenebene %><br>
+    <%= f.text_field :Aufgabenebene %>
+  </div>
+  <div class="field">
+    <%= f.label :ProjektID %><br>
+    <%= f.text_field :ProjektID %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaket_ArbeitspaketID %><br>
+    <%= f.text_field :Arbeitspaket_ArbeitspaketID %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

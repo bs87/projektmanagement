@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Ressourcename:</strong>
+  <%= @ressourcen.Ressourcename %>
+</p>
+
+<p>
+  <strong>Ressourcebeschreibung:</strong>
+  <%= @ressourcen.Ressourcebeschreibung %>
+</p>
+
+<p>
+  <strong>Ressourceart:</strong>
+  <%= @ressourcen.Ressourceart %>
+</p>
+
+<p>
+  <strong>Ressourcekuerzel:</strong>
+  <%= @ressourcen.Ressourcekuerzel %>
+</p>
+
+<p>
+  <strong>Ressourcegenerisch:</strong>
+  <%= @ressourcen.Ressourcegenerisch %>
+</p>
+
+<p>
+  <strong>Ressourcemax:</strong>
+  <%= @ressourcen.Ressourcemax %>
+</p>
+
+<%= link_to 'Edit', edit_ressourcen_path(@ressourcen) %> |
+<%= link_to 'Back', ressourcens_path %>

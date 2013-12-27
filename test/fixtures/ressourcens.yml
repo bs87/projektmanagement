@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Ressourcename: 
+  Ressourcebeschreibung: 
+  Ressourceart: 
+  Ressourcekuerzel: 
+  Ressourcegenerisch: false
+  Ressourcemax: 
+
+two:
+  Ressourcename: 
+  Ressourcebeschreibung: 
+  Ressourceart: 
+  Ressourcekuerzel: 
+  Ressourcegenerisch: false
+  Ressourcemax: 

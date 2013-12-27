@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Aufgabenname: 
+  Aufgabenbeschreibung: 
+  Aufgabenebene: 
+  ProjektID: 
+  Arbeitspaket_ArbeitspaketID: 
+
+two:
+  Aufgabenname: 
+  Aufgabenbeschreibung: 
+  Aufgabenebene: 
+  ProjektID: 
+  Arbeitspaket_ArbeitspaketID: 

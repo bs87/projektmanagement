@@ -1,0 +1,69 @@
+<%= form_for(@arbeitspaket) do |f| %>
+  <% if @arbeitspaket.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@arbeitspaket.errors.count, "error") %> prohibited this arbeitspaket from being saved:</h2>
+
+      <ul>
+      <% @arbeitspaket.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :Arbeitspaketname %><br>
+    <%= f.text_field :Arbeitspaketname %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketbeschreibung %><br>
+    <%= f.text_field :Arbeitspaketbeschreibung %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketverantwortlicher %><br>
+    <%= f.text_field :Arbeitspaketverantwortlicher %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketbeginn %><br>
+    <%= f.text_field :Arbeitspaketbeginn %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketdauer %><br>
+    <%= f.text_field :Arbeitspaketdauer %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketende %><br>
+    <%= f.text_field :Arbeitspaketende %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketnummer %><br>
+    <%= f.text_field :Arbeitspaketnummer %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketziel %><br>
+    <%= f.text_field :Arbeitspaketziel %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketeingangsdokumente %><br>
+    <%= f.text_field :Arbeitspaketeingangsdokumente %>
+  </div>
+  <div class="field">
+    <%= f.label :Arbeitspaketausgangsdokumente %><br>
+    <%= f.text_field :Arbeitspaketausgangsdokumente %>
+  </div>
+  <div class="field">
+    <%= f.label :AufgabenID %><br>
+    <%= f.text_field :AufgabenID %>
+  </div>
+  <div class="field">
+    <%= f.label :Verantwortlichkeiten_ArbeitsID %><br>
+    <%= f.text_field :Verantwortlichkeiten_ArbeitsID %>
+  </div>
+  <div class="field">
+    <%= f.label :Verantwortlichkeiten_RessourceID %><br>
+    <%= f.text_field :Verantwortlichkeiten_RessourceID %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -11,14 +11,73 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131223095725) do
+ActiveRecord::Schema.define(version: 20131227204609) do
 
-  create_table "projektes", force: true do |t|
-    t.string   "name"
-    t.string   "status"
-    t.float    "kosten"
-    t.date     "projektstart"
-    t.date     "projektende"
+  create_table "Arbeitspakets", force: true do |t|
+    t.string   "Arbeitspaketname",                 limit: 45
+    t.string   "Arbeitspaketbeschreibung",         limit: 45
+    t.integer  "Arbeitspaketverantwortlicher"
+    t.integer  "Arbeitspaketbeginn"
+    t.integer  "Arbeitspaketdauer"
+    t.integer  "Arbeitspaketende"
+    t.integer  "Arbeitspaketnummer"
+    t.string   "Arbeitspaketziel",                 limit: 45
+    t.string   "Arbeitspaketeingangsdokumente",    limit: 45
+    t.string   "Arbeitspaketausgangsdokumente",    limit: 45
+    t.integer  "AufgabenID"
+    t.integer  "Verantwortlichkeiten_ArbeitsID"
+    t.string   "Verantwortlichkeiten_RessourceID", limit: 45
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "Aufgabens", force: true do |t|
+    t.string   "Aufgabenname",                limit: 45
+    t.string   "Aufgabenbeschreibung",        limit: 45
+    t.integer  "Aufgabenebene"
+    t.string   "ProjektID",                   limit: 45
+    t.integer  "Arbeitspaket_ArbeitspaketID"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "Ressourcens", force: true do |t|
+    t.string   "Ressourcename",         limit: 45
+    t.string   "Ressourcebeschreibung", limit: 45
+    t.string   "Ressourceart",          limit: 45
+    t.string   "Ressourcekuerzel",      limit: 45
+    t.boolean  "Ressourcegenerisch"
+    t.integer  "Ressourcemax"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "Roadstops", force: true do |t|
+    t.string   "Roadstopspart", limit: 45
+    t.integer  "Roadstopsdate"
+    t.integer  "ProjektID"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "Verantwortlichkeitens", force: true do |t|
+    t.integer  "ArbeitspaketID"
+    t.string   "RessourceID",             limit: 45
+    t.integer  "Intensitaet"
+    t.string   "Beschreibung",            limit: 45
+    t.integer  "Ressourcen_RessourcenID"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "projekts", force: true do |t|
+    t.string   "Projektname"
+    t.integer  "Projektleiter"
+    t.string   "Projektstart"
+    t.string   "Projektende"
+    t.string   "Projektbeschreibung"
+    t.integer  "Roadstops_RoadstopsID"
+    t.integer  "Aufgaben_AufgabenID"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -35,12 +94,12 @@ ActiveRecord::Schema.define(version: 20131223095725) do
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                       default: "", null: false
+    t.string   "encrypted_password",          default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",               default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -49,6 +108,8 @@ ActiveRecord::Schema.define(version: 20131223095725) do
     t.datetime "updated_at"
     t.string   "vorname"
     t.string   "nachname"
+    t.integer  "Projekt_ProjektID"
+    t.integer  "Arbeitspaket_ArbeitspaketID"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -1,0 +1,69 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Arbeitspaketname:</strong>
+  <%= @arbeitspaket.Arbeitspaketname %>
+</p>
+
+<p>
+  <strong>Arbeitspaketbeschreibung:</strong>
+  <%= @arbeitspaket.Arbeitspaketbeschreibung %>
+</p>
+
+<p>
+  <strong>Arbeitspaketverantwortlicher:</strong>
+  <%= @arbeitspaket.Arbeitspaketverantwortlicher %>
+</p>
+
+<p>
+  <strong>Arbeitspaketbeginn:</strong>
+  <%= @arbeitspaket.Arbeitspaketbeginn %>
+</p>
+
+<p>
+  <strong>Arbeitspaketdauer:</strong>
+  <%= @arbeitspaket.Arbeitspaketdauer %>
+</p>
+
+<p>
+  <strong>Arbeitspaketende:</strong>
+  <%= @arbeitspaket.Arbeitspaketende %>
+</p>
+
+<p>
+  <strong>Arbeitspaketnummer:</strong>
+  <%= @arbeitspaket.Arbeitspaketnummer %>
+</p>
+
+<p>
+  <strong>Arbeitspaketziel:</strong>
+  <%= @arbeitspaket.Arbeitspaketziel %>
+</p>
+
+<p>
+  <strong>Arbeitspaketeingangsdokumente:</strong>
+  <%= @arbeitspaket.Arbeitspaketeingangsdokumente %>
+</p>
+
+<p>
+  <strong>Arbeitspaketausgangsdokumente:</strong>
+  <%= @arbeitspaket.Arbeitspaketausgangsdokumente %>
+</p>
+
+<p>
+  <strong>Aufgabenid:</strong>
+  <%= @arbeitspaket.AufgabenID %>
+</p>
+
+<p>
+  <strong>Verantwortlichkeiten arbeitsid:</strong>
+  <%= @arbeitspaket.Verantwortlichkeiten_ArbeitsID %>
+</p>
+
+<p>
+  <strong>Verantwortlichkeiten ressourceid:</strong>
+  <%= @arbeitspaket.Verantwortlichkeiten_RessourceID %>
+</p>
+
+<%= link_to 'Edit', edit_arbeitspaket_path(@arbeitspaket) %> |
+<%= link_to 'Back', arbeitspakets_path %>

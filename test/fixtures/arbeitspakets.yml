@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  Arbeitspaketname: 
+  Arbeitspaketbeschreibung: 
+  Arbeitspaketverantwortlicher: 
+  Arbeitspaketbeginn: 
+  Arbeitspaketdauer: 
+  Arbeitspaketende: 
+  Arbeitspaketnummer: 
+  Arbeitspaketziel: 
+  Arbeitspaketeingangsdokumente: 
+  Arbeitspaketausgangsdokumente: 
+  AufgabenID: 
+  Verantwortlichkeiten_ArbeitsID: 
+  Verantwortlichkeiten_RessourceID: 
+
+two:
+  Arbeitspaketname: 
+  Arbeitspaketbeschreibung: 
+  Arbeitspaketverantwortlicher: 
+  Arbeitspaketbeginn: 
+  Arbeitspaketdauer: 
+  Arbeitspaketende: 
+  Arbeitspaketnummer: 
+  Arbeitspaketziel: 
+  Arbeitspaketeingangsdokumente: 
+  Arbeitspaketausgangsdokumente: 
+  AufgabenID: 
+  Verantwortlichkeiten_ArbeitsID: 
+  Verantwortlichkeiten_RessourceID: 

@@ -1,0 +1,37 @@
+<h1>Listing ressourcens</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ressourcename</th>
+      <th>Ressourcebeschreibung</th>
+      <th>Ressourceart</th>
+      <th>Ressourcekuerzel</th>
+      <th>Ressourcegenerisch</th>
+      <th>Ressourcemax</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ressourcens.each do |ressourcen| %>
+      <tr>
+        <td><%= ressourcen.Ressourcename %></td>
+        <td><%= ressourcen.Ressourcebeschreibung %></td>
+        <td><%= ressourcen.Ressourceart %></td>
+        <td><%= ressourcen.Ressourcekuerzel %></td>
+        <td><%= ressourcen.Ressourcegenerisch %></td>
+        <td><%= ressourcen.Ressourcemax %></td>
+        <td><%= link_to 'Show', ressourcen %></td>
+        <td><%= link_to 'Edit', edit_ressourcen_path(ressourcen) %></td>
+        <td><%= link_to 'Destroy', ressourcen, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ressourcen', new_ressourcen_path %>

@@ -1,1 +1,1 @@
-json.extract! @aufgaben, :id, :Aufgabenname, :Aufgabenbeschreibung, :Aufgabenebene, :ProjektID, :Arbeitspaket_ArbeitspaketID, :created_at, :updated_at
+json.extract! @aufgaben, :id, :aufgabenname, :aufgabenbeschreibung, :aufgabenrang, :aufgabennr, :projektsid, :created_at, :updated_at

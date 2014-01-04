@@ -9,13 +9,12 @@
       <th>Arbeitspaketbeginn</th>
       <th>Arbeitspaketdauer</th>
       <th>Arbeitspaketende</th>
-      <th>Arbeitspaketnummer</th>
-      <th>Arbeitspaketziel</th>
-      <th>Arbeitspaketeingangsdokumente</th>
-      <th>Arbeitspaketausgangsdokumente</th>
-      <th>Aufgabenid</th>
-      <th>Verantwortlichkeiten arbeitsid</th>
-      <th>Verantwortlichkeiten ressourceid</th>
+      <th>Arbeitspaketnr</th>
+      <th>Arbeitspaketkuerzel</th>
+      <th>Eingangsdokumente</th>
+      <th>Ausgangsdokumente</th>
+      <th>Aufgabeid</th>
+      <th>Verantwortlichkeitenid</th>
       <th></th>
       <th></th>
       <th></th>
@@ -25,19 +24,18 @@
   <tbody>
     <% @arbeitspakets.each do |arbeitspaket| %>
       <tr>
-        <td><%= arbeitspaket.Arbeitspaketname %></td>
-        <td><%= arbeitspaket.Arbeitspaketbeschreibung %></td>
-        <td><%= arbeitspaket.Arbeitspaketverantwortlicher %></td>
-        <td><%= arbeitspaket.Arbeitspaketbeginn %></td>
-        <td><%= arbeitspaket.Arbeitspaketdauer %></td>
-        <td><%= arbeitspaket.Arbeitspaketende %></td>
-        <td><%= arbeitspaket.Arbeitspaketnummer %></td>
-        <td><%= arbeitspaket.Arbeitspaketziel %></td>
-        <td><%= arbeitspaket.Arbeitspaketeingangsdokumente %></td>
-        <td><%= arbeitspaket.Arbeitspaketausgangsdokumente %></td>
-        <td><%= arbeitspaket.AufgabenID %></td>
-        <td><%= arbeitspaket.Verantwortlichkeiten_ArbeitsID %></td>
-        <td><%= arbeitspaket.Verantwortlichkeiten_RessourceID %></td>
+        <td><%= arbeitspaket.arbeitspaketname %></td>
+        <td><%= arbeitspaket.arbeitspaketbeschreibung %></td>
+        <td><%= arbeitspaket.arbeitspaketverantwortlicher %></td>
+        <td><%= arbeitspaket.arbeitspaketbeginn %></td>
+        <td><%= arbeitspaket.arbeitspaketdauer %></td>
+        <td><%= arbeitspaket.arbeitspaketende %></td>
+        <td><%= arbeitspaket.arbeitspaketnr %></td>
+        <td><%= arbeitspaket.arbeitspaketkuerzel %></td>
+        <td><%= arbeitspaket.eingangsdokumente %></td>
+        <td><%= arbeitspaket.ausgangsdokumente %></td>
+        <td><%= arbeitspaket.aufgabeid %></td>
+        <td><%= arbeitspaket.verantwortlichkeitenid %></td>
         <td><%= link_to 'Show', arbeitspaket %></td>
         <td><%= link_to 'Edit', edit_arbeitspaket_path(arbeitspaket) %></td>
         <td><%= link_to 'Destroy', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' } %></td>

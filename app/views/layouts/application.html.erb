@@ -9,7 +9,9 @@
     <meta name="author" content="">
       
     <!-- Le styles -->
-    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href = "../assets/css/bootstrap.css" rel="stylesheet">
+    <script src  = "../assets/javascripts/jquery.js" type="text/javascript"></script>
+    
     <style type="text/css">
       body {
         padding-top: 20px;
@@ -51,6 +53,26 @@
      .marketing p + h4 {
        margin-top: 28px;
      }
+
+
+     ul, li {
+    list-style: none;
+    }
+    #nav li {
+        padding: 2px 2px 2px 15px;
+        cursor: default;
+    }
+    #nav ul {
+        display: none;
+        background: url(img/dots.png) repeat-y scroll 10px 0 transparent;
+    }
+    #nav li.expand {
+        background: url(img/arrow-down.gif) no-repeat scroll 0px 12px transparent;
+    }
+    .expanded {
+        background: url(img/arrow-up.gif) no-repeat scroll 0px 12px transparent !important;
+    }
+
   </style>
     <%= csrf_meta_tags %>
 
@@ -59,6 +81,7 @@
       <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js" type="text/javascript"></script>
     <![endif]-->
 
+    <%= javascript_include_tag "application" %>
     <%= stylesheet_link_tag "application", :media => "all" %>
 
 
@@ -72,7 +95,8 @@
            <% if current_user %>
                 <ul class="nav pull-right" >
               <p></p>
-                <p><%= link_to current_user.email, destroy_user_session_path,:class => "  icon-off  ", method: :delete  %> </p>
+                <p>
+                  <%= link_to current_user.email, destroy_user_session_path,:class => "  icon-off  ", method: :delete  %> </p>
                 
             </ul>
                 <% else %>
@@ -94,10 +118,10 @@
             <ul class="nav nav-list">
               <!--<li class="nav-header">Sidebar</li>-->
               <% if current_user %>
-
-              <li><%= link_to 'Projekte', projektes_path, :id=> 'Projekte'%></li>
-              <li><%= link_to 'Einstellungen', edit_user_registration_path %></li>
-              <li><%= link_to 'Home', root_path, method: :delete %></li>
+              <li><%= link_to 'Home', root_path %></li>
+              <li><%= link_to 'PBS', projekts_path, :id=> 'Projekte'%></li>
+              <li><%= link_to 'WBS', aufgabens_path, :id=> 'Aufgaben'%></li>
+              <li><%= link_to 'Einstellungen', edit_user_registration_path %></li>            
               <%end%>
             </ul>
           </div><!--/.well -->

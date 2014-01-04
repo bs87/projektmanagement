@@ -2,27 +2,27 @@
 
 <p>
   <strong>Aufgabenname:</strong>
-  <%= @aufgaben.Aufgabenname %>
+  <%= @aufgaben.aufgabenname %>
 </p>
 
 <p>
   <strong>Aufgabenbeschreibung:</strong>
-  <%= @aufgaben.Aufgabenbeschreibung %>
+  <%= @aufgaben.aufgabenbeschreibung %>
 </p>
 
 <p>
-  <strong>Aufgabenebene:</strong>
-  <%= @aufgaben.Aufgabenebene %>
+  <strong>Aufgabenvorgaenger:</strong>
+  <%= @aufgaben.aufgabenvorgaenger%>
 </p>
 
 <p>
-  <strong>Projektid:</strong>
-  <%= @aufgaben.ProjektID %>
+  <strong>Aufgabennr:</strong>
+  <%= @aufgaben.aufgabennr %>
 </p>
 
 <p>
-  <strong>Arbeitspaket arbeitspaketid:</strong>
-  <%= @aufgaben.Arbeitspaket_ArbeitspaketID %>
+  <strong>Projektsid:</strong>
+  <%= @aufgaben.projektsid %>
 </p>
 
 <%= link_to 'Edit', edit_aufgaben_path(@aufgaben) %> |

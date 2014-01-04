@@ -18,7 +18,7 @@ class ArbeitspaketsControllerTest < ActionController::TestCase
 
   test "should create arbeitspaket" do
     assert_difference('Arbeitspaket.count') do
-      post :create, arbeitspaket: { Arbeitspaketausgangsdokumente: @arbeitspaket.Arbeitspaketausgangsdokumente, Arbeitspaketbeginn: @arbeitspaket.Arbeitspaketbeginn, Arbeitspaketbeschreibung: @arbeitspaket.Arbeitspaketbeschreibung, Arbeitspaketdauer: @arbeitspaket.Arbeitspaketdauer, Arbeitspaketeingangsdokumente: @arbeitspaket.Arbeitspaketeingangsdokumente, Arbeitspaketende: @arbeitspaket.Arbeitspaketende, Arbeitspaketname: @arbeitspaket.Arbeitspaketname, Arbeitspaketnummer: @arbeitspaket.Arbeitspaketnummer, Arbeitspaketverantwortlicher: @arbeitspaket.Arbeitspaketverantwortlicher, Arbeitspaketziel: @arbeitspaket.Arbeitspaketziel, AufgabenID: @arbeitspaket.AufgabenID, Verantwortlichkeiten_ArbeitsID: @arbeitspaket.Verantwortlichkeiten_ArbeitsID, Verantwortlichkeiten_RessourceID: @arbeitspaket.Verantwortlichkeiten_RessourceID }
+      post :create, arbeitspaket: { arbeitspaketbeginn: @arbeitspaket.arbeitspaketbeginn, arbeitspaketbeschreibung: @arbeitspaket.arbeitspaketbeschreibung, arbeitspaketdauer: @arbeitspaket.arbeitspaketdauer, arbeitspaketende: @arbeitspaket.arbeitspaketende, arbeitspaketkuerzel: @arbeitspaket.arbeitspaketkuerzel, arbeitspaketname: @arbeitspaket.arbeitspaketname, arbeitspaketnr: @arbeitspaket.arbeitspaketnr, arbeitspaketverantwortlicher: @arbeitspaket.arbeitspaketverantwortlicher, aufgabeid: @arbeitspaket.aufgabeid, ausgangsdokumente: @arbeitspaket.ausgangsdokumente, eingangsdokumente: @arbeitspaket.eingangsdokumente, verantwortlichkeitenid: @arbeitspaket.verantwortlichkeitenid }
     end
 
     assert_redirected_to arbeitspaket_path(assigns(:arbeitspaket))
@@ -35,7 +35,7 @@ class ArbeitspaketsControllerTest < ActionController::TestCase
   end
 
   test "should update arbeitspaket" do
-    patch :update, id: @arbeitspaket, arbeitspaket: { Arbeitspaketausgangsdokumente: @arbeitspaket.Arbeitspaketausgangsdokumente, Arbeitspaketbeginn: @arbeitspaket.Arbeitspaketbeginn, Arbeitspaketbeschreibung: @arbeitspaket.Arbeitspaketbeschreibung, Arbeitspaketdauer: @arbeitspaket.Arbeitspaketdauer, Arbeitspaketeingangsdokumente: @arbeitspaket.Arbeitspaketeingangsdokumente, Arbeitspaketende: @arbeitspaket.Arbeitspaketende, Arbeitspaketname: @arbeitspaket.Arbeitspaketname, Arbeitspaketnummer: @arbeitspaket.Arbeitspaketnummer, Arbeitspaketverantwortlicher: @arbeitspaket.Arbeitspaketverantwortlicher, Arbeitspaketziel: @arbeitspaket.Arbeitspaketziel, AufgabenID: @arbeitspaket.AufgabenID, Verantwortlichkeiten_ArbeitsID: @arbeitspaket.Verantwortlichkeiten_ArbeitsID, Verantwortlichkeiten_RessourceID: @arbeitspaket.Verantwortlichkeiten_RessourceID }
+    patch :update, id: @arbeitspaket, arbeitspaket: { arbeitspaketbeginn: @arbeitspaket.arbeitspaketbeginn, arbeitspaketbeschreibung: @arbeitspaket.arbeitspaketbeschreibung, arbeitspaketdauer: @arbeitspaket.arbeitspaketdauer, arbeitspaketende: @arbeitspaket.arbeitspaketende, arbeitspaketkuerzel: @arbeitspaket.arbeitspaketkuerzel, arbeitspaketname: @arbeitspaket.arbeitspaketname, arbeitspaketnr: @arbeitspaket.arbeitspaketnr, arbeitspaketverantwortlicher: @arbeitspaket.arbeitspaketverantwortlicher, aufgabeid: @arbeitspaket.aufgabeid, ausgangsdokumente: @arbeitspaket.ausgangsdokumente, eingangsdokumente: @arbeitspaket.eingangsdokumente, verantwortlichkeitenid: @arbeitspaket.verantwortlichkeitenid }
     assert_redirected_to arbeitspaket_path(assigns(:arbeitspaket))
   end
 

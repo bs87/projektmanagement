@@ -15,6 +15,7 @@ class ArbeitspaketsController < ApplicationController
   # GET /arbeitspakets/new
   def new
     @arbeitspaket = Arbeitspaket.new
+    @aid = params[:aufgabeid]
   end
 
   # GET /arbeitspakets/1/edit
@@ -26,15 +27,16 @@ class ArbeitspaketsController < ApplicationController
   def create
     @arbeitspaket = Arbeitspaket.new(arbeitspaket_params)
 
-    respond_to do |format|
+    #respond_to do |format|
       if @arbeitspaket.save
-        format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @arbeitspaket }
+        #format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket was successfully created.' }
+        #format.json { render action: 'show', status: :created, location: @arbeitspaket }
+        redirect_to aufgabens_path
       else
         format.html { render action: 'new' }
         format.json { render json: @arbeitspaket.errors, status: :unprocessable_entity }
       end
-    end
+    #end
   end
 
   # PATCH/PUT /arbeitspakets/1
@@ -42,8 +44,8 @@ class ArbeitspaketsController < ApplicationController
   def update
     respond_to do |format|
       if @arbeitspaket.update(arbeitspaket_params)
-        format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket was successfully updated.' }
-        format.json { head :no_content }
+        #format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket was successfully updated.' }
+        #format.json { head :no_content }
       else
         format.html { render action: 'edit' }
         format.json { render json: @arbeitspaket.errors, status: :unprocessable_entity }
@@ -69,6 +71,6 @@ class ArbeitspaketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def arbeitspaket_params
-      params.require(:arbeitspaket).permit(:Arbeitspaketname, :Arbeitspaketbeschreibung, :Arbeitspaketverantwortlicher, :Arbeitspaketbeginn, :Arbeitspaketdauer, :Arbeitspaketende, :Arbeitspaketnummer, :Arbeitspaketziel, :Arbeitspaketeingangsdokumente, :Arbeitspaketausgangsdokumente, :AufgabenID, :Verantwortlichkeiten_ArbeitsID, :Verantwortlichkeiten_RessourceID)
+      params.require(:arbeitspaket).permit(:arbeitspaketname, :arbeitspaketbeschreibung, :arbeitspaketverantwortlicher, :arbeitspaketbeginn, :arbeitspaketdauer, :arbeitspaketende, :arbeitspaketnr, :arbeitspaketkuerzel, :eingangsdokumente, :ausgangsdokumente, :aufgabeid, :verantwortlichkeitenid)
     end
 end

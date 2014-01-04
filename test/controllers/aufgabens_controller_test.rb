@@ -18,7 +18,7 @@ class AufgabensControllerTest < ActionController::TestCase
 
   test "should create aufgaben" do
     assert_difference('Aufgaben.count') do
-      post :create, aufgaben: { Arbeitspaket_ArbeitspaketID: @aufgaben.Arbeitspaket_ArbeitspaketID, Aufgabenbeschreibung: @aufgaben.Aufgabenbeschreibung, Aufgabenebene: @aufgaben.Aufgabenebene, Aufgabenname: @aufgaben.Aufgabenname, ProjektID: @aufgaben.ProjektID }
+      post :create, aufgaben: { aufgabenbeschreibung: @aufgaben.aufgabenbeschreibung, aufgabenname: @aufgaben.aufgabenname, aufgabennr: @aufgaben.aufgabennr, aufgabenrang: @aufgaben.aufgabenrang, projektsid: @aufgaben.projektsid }
     end
 
     assert_redirected_to aufgaben_path(assigns(:aufgaben))
@@ -35,7 +35,7 @@ class AufgabensControllerTest < ActionController::TestCase
   end
 
   test "should update aufgaben" do
-    patch :update, id: @aufgaben, aufgaben: { Arbeitspaket_ArbeitspaketID: @aufgaben.Arbeitspaket_ArbeitspaketID, Aufgabenbeschreibung: @aufgaben.Aufgabenbeschreibung, Aufgabenebene: @aufgaben.Aufgabenebene, Aufgabenname: @aufgaben.Aufgabenname, ProjektID: @aufgaben.ProjektID }
+    patch :update, id: @aufgaben, aufgaben: { aufgabenbeschreibung: @aufgaben.aufgabenbeschreibung, aufgabenname: @aufgaben.aufgabenname, aufgabennr: @aufgaben.aufgabennr, aufgabenrang: @aufgaben.aufgabenrang, projektsid: @aufgaben.projektsid }
     assert_redirected_to aufgaben_path(assigns(:aufgaben))
   end
 

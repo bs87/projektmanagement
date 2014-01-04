@@ -4,7 +4,9 @@ class AufgabensController < ApplicationController
   # GET /aufgabens
   # GET /aufgabens.json
   def index
-    @aufgabens = Aufgaben.all
+    @aufgaben = Aufgaben.all
+    @projekts = Projekt.all
+    @arbeitspakets = Arbeitspaket.all
   end
 
   # GET /aufgabens/1
@@ -15,6 +17,8 @@ class AufgabensController < ApplicationController
   # GET /aufgabens/new
   def new
     @aufgaben = Aufgaben.new
+    @ebene = params[:ebene]
+    @pid = params[:id]
   end
 
   # GET /aufgabens/1/edit
@@ -25,16 +29,18 @@ class AufgabensController < ApplicationController
   # POST /aufgabens.json
   def create
     @aufgaben = Aufgaben.new(aufgaben_params)
-
-    respond_to do |format|
+    
+  
+    #respond_to do |format|
       if @aufgaben.save
-        format.html { redirect_to @aufgaben, notice: 'Aufgaben was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @aufgaben }
+        #format.html { redirect_to @aufgaben, notice: 'Aufgaben was successfully created.' }
+        #format.json { render action: 'show', status: :created, location: @aufgaben }
+        redirect_to projekts_path
       else
         format.html { render action: 'new' }
         format.json { render json: @aufgaben.errors, status: :unprocessable_entity }
       end
-    end
+    #end
   end
 
   # PATCH/PUT /aufgabens/1
@@ -69,6 +75,6 @@ class AufgabensController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def aufgaben_params
-      params.require(:aufgaben).permit(:Aufgabenname, :Aufgabenbeschreibung, :Aufgabenebene, :ProjektID, :Arbeitspaket_ArbeitspaketID)
+      params.require(:aufgaben).permit(:aufgabenname, :aufgabenbeschreibung, :aufgabenvorgaenger, :aufgabennr, :projektsid)
     end
 end

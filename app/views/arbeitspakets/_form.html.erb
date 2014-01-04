@@ -12,56 +12,52 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :Arbeitspaketname %><br>
-    <%= f.text_field :Arbeitspaketname %>
+    <%= f.label :arbeitspaketname %><br>
+    <%= f.text_field :arbeitspaketname %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketbeschreibung %><br>
-    <%= f.text_field :Arbeitspaketbeschreibung %>
+    <%= f.label :arbeitspaketbeschreibung %><br>
+    <%= f.text_field :arbeitspaketbeschreibung %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketverantwortlicher %><br>
-    <%= f.text_field :Arbeitspaketverantwortlicher %>
+    <%= f.label :arbeitspaketverantwortlicher %><br>
+    <%= f.text_field :arbeitspaketverantwortlicher %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketbeginn %><br>
-    <%= f.text_field :Arbeitspaketbeginn %>
+    <%= f.label :arbeitspaketbeginn %><br>
+    <%= f.date_select :arbeitspaketbeginn %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketdauer %><br>
-    <%= f.text_field :Arbeitspaketdauer %>
+    <%= f.label :arbeitspaketdauer %><br>
+    <%= f.date_select :arbeitspaketdauer %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketende %><br>
-    <%= f.text_field :Arbeitspaketende %>
+    <%= f.label :arbeitspaketende %><br>
+    <%= f.date_select :arbeitspaketende %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketnummer %><br>
-    <%= f.text_field :Arbeitspaketnummer %>
+    <%= f.label :arbeitspaketnr %><br>
+    <%= f.number_field :arbeitspaketnr %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketziel %><br>
-    <%= f.text_field :Arbeitspaketziel %>
+    <%= f.label :arbeitspaketkuerzel %><br>
+    <%= f.text_field :arbeitspaketkuerzel %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketeingangsdokumente %><br>
-    <%= f.text_field :Arbeitspaketeingangsdokumente %>
+    <%= f.label :eingangsdokumente %><br>
+    <%= f.text_field :eingangsdokumente %>
   </div>
   <div class="field">
-    <%= f.label :Arbeitspaketausgangsdokumente %><br>
-    <%= f.text_field :Arbeitspaketausgangsdokumente %>
+    <%= f.label :ausgangsdokumente %><br>
+    <%= f.text_field :ausgangsdokumente %>
   </div>
   <div class="field">
-    <%= f.label :AufgabenID %><br>
-    <%= f.text_field :AufgabenID %>
+    <%= f.label :aufgabeid %><br>
+    <%= f.number_field :aufgabeid, :value => @aid, :readonly=> true%>
   </div>
   <div class="field">
-    <%= f.label :Verantwortlichkeiten_ArbeitsID %><br>
-    <%= f.text_field :Verantwortlichkeiten_ArbeitsID %>
-  </div>
-  <div class="field">
-    <%= f.label :Verantwortlichkeiten_RessourceID %><br>
-    <%= f.text_field :Verantwortlichkeiten_RessourceID %>
+    <%= f.label :verantwortlichkeitenid %><br>
+    <%= f.number_field :verantwortlichkeitenid %>
   </div>
   <div class="actions">
     <%= f.submit %>

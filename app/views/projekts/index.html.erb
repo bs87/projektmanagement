@@ -1,39 +1,78 @@
-<h1>Listing projekts</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Projektname</th>
-      <th>Projektleiter</th>
-      <th>Projektstart</th>
-      <th>Projektende</th>
-      <th>Projektbeschreibung</th>
-      <th>Roadstops roadstopsid</th>
-      <th>Aufgaben aufgabenid</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
+<h1>Deine Projekte</h1>
+  <!-- Projekte -->
+  <ul>
     <% @projekts.each do |projekt| %>
-      <tr>
-        <td><%= projekt.Projektname %></td>
-        <td><%= projekt.Projektleiter %></td>
-        <td><%= projekt.Projektstart %></td>
-        <td><%= projekt.Projektende %></td>
-        <td><%= projekt.Projektbeschreibung %></td>
-        <td><%= projekt.Roadstops_RoadstopsID %></td>
-        <td><%= projekt.Aufgaben_AufgabenID %></td>
-        <td><%= link_to 'Show', projekt %></td>
-        <td><%= link_to 'Edit', edit_projekt_path(projekt) %></td>
-        <td><%= link_to 'Destroy', projekt, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <% if projekt.Projektleiter == current_user.email %>       
+        <li class="expand">
+
+          <table>
+            <tr>
+              <td width="120px"> <b><u><h5><%= projekt.Projektname %> </h5></b> </u><td>
+              <td> <%= link_to '', projekt, :class=>"icon-list-alt" %>  </td>
+              <td>  <%= link_to('', edit_projekt_path(projekt), :class => "icon-wrench") %> </td>
+              <td>  <%= link_to('', projekt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>  </td>
+
+            </tr>
+          </table>
+          
+          <!-- Aufgabe Unterebene 1 -->
+          <ul>
+            <% @aufgaben.each do |aufgabe| %>
+              <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>  
+                <% @vorgaenger1 = aufgabe.id %>
+                <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                <li class="expand">  
+                  <span style="color:blue"><%= aufgabe.aufgabenname %></span>
+                  <!-- Aufgabe Unterebene 2 -->
+                  <ul>
+                    <% @aufgaben.each do |aufgabe| %>
+                      <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger1 %> 
+                        <% @vorgaenger2 = aufgabe.id %>
+                        <span style="color:green">
+                        <li class="expand"> <%= aufgabe.aufgabenname %></span
+
+                          <!-- Aufgabe Unterebene 3 -->
+                          <ul>
+                            <% @aufgaben.each do |aufgabe| %>
+                              <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger2 %> 
+                                <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %> 
+                                <span style="color:#665500"><li> <%= aufgabe.aufgabenname %> </li></span>
+                              <% end %>
+                            <% end %>
+                 
+                              <li style="font-size: 11px"> <%= link_to 'add', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>projekt.id),:class => "icon-plus"  %> 
+                              </li>
+                 
+                          </ul>
+                        </li>
+                      <% end %>
+                    <%end%>
+               
+                      <li style="font-size: 11px"> <%= link_to 'add', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>projekt.id), :class=>"icon-plus" %> 
+                      </li>
+                
+                  </ul>
+                </li>
+              <% end %>
+            <% end %>
+            <li style="font-size: 11px"> <%= link_to 'add', new_aufgaben_path(:ebene=>nil, :id=>projekt.id), :class=>"icon-plus" %> 
+            </li>
+          </ul>
+        </li>
+      <% end %>
     <% end %>
-  </tbody>
-</table>
+  </ul>     
+
+ <script>
+    $(document).ready(function() {
+     $(".expand").click(function(e) {
+        $(this).toggleClass("expanded");
+        $(this).children("ul:first").slideToggle("300");
+        e.stopPropagation();
+     }); 
+    }); //$(document).ready
+  </script>
 
 <br>
 
-<%= link_to 'New Projekt', new_projekt_path %>
+<%= link_to 'Neues Projekt anlegen', new_projekt_path %>

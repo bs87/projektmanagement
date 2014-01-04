@@ -5,6 +5,8 @@ class ProjektsController < ApplicationController
   # GET /projekts.json
   def index
     @projekts = Projekt.all
+    @aufgaben = Aufgaben.all
+    @arbeitspakets = Arbeitspaket.all
   end
 
   # GET /projekts/1

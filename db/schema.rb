@@ -11,73 +11,64 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131227204609) do
+ActiveRecord::Schema.define(version: 20140103235837) do
 
-  create_table "Arbeitspakets", force: true do |t|
-    t.string   "Arbeitspaketname",                 limit: 45
-    t.string   "Arbeitspaketbeschreibung",         limit: 45
-    t.integer  "Arbeitspaketverantwortlicher"
-    t.integer  "Arbeitspaketbeginn"
-    t.integer  "Arbeitspaketdauer"
-    t.integer  "Arbeitspaketende"
-    t.integer  "Arbeitspaketnummer"
-    t.string   "Arbeitspaketziel",                 limit: 45
-    t.string   "Arbeitspaketeingangsdokumente",    limit: 45
-    t.string   "Arbeitspaketausgangsdokumente",    limit: 45
-    t.integer  "AufgabenID"
-    t.integer  "Verantwortlichkeiten_ArbeitsID"
-    t.string   "Verantwortlichkeiten_RessourceID", limit: 45
+  create_table "arbeitspakets", force: true do |t|
+    t.string   "arbeitspaketname",                 limit: 45
+    t.string   "arbeitspaketbeschreibung",         limit: 45
+    t.integer  "arbeitspaketverantwortlicher"
+    t.date     "arbeitspaketbeginn"
+    t.date     "arbeitspaketdauer"
+    t.date     "arbeitspaketende"
+    t.integer  "arbeitspaketnr"
+    t.string   "arbeitspaketziel",                 limit: 45
+    t.string   "arbeitspaketkuerzel",              limit: 45
+    t.string   "arbeitspaketeingangsdokumente",    limit: 45
+    t.string   "arbeitspaketausgangsdokumente",    limit: 45
+    t.integer  "aufgabeid"
+    t.integer  "verantwortlichkeiten_Arbeitsid"
+    t.string   "verantwortlichkeiten_Ressourceid", limit: 45
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "Aufgabens", force: true do |t|
-    t.string   "Aufgabenname",                limit: 45
-    t.string   "Aufgabenbeschreibung",        limit: 45
-    t.integer  "Aufgabenebene"
-    t.string   "ProjektID",                   limit: 45
-    t.integer  "Arbeitspaket_ArbeitspaketID"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "Ressourcens", force: true do |t|
-    t.string   "Ressourcename",         limit: 45
-    t.string   "Ressourcebeschreibung", limit: 45
-    t.string   "Ressourceart",          limit: 45
-    t.string   "Ressourcekuerzel",      limit: 45
-    t.boolean  "Ressourcegenerisch"
-    t.integer  "Ressourcemax"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "Roadstops", force: true do |t|
-    t.string   "Roadstopspart", limit: 45
-    t.integer  "Roadstopsdate"
-    t.integer  "ProjektID"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "Verantwortlichkeitens", force: true do |t|
-    t.integer  "ArbeitspaketID"
-    t.string   "RessourceID",             limit: 45
-    t.integer  "Intensitaet"
-    t.string   "Beschreibung",            limit: 45
-    t.integer  "Ressourcen_RessourcenID"
+  create_table "aufgabens", force: true do |t|
+    t.string   "aufgabenname",         limit: 45
+    t.string   "aufgabenbeschreibung", limit: 45
+    t.integer  "aufgabenvorgaenger"
+    t.integer  "aufgabennr"
+    t.integer  "projektsid"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "projekts", force: true do |t|
-    t.string   "Projektname"
-    t.integer  "Projektleiter"
-    t.string   "Projektstart"
-    t.string   "Projektende"
-    t.string   "Projektbeschreibung"
-    t.integer  "Roadstops_RoadstopsID"
-    t.integer  "Aufgaben_AufgabenID"
+    t.string   "projektname"
+    t.string   "projektleiter"
+    t.string   "projektstart"
+    t.string   "projektende"
+    t.string   "projektbeschreibung"
+    t.integer  "roadstops_roadstopsid"
+    t.integer  "aufgaben_aufgabenid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ressourcens", force: true do |t|
+    t.string   "ressourcename",         limit: 45
+    t.string   "ressourcebeschreibung", limit: 45
+    t.string   "ressourceart",          limit: 45
+    t.string   "ressourcekuerzel",      limit: 45
+    t.boolean  "ressourcegenerisch"
+    t.integer  "ressourcemax"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "roadstops", force: true do |t|
+    t.string   "roadstopspart", limit: 45
+    t.integer  "roadstopsdate"
+    t.integer  "projektid"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -108,8 +99,8 @@ ActiveRecord::Schema.define(version: 20131227204609) do
     t.datetime "updated_at"
     t.string   "vorname"
     t.string   "nachname"
-    t.integer  "Projekt_ProjektID"
-    t.integer  "Arbeitspaket_ArbeitspaketID"
+    t.integer  "projekt_projektid"
+    t.integer  "arbeitspaket_arbeitspaketid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -121,5 +112,15 @@ ActiveRecord::Schema.define(version: 20131227204609) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
+
+  create_table "verantwortlichkeitens", force: true do |t|
+    t.integer  "arbeitspaketid"
+    t.string   "ressourceid",             limit: 45
+    t.integer  "intensitaet"
+    t.string   "beschreibung",            limit: 45
+    t.integer  "ressourcen_ressourcenid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

@@ -13,23 +13,23 @@
 
   <div class="field">
     <%= f.label :Projektname %><br>
-    <%= f.text_field :Projektname %>
+    <%= f.text_field :projektname %>
   </div>
   <div class="field">
     <%= f.label :Projektleiter %><br>
-    <%= f.number_field :Projektleiter, :value => current_user.email, :readonly => true %>
+    <%= f.text_field :projektleiter, :value => current_user.email, :readonly => true %>
   </div>
   <div class="field">
     <%= f.label :Projektstart %><br>
-    <%= f.date_field :Projektstart %>
+    <%= f.date_field :projektstart %>
   </div>
   <div class="field">
     <%= f.label :Projektende %><br>
-    <%= f.date_field :Projektende %>
+    <%= f.date_field :projektende %>
   </div>
   <div class="field">
     <%= f.label :Projektbeschreibung %><br>
-    <%= f.text_area:Projektbeschreibung %>
+    <%= f.text_area:projektbeschreibung %>
   </div>
   <div class="actions">
     <%= f.submit %>

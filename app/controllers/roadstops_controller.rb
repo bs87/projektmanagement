@@ -69,6 +69,6 @@ class RoadstopsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def roadstop_params
-      params.require(:roadstop).permit(:Roadstopspart, :Roadstopsdate, :ProjektID)
+      params.require(:roadstop).permit(:roadstopspart, :roadstopsdate, :projektid)
     end
 end

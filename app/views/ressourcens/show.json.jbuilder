@@ -1,1 +1,1 @@
-json.extract! @ressourcen, :id, :Ressourcename, :Ressourcebeschreibung, :Ressourceart, :Ressourcekuerzel, :Ressourcegenerisch, :Ressourcemax, :created_at, :updated_at
+json.extract! @ressourcen, :id, :ressourcename, :ressourcebeschreibung, :ressourceart, :ressourcekuerzel, :ressourcegenerisch, :ressourcemax, :created_at, :updated_at

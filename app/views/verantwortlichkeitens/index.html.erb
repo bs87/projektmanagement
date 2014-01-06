@@ -17,11 +17,11 @@
   <tbody>
     <% @verantwortlichkeitens.each do |verantwortlichkeiten| %>
       <tr>
-        <td><%= verantwortlichkeiten.ArbeitspaketID %></td>
-        <td><%= verantwortlichkeiten.RessourceID %></td>
-        <td><%= verantwortlichkeiten.Intensitaet %></td>
-        <td><%= verantwortlichkeiten.Beschreibung %></td>
-        <td><%= verantwortlichkeiten.Ressourcen_RessourcenID %></td>
+        <td><%= verantwortlichkeiten.arbeitspaketID %></td>
+        <td><%= verantwortlichkeiten.ressourceID %></td>
+        <td><%= verantwortlichkeiten.intensitaet %></td>
+        <td><%= verantwortlichkeiten.beschreibung %></td>
+        <td><%= verantwortlichkeiten.ressourcen_ressourcenID %></td>
         <td><%= link_to 'Show', verantwortlichkeiten %></td>
         <td><%= link_to 'Edit', edit_verantwortlichkeiten_path(verantwortlichkeiten) %></td>
         <td><%= link_to 'Destroy', verantwortlichkeiten, method: :delete, data: { confirm: 'Are you sure?' } %></td>

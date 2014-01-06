@@ -1,13 +1,13 @@
 class CreateProjekts < ActiveRecord::Migration
   def change
     create_table :projekts do |t|
-      t.string :Projektname
-      t.integer :Projektleiter
-      t.string :Projektstart
-      t.string :Projektende
-      t.string :Projektbeschreibung
-      t.integer :Roadstops_RoadstopsID
-      t.integer :Aufgaben_AufgabenID
+      t.string :projektname
+      t.string :projektleiter
+      t.string :projektstart
+      t.string :projektende
+      t.string :projektbeschreibung
+      t.integer :roadstops_roadstopsid
+      t.integer :aufgaben_aufgabenid
 
       t.timestamps
     end

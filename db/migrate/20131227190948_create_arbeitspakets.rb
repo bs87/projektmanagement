@@ -1,19 +1,20 @@
 class CreateArbeitspakets < ActiveRecord::Migration
   def change
-    create_table :Arbeitspakets do |t|
-      t.string :Arbeitspaketname, :limit =>45
-      t.string :Arbeitspaketbeschreibung, :limit =>45
-      t.integer :Arbeitspaketverantwortlicher
-      t.integer :Arbeitspaketbeginn
-      t.integer :Arbeitspaketdauer
-      t.integer :Arbeitspaketende
-      t.integer :Arbeitspaketnummer
-      t.string :Arbeitspaketziel, :limit =>45
-      t.string :Arbeitspaketeingangsdokumente, :limit =>45
-      t.string :Arbeitspaketausgangsdokumente, :limit =>45
-      t.integer :AufgabenID
-      t.integer :Verantwortlichkeiten_ArbeitsID
-      t.string :Verantwortlichkeiten_RessourceID, :limit =>45
+    create_table :arbeitspakets do |t|
+      t.string :arbeitspaketname, :limit =>45
+      t.string :arbeitspaketbeschreibung, :limit =>45
+      t.integer :arbeitspaketverantwortlicher
+      t.date :arbeitspaketbeginn
+      t.date :arbeitspaketdauer
+      t.date :arbeitspaketende
+      t.integer :arbeitspaketnr
+      t.string :arbeitspaketziel, :limit =>45
+        t.string :arbeitspaketkuerzel, :limit =>45
+      t.string :arbeitspaketeingangsdokumente, :limit =>45
+      t.string :arbeitspaketausgangsdokumente, :limit =>45
+      t.integer :aufgabeid
+      t.integer :verantwortlichkeiten_Arbeitsid
+      t.string :verantwortlichkeiten_Ressourceid, :limit =>45
 
       t.timestamps
     end

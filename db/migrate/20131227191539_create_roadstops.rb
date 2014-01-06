@@ -1,9 +1,9 @@
 class CreateRoadstops < ActiveRecord::Migration
   def change
-    create_table :Roadstops do |t|
-      t.string :Roadstopspart, :limit =>45
-      t.integer :Roadstopsdate
-      t.integer :ProjektID
+    create_table :roadstops do |t|
+      t.string :roadstopspart, :limit =>45
+      t.integer :roadstopsdate
+      t.integer :projektid
 
       t.timestamps
     end

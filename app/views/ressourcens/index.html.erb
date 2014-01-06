@@ -18,12 +18,12 @@
   <tbody>
     <% @ressourcens.each do |ressourcen| %>
       <tr>
-        <td><%= ressourcen.Ressourcename %></td>
-        <td><%= ressourcen.Ressourcebeschreibung %></td>
-        <td><%= ressourcen.Ressourceart %></td>
-        <td><%= ressourcen.Ressourcekuerzel %></td>
-        <td><%= ressourcen.Ressourcegenerisch %></td>
-        <td><%= ressourcen.Ressourcemax %></td>
+        <td><%= ressourcen.ressourcename %></td>
+        <td><%= ressourcen.ressourcebeschreibung %></td>
+        <td><%= ressourcen.ressourceart %></td>
+        <td><%= ressourcen.ressourcekuerzel %></td>
+        <td><%= ressourcen.ressourcegenerisch %></td>
+        <td><%= ressourcen.ressourcemax %></td>
         <td><%= link_to 'Show', ressourcen %></td>
         <td><%= link_to 'Edit', edit_ressourcen_path(ressourcen) %></td>
         <td><%= link_to 'Destroy', ressourcen, method: :delete, data: { confirm: 'Are you sure?' } %></td>

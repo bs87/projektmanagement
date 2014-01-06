@@ -36,7 +36,7 @@
     <%= f.date_select :arbeitspaketende %>
   </div>
   <div class="field">
-    <%= f.label :arbeitspaketnr %><br>
+    <%= f.label :arbeitspaketnummer %><br>
     <%= f.number_field :arbeitspaketnr %>
   </div>
   <div class="field">
@@ -45,11 +45,11 @@
   </div>
   <div class="field">
     <%= f.label :eingangsdokumente %><br>
-    <%= f.text_field :eingangsdokumente %>
+    <%= f.text_field :arbeitspaketeingangsdokumente %>
   </div>
   <div class="field">
     <%= f.label :ausgangsdokumente %><br>
-    <%= f.text_field :ausgangsdokumente %>
+    <%= f.text_field :arbeitspaketausgangsdokumente %>
   </div>
   <div class="field">
     <%= f.label :aufgabeid %><br>
@@ -57,7 +57,7 @@
   </div>
   <div class="field">
     <%= f.label :verantwortlichkeitenid %><br>
-    <%= f.number_field :verantwortlichkeitenid %>
+    <%= f.number_field :verantwortlichkeiten_Arbeitsid %>
   </div>
   <div class="actions">
     <%= f.submit %>

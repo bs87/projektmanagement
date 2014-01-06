@@ -15,9 +15,9 @@
   <tbody>
     <% @roadstops.each do |roadstop| %>
       <tr>
-        <td><%= roadstop.Roadstopspart %></td>
-        <td><%= roadstop.Roadstopsdate %></td>
-        <td><%= roadstop.ProjektID %></td>
+        <td><%= roadstop.roadstopspart %></td>
+        <td><%= roadstop.roadstopsdate %></td>
+        <td><%= roadstop.projektid %></td>
         <td><%= link_to 'Show', roadstop %></td>
         <td><%= link_to 'Edit', edit_roadstop_path(roadstop) %></td>
         <td><%= link_to 'Destroy', roadstop, method: :delete, data: { confirm: 'Are you sure?' } %></td>

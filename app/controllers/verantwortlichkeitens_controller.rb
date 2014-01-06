@@ -69,6 +69,6 @@ class VerantwortlichkeitensController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def verantwortlichkeiten_params
-      params.require(:verantwortlichkeiten).permit(:ArbeitspaketID, :RessourceID, :Intensitaet, :Beschreibung, :Ressourcen_RessourcenID)
+      params.require(:verantwortlichkeiten).permit(:arbeitspaketid, :ressourceid, :intensitaet, :beschreibung, :ressourcen_ressourcenid)
     end
 end

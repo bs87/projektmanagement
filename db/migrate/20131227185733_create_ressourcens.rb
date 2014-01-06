@@ -1,12 +1,12 @@
 class CreateRessourcens < ActiveRecord::Migration
   def change
-    create_table(:Ressourcens) do |t|
-      t.string :Ressourcename, :limit =>45
-      t.string :Ressourcebeschreibung, :limit =>45
-      t.string :Ressourceart, :limit =>45
-      t.string :Ressourcekuerzel, :limit =>45
-      t.boolean :Ressourcegenerisch
-      t.integer :Ressourcemax
+    create_table(:ressourcens) do |t|
+      t.string :ressourcename, :limit =>45
+      t.string :ressourcebeschreibung, :limit =>45
+      t.string :ressourceart, :limit =>45
+      t.string :ressourcekuerzel, :limit =>45
+      t.boolean :ressourcegenerisch
+      t.integer :ressourcemax
 
       t.timestamps
     end

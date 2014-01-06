@@ -1,1 +1,1 @@
-json.extract! @roadstop, :id, :Roadstopspart, :Roadstopsdate, :ProjektID, :created_at, :updated_at
+json.extract! @roadstop, :id, :roadstopspart, :roadstopsdate, :projektid, :created_at, :updated_at

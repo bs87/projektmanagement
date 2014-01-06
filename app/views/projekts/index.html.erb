@@ -2,12 +2,12 @@
   <!-- Projekte -->
   <ul>
     <% @projekts.each do |projekt| %>
-      <% if projekt.Projektleiter == current_user.email %>       
+      <% if projekt.projektleiter == current_user.email %>       
         <li class="expand">
 
           <table>
             <tr>
-              <td width="120px"> <b><u><h5><%= projekt.Projektname %> </h5></b> </u><td>
+              <td width="120px"> <b><u><h5><%= projekt.projektname %> </h5></b> </u><td>
               <td> <%= link_to '', projekt, :class=>"icon-list-alt" %>  </td>
               <td>  <%= link_to('', edit_projekt_path(projekt), :class => "icon-wrench") %> </td>
               <td>  <%= link_to('', projekt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>  </td>

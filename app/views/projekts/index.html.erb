@@ -1,46 +1,46 @@
 <h1>Deine Projekte</h1>
   <!-- Projekte -->
-  <ul>
+ 
     <% @projekts.each do |projekt| %>
-      <% if projekt.projektleiter == current_user.email %>       
-        <li class="expand">
+      <% if projekt.projektleiter == current_user.email %>
+      
+       <div class="tree well">
+        <ul role="tree">       
+        <li class="parent_li" role="treeitem"> 
 
-          <table>
-            <tr>
-              <td width="120px"> <b><u><h5><%= projekt.projektname %> </h5></b> </u><td>
-              <td> <%= link_to '', projekt, :class=>"icon-list-alt" %>  </td>
-              <td>  <%= link_to('', edit_projekt_path(projekt), :class => "icon-wrench") %> </td>
-              <td>  <%= link_to('', projekt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>  </td>
+         
+              <span title="collapse this branche"><i class="icon-folder-open"></i><%= projekt.projektname %></span>  
+               <%= link_to '', projekt, :class=>"icon-list-alt" %>  
+                <%= link_to('', edit_projekt_path(projekt), :class => "icon-wrench") %> 
+              <%= link_to('', projekt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>  
 
-            </tr>
-          </table>
-          
+           
           <!-- Aufgabe Unterebene 1 -->
-          <ul>
+          <ul role"tree">
             <% @aufgaben.each do |aufgabe| %>
               <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>  
                 <% @vorgaenger1 = aufgabe.id %>
                 <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                <li class="expand">  
-                  <span style="color:blue"><%= aufgabe.aufgabenname %></span>
+                <li class="parent_li" role="treeitem">  
+                   <span title="collapse this branche"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %></span>
                   <!-- Aufgabe Unterebene 2 -->
-                  <ul>
+                   <ul role"tree">
                     <% @aufgaben.each do |aufgabe| %>
                       <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger1 %> 
                         <% @vorgaenger2 = aufgabe.id %>
-                        <span style="color:green">
-                        <li class="expand"> <%= aufgabe.aufgabenname %></span
+                         <span title="collapse this branche"><i class="icon-minus-sign"></i>
+                        <li class="parent_li" role="treeitem">   <%= aufgabe.aufgabenname %></span>
 
                           <!-- Aufgabe Unterebene 3 -->
                           <ul>
                             <% @aufgaben.each do |aufgabe| %>
                               <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger2 %> 
                                 <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %> 
-                                <span style="color:#665500"><li> <%= aufgabe.aufgabenname %> </li></span>
+                                <span><i class="btn icon-minus-sign"></i><li> <%= aufgabe.aufgabenname %> </li></span>
                               <% end %>
                             <% end %>
                  
-                              <li style="font-size: 11px"> <%= link_to 'add', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>projekt.id),:class => "icon-plus"  %> 
+                              <li> <%= link_to ' Neue Aufgabe', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>projekt.id),:class => "btn btn-small icon-plus-sign"  %> 
                               </li>
                  
                           </ul>
@@ -48,18 +48,19 @@
                       <% end %>
                     <%end%>
                
-                      <li style="font-size: 11px"> <%= link_to 'add', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>projekt.id), :class=>"icon-plus" %> 
+                      <li>  <%= link_to  ' Neue Aufgabe', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>projekt.id), :class => "btn btn-small icon-plus-sign" %> 
                       </li>
                 
                   </ul>
                 </li>
               <% end %>
             <% end %>
-            <li style="font-size: 11px"> <%= link_to 'add', new_aufgaben_path(:ebene=>nil, :id=>projekt.id), :class=>"icon-plus" %> 
+            <li > <%= link_to ' Neue Aufgabe', new_aufgaben_path(:ebene=>nil, :id=>projekt.id), :class=>"btn btn-small icon-plus-sign" %> 
             </li>
           </ul>
         </li>
       <% end %>
+      </div>
     <% end %>
   </ul>     
 
@@ -75,4 +76,6 @@
 
 <br>
 
-<%= link_to 'Neues Projekt anlegen', new_projekt_path %>
+
+
+<p><%= link_to 'Neues Projekt anlegen', new_projekt_path , :class => 'btn btn-lg btn-success ',:id => 'projektanlegen' %></p>

@@ -12,14 +12,14 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
-gem 'devise'
+gem 'devise', '3.0.0.rc' 
 gem 'rolify'
 gem 'cancan'
 gem "paperclip", "~> 3.0"
 gem "paperclip-dropbox"
 gem 'jquery-ui-bootstrap-rails'
 gem 'jquery-ui-themes'
-
+gem 'protected_attributes'
 
 group   :developement do
 gem 'rspec-rails'

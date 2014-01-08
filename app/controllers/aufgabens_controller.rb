@@ -62,7 +62,7 @@ class AufgabensController < ApplicationController
   def destroy
     @aufgaben.destroy
     respond_to do |format|
-      format.html { redirect_to aufgabens_url }
+      format.html { redirect_to projekts_url }
       format.json { head :no_content }
     end
   end

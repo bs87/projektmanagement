@@ -31,7 +31,6 @@ class ProjektesController < ApplicationController
   # POST /projektes.json
   def create
     @projekte = Projekte.new(projekte_params)
-
     respond_to do |format|
       if @projekte.save
         format.html { redirect_to @projekte, notice: 'Projekte was successfully created.' }

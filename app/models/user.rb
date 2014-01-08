@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-#attr_accessible :vorname, :nachname, :email
+attr_accessible :vorname, :nachname, :email, :password, :password_confirmation
 
 #Postleitzahl hat 5 Ziffern
 validates :email, :uniqueness => true

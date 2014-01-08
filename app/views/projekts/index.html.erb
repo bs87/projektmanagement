@@ -28,15 +28,16 @@
                     <% @aufgaben.each do |aufgabe| %>
                       <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger1 %> 
                         <% @vorgaenger2 = aufgabe.id %>
-                         <span title="collapse this branche"><i class="icon-minus-sign"></i>
-                        <li class="parent_li" role="treeitem">   <%= aufgabe.aufgabenname %></span>
+                        <li class="parent_li" role="treeitem">
+                         <span title="collapse this branche"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %></span>
 
                           <!-- Aufgabe Unterebene 3 -->
-                          <ul>
+                          <ul role"tree">
                             <% @aufgaben.each do |aufgabe| %>
                               <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger2 %> 
                                 <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %> 
-                                <span><i class="btn icon-minus-sign"></i><li> <%= aufgabe.aufgabenname %> </li></span>
+                                 <li class="parent_li" role="treeitem">
+                                 <span title="collapse this branche"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %></span>
                               <% end %>
                             <% end %>
                  

@@ -1,93 +1,133 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>jOrgChart - A jQuery OrgChart Plugin</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../assets/css/jquery.jOrgChart.css"/>
+    <link rel="stylesheet" href="../assets/css/custom.css"/>
+    <link href="../assets/css/prettify.css" type="text/css" rel="stylesheet" />
+
+    <script type="text/javascript" src="../assets/javascripts/prettify.js"></script>
+    
+    <!-- jQuery includes -->
+    <script type="text/javascript" src="../assets/javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="../assets/javascripts/jquery-ui.min.js"></script>
+    
+    <script src="../assets/javascripts/jquery.jOrgChart.js"></script>
+
+    <script>
+    jQuery(document).bind('page:change', function() {
+        $("#org").jOrgChart({
+            chartElement : '#chart',
+            dragAndDrop  : true
+        });
+    });
+    </script>
+  </head>
+
+
+
+
 <h1>Work Breakdown Structure</h1>
-
-  <!-- Projekte -->
-  <ul>
+  
+  <ul id="org" style="display: none;">   
     <% @projekts.each do |projekt| %>
-      <% if projekt.projektleiter == current_user.email %>       
-        <li class="expand">
-
-          <table>
-            <tr>
-              <td width="120px"> <b><u><%= projekt.projektname %>  </u></b><td>
-              <td> <%= link_to '', projekt, :class=>"icon-list-alt" %>  </td>
-              <td>  <%= link_to('', edit_projekt_path(projekt), :class => "icon-wrench") %> </td>
-              <td>  <%= link_to('', projekt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>  </td>
-
-            </tr>
-          </table>
-          
-          <!-- Aufgabe Ebene 1 -->
+      <% if projekt.projektleiter == current_user.email %> 
+        <li> 
+          <%= projekt.projektname %>  
+          <!-- Ebene 1 -->
           <ul>
             <% @aufgaben.each do |aufgabe| %>
-              <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>  
+              <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
                 <% @vorgaenger1 = aufgabe.id %>
                 <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                <li class="expand">  
-                  <span style="color:blue"><%= aufgabe.aufgabenname %></span>
-                  
-                  <!-- Aufgabe Ebene 2 -->
-                  <ul>
-                    <% @aufgaben.each do |aufgabe| %>
-                      <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger1 %> 
-                        <% @vorgaenger2 = aufgabe.id %>
-                        <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>           
-                        <li class="expand"> 
-                          <span style="color:green"> <%= aufgabe.aufgabenname %> </span>
+                <li> 
+                  <%= aufgabe.aufgabenname %> 
+                  <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                    <%= link_to 'add2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
 
-                          <ul>
-                            <% @arbeitspakets.each do |arbeitspaket| %>
-                              <% if aufgabe.id == arbeitspaket.aufgabeid %>
-                                <li> <%= arbeitspaket.arbeitspaketname %> </li>
-                              <% end %>
-                            <% end %>
-                          </ul>
-
-                          <!-- Aufgabe Ebene 3 -->
-                          <ul>
-                            <% @aufgaben.each do |aufgabe| %>
-                              <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger2 %> 
-                                <li class="expand"> 
-                                  <span style="color:#665500"> <%= aufgabe.aufgabenname %> </span>
-                                  <ul>
-                                    <% @arbeitspakets.each do |arbeitspaket| %>
-                                      <% if aufgabe.id == arbeitspaket.aufgabeid %>
-                                        <li> <%= arbeitspaket.arbeitspaketname %> </li>
-                                      <% end %>
-                                    <% end %>
-                                    <!-- AP hinzufügen Link auf Ebene 3 -->
-                                      <li style="font-size: 11px"> <%= link_to 'add', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), 
-                                        :class=>"icon-plus" %> 
-                                      </li>
-                                  </ul>
-                                </li>
-                              <% end %>
-                            <% end %>
-                            <!-- AP hinzufügen Link auf Ebene 2 -->
-                            <% if !@nachfolger2.present? %>
-                              <li style="font-size: 11px"> <%= link_to 'add', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %> 
-                              </li>
-                            <%end%>
-                          </ul>
-                        </li>
+                    <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
+                    <ul>
+                      <% @arbeitspakets.each do |arbeitspaket| %>
+                        <% if aufgabe.id == arbeitspaket.aufgabeid %>     
+                            <li> 
+                              <span style="color:white"> <%= arbeitspaket.arbeitspaketname %> </span>
+                            </li>                         
+                        <% end %>
                       <% end %>
-                    <%end%>
-                    <!-- AP hinzufügen Link auf Ebene 1 -->
-                    <% if !@nachfolger1.present? %>
-                      <li style="font-size: 11px"> <%= link_to 'add', 
-                        new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %> 
-                      </li>
-                    <%end%>
-                  </ul>
+                    </ul>
+
+
+                  <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                    <!-- Ebene 2 -->
+                    <ul>
+                      <% @aufgaben.each do |aufgabe| %>
+                        <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger1 %>
+                          <% @vorgaenger2 = aufgabe.id %>
+                          <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                          <li> 
+                            <%= aufgabe.aufgabenname  %> 
+                            <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                              <%= link_to 'add2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
+
+                              <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
+                              <ul>
+                                <% @arbeitspakets.each do |arbeitspaket| %>
+                                  <% if aufgabe.id == arbeitspaket.aufgabeid %>     
+                                      <li> 
+                                        <span style="color:white"><%= arbeitspaket.arbeitspaketname %> </span>
+                                      </li>                         
+                                  <% end %>
+                                <% end %>
+                              </ul>
+
+                            <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                              <!-- Ebene 3 -->
+                              <ul>
+                                <% @aufgaben.each do |aufgabe| %>
+                                  <% if projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
+                                    <% @vorgaenger3 = aufgabe.id %>
+                                    <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                                    <li> 
+                                      <%= aufgabe.aufgabenname  %>   
+                                      <%= link_to 'add2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
+
+                                      <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
+                                      <ul>
+                                        <% @arbeitspakets.each do |arbeitspaket| %>
+                                          <% if aufgabe.id == arbeitspaket.aufgabeid %>     
+                                              <li> 
+                                                <span style="color:white"><%= arbeitspaket.arbeitspaketname %> </span>
+                                              </li>                         
+                                          <% end %>
+                                        <% end %>
+                                      </ul>
+
+                                    </li>
+                                  <% end %>
+                                <% end %>
+                              </ul>
+
+                            <% end %>
+                          </li>
+                        <% end %>
+                      <%end%>
+                    </ul>
+
+                  <% end %>
                 </li>
-              <% end %>
-            <% end %>
+              <%end%>
+            <%end%>
           </ul>
-        </li>
-
+        </li> 
       <% end %>
-    <% end %>
-  </ul>     
-
+    <% end%>
+  </ul>
+ 
+   <div id="chart" class="orgChart"></div>  
+    
+  
  <script>
     $(document).ready(function() {
      $(".expand").click(function(e) {
@@ -98,38 +138,5 @@
     }); //$(document).ready
   </script>
 
-
-
-<!--
-<table>
-  <thead>
-    <tr>
-      <th>Aufgabenname</th>
-      <th>Aufgabenbeschreibung</th>
-      <th>Aufgabenrang</th>
-      <th>Aufgabennr</th>
-      <th>Projektsid</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @aufgaben.each do |aufgaben| %>
-      <tr>
-        <td><%= aufgaben.aufgabenname %></td>
-        <td><%= aufgaben.aufgabenbeschreibung %></td>
-        <td><%= aufgaben.aufgabenvorgaenger%></td>
-        <td><%= aufgaben.aufgabennr %></td>
-        <td><%= aufgaben.projektsid %></td>
-        <td><%= link_to 'Show', aufgaben %></td>
-        <td><%= link_to 'Edit', edit_aufgaben_path(aufgaben) %></td>
-        <td><%= link_to 'Destroy', aufgaben, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
--->
 
 

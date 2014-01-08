@@ -19,7 +19,7 @@ gem "paperclip", "~> 3.0"
 gem "paperclip-dropbox"
 gem 'jquery-ui-bootstrap-rails'
 gem 'jquery-ui-themes'
-
+gem 'jquery-rails'
 
 group   :developement do
 gem 'rspec-rails'

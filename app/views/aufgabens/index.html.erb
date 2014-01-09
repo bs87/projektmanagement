@@ -43,15 +43,15 @@
                 <li> 
                   <%= aufgabe.aufgabenname %> 
                   <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
-                    <%= link_to 'add2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
+                    <%= link_to '2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
 
                     <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
                     <ul>
                       <% @arbeitspakets.each do |arbeitspaket| %>
                         <% if aufgabe.id == arbeitspaket.aufgabeid %>     
                             <li> 
-                              <span style="color:white"> <%= arbeitspaket.arbeitspaketname %> </span>
-                            </li>                         
+                               <%= arbeitspaket.arbeitspaketname %> 
+                            </li>                        
                         <% end %>
                       <% end %>
                     </ul>
@@ -68,15 +68,15 @@
                           <li> 
                             <%= aufgabe.aufgabenname  %> 
                             <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
-                              <%= link_to 'add2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
+                              <%= link_to '2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
 
                               <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
                               <ul>
                                 <% @arbeitspakets.each do |arbeitspaket| %>
                                   <% if aufgabe.id == arbeitspaket.aufgabeid %>     
-                                      <li> 
-                                        <span style="color:white"><%= arbeitspaket.arbeitspaketname %> </span>
-                                      </li>                         
+                                      <li > 
+                                        <%= arbeitspaket.arbeitspaketname %> 
+                                      </li>                        
                                   <% end %>
                                 <% end %>
                               </ul>
@@ -91,14 +91,14 @@
                                     <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
                                     <li> 
                                       <%= aufgabe.aufgabenname  %>   
-                                      <%= link_to 'add2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
+                                      <%= link_to '', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
 
                                       <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
                                       <ul>
                                         <% @arbeitspakets.each do |arbeitspaket| %>
                                           <% if aufgabe.id == arbeitspaket.aufgabeid %>     
                                               <li> 
-                                                <span style="color:white"><%= arbeitspaket.arbeitspaketname %> </span>
+                                                <%= arbeitspaket.arbeitspaketname %> 
                                               </li>                         
                                           <% end %>
                                         <% end %>

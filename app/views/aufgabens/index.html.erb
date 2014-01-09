@@ -3,7 +3,7 @@
     <title>jOrgChart - A jQuery OrgChart Plugin</title>
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../assets/css/jquery.jOrgChart.css"/>
-    <link rel="stylesheet" href="../assets/css/custom.css"/>
+    
     <link href="../assets/css/prettify.css" type="text/css" rel="stylesheet" />
 
     <script type="text/javascript" src="../assets/javascripts/prettify.js"></script>
@@ -49,8 +49,8 @@
                     <ul>
                       <% @arbeitspakets.each do |arbeitspaket| %>
                         <% if aufgabe.id == arbeitspaket.aufgabeid %>     
-                            <li> 
-                               <%= arbeitspaket.arbeitspaketname %> 
+                            <li style= "border-color: green"> 
+                               <span style="color:red; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
                             </li>                        
                         <% end %>
                       <% end %>
@@ -68,14 +68,14 @@
                           <li> 
                             <%= aufgabe.aufgabenname  %> 
                             <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
-                              <%= link_to '2', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
+                              <%= link_to '', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class=>"icon-plus" %>
 
                               <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
                               <ul>
                                 <% @arbeitspakets.each do |arbeitspaket| %>
                                   <% if aufgabe.id == arbeitspaket.aufgabeid %>     
-                                      <li > 
-                                        <%= arbeitspaket.arbeitspaketname %> 
+                                      <li style= "border-color: green" > 
+                                        <span style="color:red; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span>
                                       </li>                        
                                   <% end %>
                                 <% end %>
@@ -97,8 +97,8 @@
                                       <ul>
                                         <% @arbeitspakets.each do |arbeitspaket| %>
                                           <% if aufgabe.id == arbeitspaket.aufgabeid %>     
-                                              <li> 
-                                                <%= arbeitspaket.arbeitspaketname %> 
+                                              <li style= "border-color: green"> 
+                                                <span style="color:red; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
                                               </li>                         
                                           <% end %>
                                         <% end %>

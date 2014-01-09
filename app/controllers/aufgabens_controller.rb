@@ -16,6 +16,8 @@ class AufgabensController < ApplicationController
 
   # GET /aufgabens/new
   def new
+
+
     @aufgaben = Aufgaben.new
     @ebene = params[:ebene]
     @pid = params[:id]
@@ -29,10 +31,25 @@ class AufgabensController < ApplicationController
   # POST /aufgabens.json
   def create
     @aufgaben = Aufgaben.new(aufgaben_params)
+
+                       
+
     
+         # if !@nachfolger1.present? 
   
     #respond_to do |format|
       if @aufgaben.save
+
+           @vorgaenger = aufgaben_params[:aufgabenvorgaenger]
+            @aufgabenname = aufgaben_params[:aufgabenname]
+          @projektsid = aufgaben_params[:projektsid]
+     
+      @allpakete = Arbeitspaket.find(:all, :conditions => [ "aufgabeid = ?", @vorgaenger])
+      @id = Aufgaben.where(aufgabenname: @aufgabenname , projektsid: @projektsid ) 
+      @allpakete.each do |paket| 
+                paket.update_attribute(:aufgabeid,@aufgaben.id) 
+                paket.save
+         end         
         #format.html { redirect_to @aufgaben, notice: 'Aufgaben was successfully created.' }
         #format.json { render action: 'show', status: :created, location: @aufgaben }
         redirect_to projekts_path
@@ -60,6 +77,8 @@ class AufgabensController < ApplicationController
   # DELETE /aufgabens/1
   # DELETE /aufgabens/1.json
   def destroy
+     @aufgaben = Aufgaben.find(params[:id])
+   
     @aufgaben.destroy
     respond_to do |format|
       format.html { redirect_to projekts_url }

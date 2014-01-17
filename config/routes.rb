@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 Projektmanagement::Application.routes.draw do 
   resources :arbeitspaketvorgaengers
   
 
+=======
+Projektmanagement::Application.routes.draw do
+  get "roadmap/new"
+  get "roadmap/create"
+  get "roadmap/show"
+  get "roadmap/index"
+>>>>>>> a4781b750027319ca716af276c032b2928f09fcb
   resources :arbeitspakets
 
   resources :projekts
@@ -9,6 +17,8 @@ Projektmanagement::Application.routes.draw do
   resources :roadstops
 
   resources :aufgabens
+
+  resources :roadmaps
 
   resources :verantwortlichkeitens
 

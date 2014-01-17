@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<%= javascript_include_tag 'jquery_ujs' %>
 <h1>Deine Projekte</h1>
     <!-- Projektliste -->
     <% @projekts.each do |projekt| %>
@@ -26,7 +28,8 @@
                      <!-- Aufgaben Optionen -->
                      <%= link_to '', aufgabe, :class=>"icon-list-alt" %> 
                      <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %> 
-                     <%= link_to('', aufgabe, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                     <%= link_to('', aufgabe, :method => :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                    
                     <!-- Aufgabe Unterebene 2 -->
                      <ul role"tree">
                       <% @aufgaben.each do |aufgabe| %>
@@ -78,9 +81,23 @@
       </div>
     <% end %>
   </ul>     
-
+ <script>$(function () {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+ </script>
  <script>
-    $(document).ready(function() {
+    $(document).on('page:load',(function() {
      $(".expand").click(function(e) {
         $(this).toggleClass("expanded");
         $(this).children("ul:first").slideToggle("300");

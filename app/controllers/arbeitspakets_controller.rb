@@ -56,9 +56,12 @@ class ArbeitspaketsController < ApplicationController
   # DELETE /arbeitspakets/1
   # DELETE /arbeitspakets/1.json
   def destroy
+    
+    @arbeitspaket = Arbeitspaket.find(params[:id])
+   
     @arbeitspaket.destroy
     respond_to do |format|
-      format.html { redirect_to arbeitspakets_url }
+      format.html { redirect_to aufgabens_url }
       format.json { head :no_content }
     end
   end

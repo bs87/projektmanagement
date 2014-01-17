@@ -9,26 +9,14 @@
 //
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
-//
-//= require jquery
-//= require jquery_ujs
 //= require twitter/bootstrap
+//= require jquery_ujs
+//= require jquery
+//= require jquery.turbolinks
 //= require turbolinks
-//= require_tree .
-$(function () {
-    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
-    $('.tree li.parent_li > span').on('click', function (e) {
-        var children = $(this).parent('li.parent_li').find(' > ul > li');
-        if (children.is(":visible")) {
-            children.hide('fast');
-            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
-        } else {
-            children.show('fast');
-            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
-        }
-        e.stopPropagation();
-    });
-});
+//= require_tree . 
+
+
 (function($) {
 
   $.fn.jOrgChart = function(options) {
@@ -250,3 +238,7 @@ $(function () {
   };
 
 })(jQuery);
+ 
+
+
+

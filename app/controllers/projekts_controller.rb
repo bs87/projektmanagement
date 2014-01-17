@@ -57,6 +57,8 @@ class ProjektsController < ApplicationController
   # DELETE /projekts/1
   # DELETE /projekts/1.json
   def destroy
+     @projekt = Projekt.find(params[:id])
+   
     @projekt.destroy
     respond_to do |format|
       format.html { redirect_to projekts_url }

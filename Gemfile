@@ -18,7 +18,7 @@ gem "paperclip", "~> 3.0"
 gem "paperclip-dropbox"
 gem 'jquery-ui-bootstrap-rails'
 gem 'jquery-ui-themes'
-gem 'jquery-rails'
+gem 'jquery-rails', '~> 2.1'
 gem 'protected_attributes'
 gem 'jquery-turbolinks'
 gem 'turbolinks'

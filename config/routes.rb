@@ -1,4 +1,8 @@
 Projektmanagement::Application.routes.draw do
+  get "roadmap/new"
+  get "roadmap/create"
+  get "roadmap/show"
+  get "roadmap/index"
   resources :arbeitspakets
 
   resources :projekts
@@ -6,6 +10,8 @@ Projektmanagement::Application.routes.draw do
   resources :roadstops
 
   resources :aufgabens
+
+  resources :roadmaps
 
   resources :verantwortlichkeitens
 

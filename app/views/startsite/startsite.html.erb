@@ -10,19 +10,56 @@
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
       <!-- Jumbotron -->
       <% if current_user %>
-      <h1>Hallo <%= current_user.email %></h1><br>
+        <h1>Hallo <%= current_user.email %></h1><br>
+
+        <!-- Vorgängerarray -->
+        <% @vg_list = Array.new  %>
+
+        <!-- Ermittlung des/der ersten APs -->
+        <table>
+          <tr>
+            <% @arbeitspakets.each do |ap| %>
+              <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap.id]) %>
+              <% if @vorgaenger.empty? %> 
+                  <% @vg_list.push( ap.id) %>
+                  <td> <%= ap.id %> </td>
+              <% end %>
+            <%end%>
+          </tr>
+
+          
+            <!-- Solange keine Nachfolger gefundne werden -->
+            <% loop do %>  
+              <% if @vg_list.empty? %>
+                  <% break %>
+              <%end%>
+
+              <% @vrg_select = Arbeitspaketvorgaenger.find(:all, 
+                 :conditions => [ "apvorgaengerid = ?", @vg_list.first]) %>
+              <% @vg_list.delete(@vg_list.first) %>
+
+                
+              <tr>
+                <% @vrg_select.each do |vselect| %>
+                  <td> <%= vselect.apid %> </td>
+                  <% @vg_list.push(vselect.apid) %>
+                <% end %>
+              </tr>
+            <% end %>
+          
+
+
+        </table>
 
       <% else %>
+    
 
       <div class="jumbotron fluid">
         <h1>Projektmanagement</h1><br>
         <a class="btn btn-large btn-inverse" href="accounts/sign_in">Jetzt anmelden</a>
       </div>
 
-
       <hr>
-
-  
 
       <!-- Example row of columns -->
       <div class="row-fluid">

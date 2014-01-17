@@ -1,0 +1,22 @@
+<h1>Vorgaenger editieren</h1><br>
+<table>
+	<% @arbeitspaketvorgaengers.each do |arbeitspaketvorgaenger| %>
+	
+	  <% if arbeitspaketvorgaenger.apid.to_s== @apid.to_s %>
+		  <tr>
+		    <!-- <td><%= arbeitspaketvorgaenger.apid %></td> -->
+		    <td> 
+		    	<% @vid=  arbeitspaketvorgaenger.apvorgaengerid %>
+		    	<% @v = Arbeitspaket.find(:all, :conditions => [ "id = ?", @vid]) %>
+		    	<%= @v.first.arbeitspaketname %>
+		    </td>
+		    <td>
+		    	<%= link_to 'Entfernen', arbeitspaketvorgaenger, method: :delete, data: { confirm: 'Are you sure?' } %>
+		    </td>
+		  </tr>
+	  <% end %>
+	<% end %>
+</table><br>
+<%= render 'form' %>
+
+<%= link_to 'Back', arbeitspaketvorgaengers_path %>

@@ -1,35 +1,79 @@
-<h1>Listing verantwortlichkeitens</h1>
-
+<h1>Ressource Allocation Matrix</h1>
+<br>
 <table>
   <thead>
     <tr>
-      <th>Arbeitspaketid</th>
-      <th>Ressourceid</th>
-      <th>Intensitaet</th>
-      <th>Beschreibung</th>
-      <th>Ressourcen ressourcenid</th>
+      <th>Name</th>
+      <th>Beginn</th>
+      <th>Dauer</th>
+      <th>Ende</th>
+      <th>Vorgaenger</th>
+      <th>Ressourcenname</th>
+      <th>Kapazität</th>
+      <th><th>
       <th></th>
       <th></th>
-      <th></th>
+      <th></th> 
     </tr>
   </thead>
 
   <tbody>
-    <% @verantwortlichkeitens.each do |verantwortlichkeiten| %>
+    <% @arbeitspakets.each do |arbeitspaket| %>
       <tr>
-        <td><%= verantwortlichkeiten.arbeitspaketID %></td>
-        <td><%= verantwortlichkeiten.ressourceID %></td>
-        <td><%= verantwortlichkeiten.intensitaet %></td>
-        <td><%= verantwortlichkeiten.beschreibung %></td>
-        <td><%= verantwortlichkeiten.ressourcen_ressourcenID %></td>
-        <td><%= link_to 'Show', verantwortlichkeiten %></td>
-        <td><%= link_to 'Edit', edit_verantwortlichkeiten_path(verantwortlichkeiten) %></td>
-        <td><%= link_to 'Destroy', verantwortlichkeiten, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= arbeitspaket.arbeitspaketname %></td>
+        <td> toDo </td>
+        <td><%= arbeitspaket.arbeitspaketdauer %></td>
+        <td> toDo</td>
+        <td> toDo</td> 
+        <td> 
+
+          <%= link_to 'Vorgänger editieren', new_arbeitspaketvorgaenger_path(:apid=>arbeitspaket.id) %>
+
+        </td>
+ 
+        <!-- Alle AP/Ress Beziehungen von AP -->
+        <% @ressourcen = Verantwortlichkeiten.find( :all, :conditions => [ "arbeitspaketid = ?", arbeitspaket.id]) %>
+        
+
+        <!-- Ressourcenname und Funktion -->
+        <td class="field">
+        <% @ressourcen.each do |res| %> 
+          <% @reso = Ressourcen.find(:all, :conditions=> ["id =?", res.ressourceid]) %>
+          <% if @reso.present? %>
+            <%= @reso.first.ressourcename + " (" + @reso.first.ressourcefunktion + ")" %><br>
+          <% end %> 
+        <% end %>
+        <% if !@ressourcen.present?%>
+          <%= "keine" %>  
+        <% end %>
+        <td>
+
+        <!-- Ressourcenname und Funktion -->
+        <td class="field">
+        <% @ressourcen.each do |res| %> 
+          <% if @ressourcen.present? %>
+                <%= res.intensitaet %><br>
+          <% end %>
+        <% end %>
+        <% if !@ressourcen.present?%>
+          <%= "keine" %>  
+        <% end %>
+        <td>
+          <%=  link_to 'Ressourcen bearbeiten', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id) %>
+        <td>
+        
+
+        
+        <td><%= link_to 'Show', arbeitspaket %></td>
+        <td><%= link_to 'Edit', edit_arbeitspaket_path(arbeitspaket) %></td>
+        <td><%= link_to 'Destroy', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
+
 <br>
 
-<%= link_to 'New Verantwortlichkeiten', new_verantwortlichkeiten_path %>
+<!-- <%=  link_to 'New Verantwortlichkeiten', new_verantwortlichkeiten_path %> -->

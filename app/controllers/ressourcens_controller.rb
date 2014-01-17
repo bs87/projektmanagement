@@ -15,26 +15,29 @@ class RessourcensController < ApplicationController
   # GET /ressourcens/new
   def new
     @ressourcen = Ressourcen.new
+    @useraccount = params[:useraccount]
   end
 
   # GET /ressourcens/1/edit
   def edit
   end
 
+  def addaccount
+  end
+  
   # POST /ressourcens
   # POST /ressourcens.json
   def create
     @ressourcen = Ressourcen.new(ressourcen_params)
 
-    respond_to do |format|
       if @ressourcen.save
-        format.html { redirect_to @ressourcen, notice: 'Ressourcen was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @ressourcen }
+        redirect_to ressourcens_path
+        #format.html { redirect_to @ressourcen, notice: 'Ressourcen was successfully created.' }
+        #format.json { render action: 'show', status: :created, location: @ressourcen }
       else
         format.html { render action: 'new' }
         format.json { render json: @ressourcen.errors, status: :unprocessable_entity }
       end
-    end
   end
 
   # PATCH/PUT /ressourcens/1
@@ -69,6 +72,6 @@ class RessourcensController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ressourcen_params
-      params.require(:ressourcen).permit(:ressourcename, :ressourcebeschreibung, :ressourceart, :ressourcekuerzel, :ressourcegenerisch, :ressourcemax)
+      params.require(:ressourcen).permit(:ressourcename, :ressourcefunktion, :ressourcebeschreibung, :ressourceart, :ressourcekuerzel, :ressourcegenerisch, :ressourcemax, :kosten, :gruppen_id)
     end
 end

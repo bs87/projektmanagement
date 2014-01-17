@@ -1,0 +1,2 @@
+module ArbeitspaketvorgaengersHelper
+end

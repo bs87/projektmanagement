@@ -28,15 +28,16 @@ class ProjektsController < ApplicationController
   def create
     @projekt = Projekt.new(projekt_params)
 
-    respond_to do |format|
-      if @projekt.save
-        format.html { redirect_to @projekt, notice: 'Projekt was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @projekt }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @projekt.errors, status: :unprocessable_entity }
-      end
+
+    if @projekt.save
+      redirect_to projekts_path
+      #format.html { redirect_to @projekt, notice: 'Projekt was successfully created.' }
+      #format.json { render action: 'show', status: :created, location: @projekt }
+    else
+      format.html { render action: 'new' }
+      format.json { render json: @projekt.errors, status: :unprocessable_entity }
     end
+
   end
 
   # PATCH/PUT /projekts/1

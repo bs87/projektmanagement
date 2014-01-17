@@ -25,13 +25,13 @@ class ArbeitspaketsController < ApplicationController
   # POST /arbeitspakets
   # POST /arbeitspakets.json
   def create
-    @arbeitspaket = Arbeitspaket.new(arbeitspaket_params)
+    @arbeitspaket = Arbeitspaket.new(arbeitspaket_params) 
 
     #respond_to do |format|
       if @arbeitspaket.save
         #format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket was successfully created.' }
         #format.json { render action: 'show', status: :created, location: @arbeitspaket }
-        redirect_to aufgabens_path
+        #redirect_to aufgabens_path
       else
         format.html { render action: 'new' }
         format.json { render json: @arbeitspaket.errors, status: :unprocessable_entity }

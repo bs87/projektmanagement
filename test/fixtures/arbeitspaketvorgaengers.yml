@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  apid: 1
+  apvorgaengerid: 1
+
+two:
+  apid: 1
+  apvorgaengerid: 1

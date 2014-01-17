@@ -1,3 +1,3 @@
 class Projekt < ActiveRecord::Base
-	attr_accessible :projektname, :projektleiter, :projektstart, :projektende, :projektbeschreibung
+	attr_accessible :id, :projektname, :projektleiter, :projektstart, :projektende, :projektbeschreibung
 end

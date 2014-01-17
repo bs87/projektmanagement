@@ -5,7 +5,7 @@ class CreateArbeitspakets < ActiveRecord::Migration
       t.string :arbeitspaketbeschreibung, :limit =>45
       t.integer :arbeitspaketverantwortlicher
       t.date :arbeitspaketbeginn
-      t.date :arbeitspaketdauer
+      t.integer :arbeitspaketdauer
       t.date :arbeitspaketende
       t.integer :arbeitspaketnr
       t.string :arbeitspaketziel, :limit =>45

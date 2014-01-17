@@ -1,5 +1,61 @@
-<h1>New ressourcen</h1>
+<h1>Ressoure hinzufügen</h1>
 
-<%= render 'form' %>
+<%if @useraccount!='true' %>
+	<%= render 'form' %>
+<% else %>
+
+	<%= form_for(@ressourcen) do |f| %>
+  <% if @ressourcen.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ressourcen.errors.count, "error") %> prohibited this ressourcen from being saved:</h2>
+
+      <ul>
+      <% @ressourcen.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :Ressourcename %><br>
+    <%= f.collection_select :ressourcename, User.all, :email, :email	 %>
+  </div>
+    <div>
+    <%= f.label :Funktion %><br>
+    <%= f.select :ressourcefunktion, [['Bauleiter','Bauleiter'],['Projektleiter','Projektleiter'],['Designer','Designer'],['Statiker','Statiker'],['Bauarbeiter','Bauarbeiter'],['Kranführer','Kranführer'] ] %>
+  </div>
+  <div class="field">
+    <%= f.label :Ressourcebeschreibung %><br>
+    <%= f.text_field :ressourcebeschreibung %>
+  </div> 
+  <div>
+    <%= f.hidden_field:ressourceart, :value=>'Arbeit' %>
+  </div>
+  <div class="field">
+    <%= f.label :Ressourcekuerzel %><br>
+    <%= f.text_field :ressourcekuerzel %>
+  </div>
+  <div class="field">
+    <%= f.label :Ressourcegenerisch %><br>
+    <%= f.check_box :ressourcegenerisch, :checked=>true %>
+  </div>
+   <div class="field">
+    <%= f.label :Gruppe %><br>
+    <%= f.select :gruppen_id, [['', nil ],['Testgruppe',1] ] %>
+  </div>
+  <div class="field">
+    <%= f.label :Ressourcemax %><br>
+    <%= f.text_field :ressourcemax %>
+  </div>
+  <div class="field">
+    <%= f.label :Kosten %><br>
+    <%= f.text_field :kosten %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+ <% end %>
+<%end%>
 
 <%= link_to 'Back', ressourcens_path %>

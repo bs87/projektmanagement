@@ -15,13 +15,17 @@
     <%= f.label :Ressourcename %><br>
     <%= f.text_field :ressourcename %>
   </div>
+  <div>
+    <%= f.label :Funktion %><br>
+    <%= f.select :ressourcefunktion, [['Bauleiter','Bauleiter'],['Projektleiter','Projektleiter'],['Designer','Designer'],['Statiker','Statiker'],['Bauarbeiter','Bauarbeiter'],['Kranführer','Kranführer'] ] %>
+  </div>
   <div class="field">
     <%= f.label :Ressourcebeschreibung %><br>
     <%= f.text_field :ressourcebeschreibung %>
-  </div>
-  <div class="field">
+  </div> 
+  <div>
     <%= f.label :Ressourceart %><br>
-    <%= f.text_field :ressourceart %>
+    <%= f.select :ressourceart, [['Arbeit','Arbeit'],['Material','Material'] ] %>
   </div>
   <div class="field">
     <%= f.label :Ressourcekuerzel %><br>
@@ -31,11 +35,21 @@
     <%= f.label :Ressourcegenerisch %><br>
     <%= f.check_box :ressourcegenerisch %>
   </div>
+   <div class="field">
+    <%= f.label :Gruppe %><br>
+    <%= f.select :gruppen_id, [['', nil ],['Testgruppe',1] ] %>
+  </div>
   <div class="field">
     <%= f.label :Ressourcemax %><br>
     <%= f.text_field :ressourcemax %>
+  </div>
+  <div class="field">
+    <%= f.label :Kosten %><br>
+    <%= f.text_field :kosten %>
   </div>
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
+

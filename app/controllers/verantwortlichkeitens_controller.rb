@@ -5,6 +5,9 @@ class VerantwortlichkeitensController < ApplicationController
   # GET /verantwortlichkeitens.json
   def index
     @verantwortlichkeitens = Verantwortlichkeiten.all
+    @ressourcens = Ressourcen.all
+    @arbeitspakets = Arbeitspaket.all
+    @arbeitspaketvorgaengers = Arbeitspaketvorgaenger.all
   end
 
   # GET /verantwortlichkeitens/1
@@ -15,6 +18,9 @@ class VerantwortlichkeitensController < ApplicationController
   # GET /verantwortlichkeitens/new
   def new
     @verantwortlichkeiten = Verantwortlichkeiten.new
+    @apid = params[:apid]
+    @vressourcens = Verantwortlichkeiten.find(:all, :conditions => [ "arbeitspaketid = ?", @apid ])
+    
   end
 
   # GET /verantwortlichkeitens/1/edit

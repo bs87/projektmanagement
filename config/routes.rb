@@ -1,4 +1,7 @@
-Projektmanagement::Application.routes.draw do
+Projektmanagement::Application.routes.draw do 
+  resources :arbeitspaketvorgaengers
+  
+
   resources :arbeitspakets
 
   resources :projekts

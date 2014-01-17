@@ -1,0 +1,29 @@
+<h1>Vorgaenger des Arbeitspakets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Apid</th>
+      <th>Apvorgaengerid</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @arbeitspaketvorgaengers.each do |arbeitspaketvorgaenger| %>
+      <tr>
+        <td><%= arbeitspaketvorgaenger.apid %></td>
+        <td><%= arbeitspaketvorgaenger.apvorgaengerid %></td>
+        <td><%= link_to 'Show', arbeitspaketvorgaenger %></td>
+        <td><%= link_to 'Edit', edit_arbeitspaketvorgaenger_path(arbeitspaketvorgaenger) %></td>
+        <td><%= link_to 'Destroy', arbeitspaketvorgaenger, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Arbeitspaketvorgaenger', new_arbeitspaketvorgaenger_path %>

@@ -11,26 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140103235837) do
+ActiveRecord::Schema.define(version: 20140115115832) do
 
   create_table "arbeitspakets", force: true do |t|
-    t.string   "arbeitspaketname",                 limit: 45
-    t.string   "arbeitspaketbeschreibung",         limit: 45
+    t.string   "arbeitspaketname",              limit: 45
+    t.string   "arbeitspaketbeschreibung",      limit: 45
     t.integer  "arbeitspaketverantwortlicher"
-    t.date     "arbeitspaketbeginn"
-    t.date     "arbeitspaketdauer"
-    t.date     "arbeitspaketende"
-    t.integer  "arbeitspaketnr"
-    t.string   "arbeitspaketziel",                 limit: 45
-    t.string   "arbeitspaketkuerzel",              limit: 45
-    t.string   "arbeitspaketeingangsdokumente",    limit: 45
-    t.string   "arbeitspaketausgangsdokumente",    limit: 45
+    t.integer  "arbeitspaketdauer"
+    t.integer  "vorgaenger"
+    t.string   "arbeitspaketziel",              limit: 45
+    t.string   "arbeitspaketeingangsdokumente", limit: 45
+    t.string   "arbeitspaketausgangsdokumente", limit: 45
     t.integer  "aufgabeid"
-    t.integer  "verantwortlichkeiten_Arbeitsid"
-    t.string   "verantwortlichkeiten_Ressourceid", limit: 45
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "arbeitspaketvorgaengers", force: true do |t|
+    t.integer  "apid"
+    t.integer  "apvorgaengerid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "arbeitspaketvorgaengers", ["apid", "apvorgaengerid"], name: "index_apv_on_apid_and_apvorgaengerid", unique: true, using: :btree
 
   create_table "aufgabens", force: true do |t|
     t.string   "aufgabenname",         limit: 45
@@ -45,8 +49,7 @@ ActiveRecord::Schema.define(version: 20140103235837) do
   create_table "projekts", force: true do |t|
     t.string   "projektname"
     t.string   "projektleiter"
-    t.string   "projektstart"
-    t.string   "projektende"
+    t.date     "projektstart"
     t.string   "projektbeschreibung"
     t.integer  "roadstops_roadstopsid"
     t.integer  "aufgaben_aufgabenid"
@@ -56,6 +59,7 @@ ActiveRecord::Schema.define(version: 20140103235837) do
 
   create_table "ressourcens", force: true do |t|
     t.string   "ressourcename",         limit: 45
+    t.string   "ressourcefunktion"
     t.string   "ressourcebeschreibung", limit: 45
     t.string   "ressourceart",          limit: 45
     t.string   "ressourcekuerzel",      limit: 45
@@ -63,6 +67,10 @@ ActiveRecord::Schema.define(version: 20140103235837) do
     t.integer  "ressourcemax"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "gruppen_id"
+    t.float    "kosten"
+    t.integer  "userid"
+    t.string   "username"
   end
 
   create_table "roadstops", force: true do |t|
@@ -101,6 +109,7 @@ ActiveRecord::Schema.define(version: 20140103235837) do
     t.string   "nachname"
     t.integer  "projekt_projektid"
     t.integer  "arbeitspaket_arbeitspaketid"
+    t.integer  "roleid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -115,10 +124,9 @@ ActiveRecord::Schema.define(version: 20140103235837) do
 
   create_table "verantwortlichkeitens", force: true do |t|
     t.integer  "arbeitspaketid"
-    t.string   "ressourceid",             limit: 45
+    t.string   "ressourceid",    limit: 45
     t.integer  "intensitaet"
-    t.string   "beschreibung",            limit: 45
-    t.integer  "ressourcen_ressourcenid"
+    t.string   "beschreibung",   limit: 45
     t.datetime "created_at"
     t.datetime "updated_at"
   end

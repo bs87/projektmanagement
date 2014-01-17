@@ -12,24 +12,15 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :ArbeitspaketID %><br>
-    <%= f.text_field :arbeitspaketid %>
+    <%= f.hidden_field :arbeitspaketid, :value=>@apid, :readonly=>true %>
   </div>
   <div class="field">
     <%= f.label :RessourceID %><br>
-    <%= f.text_field :ressourceid %>
+    <%= f.collection_select :ressourceid, Ressourcen.all, :id, :ressourcename   %>
   </div>
   <div class="field">
     <%= f.label :Intensitaet %><br>
     <%= f.text_field :intensitaet %>
-  </div>
-  <div class="field">
-    <%= f.label :Beschreibung %><br>
-    <%= f.text_field :beschreibung %>
-  </div>
-  <div class="field">
-    <%= f.label :Ressourcen_RessourcenID %><br>
-    <%= f.text_field :ressourcen_ressourcenid %>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -1,5 +1,24 @@
-<h1>New verantwortlichkeiten</h1>
-
+<h1>Ressourcen bearbeiten</h1>
+<table>
+	<% @vressourcens.each do |ressource| %>
+	  <% @ressourcens = Ressourcen.find(:all, :conditions => [ "id = ?", ressource.ressourceid ]) %>
+	  <tr>
+	    <td> 
+	      <%= @ressourcens.first.ressourcename %>
+	    </td>
+	    <td>
+	      <%= @ressourcens.first.ressourcefunktion %>
+	    </td>
+	    <td>
+	      <%= ressource.intensitaet %>
+	    </td>
+	    <td>
+	      <%= link_to 'Loeschen', ressource, method: :delete, data: { confirm: 'Are you sure?' } %>
+	    <td>
+	  </tr>
+	<% end %>
+</table>
+<br>
 <%= render 'form' %>
 
 <%= link_to 'Back', verantwortlichkeitens_path %>

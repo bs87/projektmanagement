@@ -1,0 +1,25 @@
+<%= form_for(@arbeitspaketvorgaenger) do |f| %>
+  <% if @arbeitspaketvorgaenger.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@arbeitspaketvorgaenger.errors.count, "error") %> prohibited this arbeitspaketvorgaenger from being saved:</h2>
+
+      <ul>
+      <% @arbeitspaketvorgaenger.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :apid %><br>
+    <%= f.number_field :apid, :value=>@apid%>
+  </div>
+  <div class="field">
+    <%= f.label :apvorgaengerid %><br>
+    <%= f.collection_select :apvorgaengerid, Arbeitspaket.all, :id, :arbeitspaketname %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

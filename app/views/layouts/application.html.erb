@@ -118,9 +118,11 @@
               <li><%= link_to 'Home', root_path %></li> 
               <li><%= link_to 'PBS', projekts_path ,'data-no-turbolink' => true,:id=> 'Projekte'%></li>
               <li><%= link_to 'WBS', aufgabens_path,'data-no-turbolink' => true, :id=> 'Aufgaben'%></li>
-              <li><%= link_to 'Ressourcenverwaltung', ressourcens_path, :id=>'Aufgaben'%></li>
               <li><%= link_to 'RAM', verantwortlichkeitens_path %></li>
               <li><%= link_to 'Roadmap', roadmaps_path,'data-no-turbolink' => true,:id=> 'Roadmap'%></li>
+              <%if current_user.email == "admin@pm.de"%>
+               <li><%= link_to 'Ressourcenverwaltung', ressourcens_path, :id=>'Aufgaben'%></li>
+               <% end %>
               <li><%= link_to 'Einstellungen', edit_user_registration_path %></li>            
               <%end%>
             </ul>

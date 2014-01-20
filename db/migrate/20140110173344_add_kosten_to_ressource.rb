@@ -3,3 +3,4 @@ class AddKostenToRessource < ActiveRecord::Migration
   	add_column :ressourcens, :kosten, :double
   end
 end
+

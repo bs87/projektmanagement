@@ -29,10 +29,10 @@ class ArbeitspaketsController < ApplicationController
 
     #respond_to do |format|
       if @arbeitspaket.save
-        #format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket was successfully created.' }
+       flash[:notice] ="Arbeitspaket was successfully created."
         #format.json { render action: 'show', status: :created, location: @arbeitspaket }
-        #redirect_to aufgabens_path
-      else
+        redirect_to aufgabens_path
+        else
         format.html { render action: 'new' }
         format.json { render json: @arbeitspaket.errors, status: :unprocessable_entity }
       end
@@ -44,7 +44,7 @@ class ArbeitspaketsController < ApplicationController
   def update
     respond_to do |format|
       if @arbeitspaket.update(arbeitspaket_params)
-        #format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket was successfully updated.' }
+        format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket wurde erstellt.' }
         #format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -60,6 +60,7 @@ class ArbeitspaketsController < ApplicationController
     @arbeitspaket = Arbeitspaket.find(params[:id])
    
     @arbeitspaket.destroy
+    flash[:notice] ="Arbeitspaket wurde gelöscht."
     respond_to do |format|
       format.html { redirect_to aufgabens_url }
       format.json { head :no_content }
@@ -74,6 +75,6 @@ class ArbeitspaketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def arbeitspaket_params
-      params.require(:arbeitspaket).permit(:arbeitspaketname, :arbeitspaketbeschreibung, :arbeitspaketverantwortlicher, :arbeitspaketbeginn, :arbeitspaketdauer, :arbeitspaketende, :arbeitspaketnr, :arbeitspaketkuerzel, :eingangsdokumente, :ausgangsdokumente, :aufgabeid, :verantwortlichkeitenid)
+      params.require(:arbeitspaket).permit(:arbeitspaketname, :arbeitspaketbeschreibung, :arbeitspaketverantwortlicher, :arbeitspakettyp, :arbeitspaketbeginn, :arbeitspaketdauer, :arbeitspaketende, :arbeitspaketnr, :arbeitspaketkuerzel, :eingangsdokumente, :ausgangsdokumente, :aufgabeid, :verantwortlichkeitenid)
     end
 end

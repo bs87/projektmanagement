@@ -2,6 +2,11 @@
 <%= javascript_include_tag 'jquery_ujs' %>
 <h1>Deine Projekte</h1>
     <!-- Projektliste -->
+
+    <% if @projekts == nil %> 
+
+       <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
+<% else %>
     <% @projekts.each do |projekt| %>
       <!-- Nur Projekte wo Benutzer Projektleiter ist -->
       <% if projekt.projektleiter == current_user.email %>
@@ -108,6 +113,6 @@
 
 <br>
 
-
+<% end %>
 
 <p><%= link_to 'Neues Projekt anlegen', new_projekt_path , :class => 'btn btn-lg btn-success ',:id => 'projektanlegen' %></p>

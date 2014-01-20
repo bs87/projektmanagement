@@ -4,7 +4,12 @@ class RessourcensController < ApplicationController
   # GET /ressourcens
   # GET /ressourcens.json
   def index
+    if current_user.email != "admin@pm.de"
+    flash[:error] ="Zugriff verweigert."
+    redirect_to root_url
+  else
     @ressourcens = Ressourcen.all
+  end
   end
 
   # GET /ressourcens/1

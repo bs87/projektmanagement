@@ -3,7 +3,7 @@ class CreateProjekts < ActiveRecord::Migration
     create_table :projekts do |t|
       t.string :projektname
       t.string :projektleiter
-      t.string :projektstart
+      t.date :projektstart
       t.string :projektende
       t.string :projektbeschreibung
       t.integer :roadstops_roadstopsid

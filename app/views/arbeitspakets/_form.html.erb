@@ -27,6 +27,10 @@
     <%= f.label :arbeitspaketdauer %><br>
     <%= f.text_field  :arbeitspaketdauer %>
   </div>
+  <div>
+    <%= f.label :ArbeitspaketTyp %><br>
+    <%= f.select :arbeitspakettyp, [['Standard','Standard'],['Milestone','Milestone'],['Release','Release']] %>
+  </div>
   <div class="field">
     <%= f.label :eingangsdokumente %><br>
     <%= f.text_field :arbeitspaketeingangsdokumente %>

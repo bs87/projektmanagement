@@ -8,13 +8,13 @@
 
 #User.create!(email: 'admin@afda.de', password: 'dafdddafsdf')
 Role.delete_all
-Role.create!(name: 'admin')
-Role.create!(name: 'reguser')
+Role.create!(id: 1, name: 'admin')
+Role.create!(id: 2 ,name: 'reguser')
 
 User.delete_all
-User.create!(email: 'admin@pm.de', password: '12345678', vorname: 'hugo', nachname: 'boss', roleid: 1)
-User.create!(email: 'homer@pm.de', password: '12345678', vorname: 'homer', nachname: 'simpson', roleid: 2)
-User.create!(email: 'marge@pm.de', password: '12345678', vorname: 'marge', nachname: 'simpson', roleid: 2)
+User.create!(id: 1, email: 'admin@pm.de', password: '12345678', vorname: 'hugo', nachname: 'boss', roleid: 1)
+User.create!(id: 2, email: 'homer@pm.de', password: '12345678', vorname: 'homer', nachname: 'simpson', roleid: 2)
+User.create!(id: 3, email: 'marge@pm.de', password: '12345678', vorname: 'marge', nachname: 'simpson', roleid: 2)
 
 Ressourcen.delete_all
 Ressourcen.create!(id: 1, ressourcename: 'Mr. Burns', ressourcefunktion: 'Bauleiter', ressourcebeschreibung: '3 Jahre Erfahrung', ressourceart: 'Arbeit', ressourcekuerzel: 'SE', ressourcegenerisch: 1, ressourcemax: 100, kosten: 80, gruppen_id: 1)
@@ -43,14 +43,14 @@ Aufgaben.create!( id: 11, aufgabenname: 'Präsentation', aufgabenbeschreibung: '
 
 Arbeitspaket.delete_all
 #Definition	
-Arbeitspaket.create!( id: 1, arbeitspaketname: 'Ziele festlegen', arbeitspaketbeschreibung: 'Festlegung der Ziele', arbeitspaketdauer: 3, arbeitspaketziel: 'Ziele sind genau defniert', arbeitspaketeingangsdokumente: 'Anforderungskatalog', arbeitspaketsausgangsdokumente: 'Pflichtenheft', aufgabeid: 1 )
-Arbeitspaket.create!( id: 2, arbeitspaketname: 'Ressourcen festlegen', arbeitspaketbeschreibung: 'Festlegung der Ressourcen', arbeitspaketdauer: 2, arbeitspaketziel: 'Ressourcen sind genau defniert', arbeitspaketeingangsdokumente: nil, arbeitspaketsausgangsdokumente: 'Ressourcenplan', aufgabeid: 1 )
+Arbeitspaket.create!( id: 1, arbeitspaketname: 'Ziele festlegen', arbeitspaketbeschreibung: 'Festlegung der Ziele', arbeitspaketdauer: 3, arbeitspaketziel: 'Ziele sind genau defniert', arbeitspaketeingangsdokumente: 'Anforderungskatalog', arbeitspaketsausgangsdokumente: 'Pflichtenheft', aufgabeid: 1, arbeitspakettyp: 'Standard' )
+Arbeitspaket.create!( id: 2, arbeitspaketname: 'Ressourcen festlegen', arbeitspaketbeschreibung: 'Festlegung der Ressourcen', arbeitspaketdauer: 2, arbeitspaketziel: 'Ressourcen sind genau defniert', arbeitspaketeingangsdokumente: nil, arbeitspaketsausgangsdokumente: 'Ressourcenplan', aufgabeid: 1, arbeitspakettyp: 'Standard' )
 
 #Planung
-Arbeitspaket.create!( id: 3, arbeitspaketname: 'Statik Pläne erstellen', arbeitspaketbeschreibung: 'Statik bestimmen', arbeitspaketdauer: 5, arbeitspaketziel: 'Statik ist berechnet', arbeitspaketeingangsdokumente: 'Bauunterlagen', arbeitspaketsausgangsdokumente: 'Statikzeichnung', aufgabeid: 5 )
-Arbeitspaket.create!( id: 4, arbeitspaketname: 'Ansprechpartner ermitteln', arbeitspaketbeschreibung: 'Beschreibung Ansprechpartner ermittlen', arbeitspaketdauer: 6, arbeitspaketziel: 'Ansprechpartner sind ermittelt', arbeitspaketeingangsdokumente: nil, arbeitspaketsausgangsdokumente: 'Liste der Ansprechpartner', aufgabeid: 6 )
-Arbeitspaket.create!( id: 5, arbeitspaketname: 'Präsentationslayout Designen', arbeitspaketbeschreibung: 'Design bestimmen', arbeitspaketdauer: 2, arbeitspaketziel: 'Design steht', arbeitspaketeingangsdokumente: 'Design in CSS Format', arbeitspaketsausgangsdokumente: 'Pflichtenheft', aufgabeid: 11 )
-Arbeitspaket.create!( id: 6, arbeitspaketname: 'Präsentation halten', arbeitspaketbeschreibung: 'Präsi halten', arbeitspaketdauer: 1, arbeitspaketziel: 'Präsi gehalten', arbeitspaketeingangsdokumente: 'PPP', arbeitspaketsausgangsdokumente: nil, aufgabeid: 11 )
+Arbeitspaket.create!( id: 3, arbeitspaketname: 'Statik Pläne erstellen', arbeitspaketbeschreibung: 'Statik bestimmen', arbeitspaketdauer: 5, arbeitspaketziel: 'Statik ist berechnet', arbeitspaketeingangsdokumente: 'Bauunterlagen', arbeitspaketsausgangsdokumente: 'Statikzeichnung', aufgabeid: 5, arbeitspakettyp: 'Standard' )
+Arbeitspaket.create!( id: 4, arbeitspaketname: 'Ansprechpartner ermitteln', arbeitspaketbeschreibung: 'Beschreibung Ansprechpartner ermittlen', arbeitspaketdauer: 6, arbeitspaketziel: 'Ansprechpartner sind ermittelt', arbeitspaketeingangsdokumente: nil, arbeitspaketsausgangsdokumente: 'Liste der Ansprechpartner', aufgabeid: 6, arbeitspakettyp: 'Release' )
+Arbeitspaket.create!( id: 5, arbeitspaketname: 'Präsentationslayout Designen', arbeitspaketbeschreibung: 'Design bestimmen', arbeitspaketdauer: 2, arbeitspaketziel: 'Design steht', arbeitspaketeingangsdokumente: 'Design in CSS Format', arbeitspaketsausgangsdokumente: 'Pflichtenheft', aufgabeid: 11, arbeitspakettyp: 'Milestone' )
+Arbeitspaket.create!( id: 6, arbeitspaketname: 'Präsentation halten', arbeitspaketbeschreibung: 'Präsi halten', arbeitspaketdauer: 1, arbeitspaketziel: 'Präsi gehalten', arbeitspaketeingangsdokumente: 'PPP', arbeitspaketsausgangsdokumente: nil, aufgabeid: 11, arbeitspakettyp: 'Standard' )
 
 
 Verantwortlichkeiten.delete_all

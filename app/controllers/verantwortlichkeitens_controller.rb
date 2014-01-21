@@ -20,7 +20,6 @@ class VerantwortlichkeitensController < ApplicationController
     @verantwortlichkeiten = Verantwortlichkeiten.new
     @apid = params[:apid]
     @vressourcens = Verantwortlichkeiten.find(:all, :conditions => [ "arbeitspaketid = ?", @apid ])
-    
   end
 
   # GET /verantwortlichkeitens/1/edit
@@ -34,6 +33,21 @@ class VerantwortlichkeitensController < ApplicationController
 
     respond_to do |format|
       if @verantwortlichkeiten.save
+        
+        #Gewünschte Intensitaet fuer AP
+        @intensitaet = verantwortlichkeiten_params.fetch(:intensitaet)   
+        #ApId für die zu erstellende Ressource
+        @arbid = verantwortlichkeiten_params.fetch(:arbeitspaketid) 
+
+        #Vorhandene Intensitate der Ressource (max. Verfügbar)
+        @sel_intensitaetmax = Ressourcen.find(:all, :conditions => [ "id = ?", @arbid ])
+        @intensitaetmax = @sel_intensitaetmax.first.ressourcemax
+
+        #Berechnung der neuen Intensitaet
+        @new_intensitaet = @intensitaetmax-@intensitaet
+      
+        Ressourcen.update(1, :ressourcemax => @new_intensitaet)
+
         format.html { redirect_to @verantwortlichkeiten, notice: 'Verantwortlichkeiten was successfully created.' }
         format.json { render action: 'show', status: :created, location: @verantwortlichkeiten }
       else
@@ -48,6 +62,9 @@ class VerantwortlichkeitensController < ApplicationController
   def update
     respond_to do |format|
       if @verantwortlichkeiten.update(verantwortlichkeiten_params)
+        @beschreibung = verantwortlichkeiten_params(:beschreibung)   
+
+        Ressourcen.update(1, :ressourcename => "2")
         format.html { redirect_to @verantwortlichkeiten, notice: 'Verantwortlichkeiten was successfully updated.' }
         format.json { head :no_content }
       else
@@ -75,6 +92,6 @@ class VerantwortlichkeitensController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def verantwortlichkeiten_params
-      params.require(:verantwortlichkeiten).permit(:arbeitspaketid, :ressourceid, :intensitaet, :beschreibung, :ressourcen_ressourcenid)
+      params.require(:verantwortlichkeiten).permit(:arbeitspaketid, :ressourceid, :intensitaet, :beschreibung)
     end
 end

@@ -16,6 +16,7 @@ class ArbeitspaketsController < ApplicationController
   def new
     @arbeitspaket = Arbeitspaket.new
     @aid = params[:aufgabeid]
+    @anzahlwerte = params[:anzahlwerte]
   end
 
   # GET /arbeitspakets/1/edit
@@ -42,7 +43,7 @@ class ArbeitspaketsController < ApplicationController
   # PATCH/PUT /arbeitspakets/1
   # PATCH/PUT /arbeitspakets/1.json
   def update
-    respond_to do |format|
+    #respond_to do |format|
       if @arbeitspaket.update(arbeitspaket_params)
         format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket wurde erstellt.' }
         #format.json { head :no_content }
@@ -50,7 +51,7 @@ class ArbeitspaketsController < ApplicationController
         format.html { render action: 'edit' }
         format.json { render json: @arbeitspaket.errors, status: :unprocessable_entity }
       end
-    end
+    #end
   end
 
   # DELETE /arbeitspakets/1

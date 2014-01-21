@@ -1,17 +1,25 @@
 <h1>Vorgaenger editieren</h1><br>
 <table>
+	<% @vlist    = Array.new %>
+
 	<% @arbeitspaketvorgaengers.each do |arbeitspaketvorgaenger| %>
 	
+	  <!-- Prüfen ob AP VOrgänger hat-->
 	  <% if arbeitspaketvorgaenger.apid.to_s== @apid.to_s %>
 		  <tr>
-		    <!-- <td><%= arbeitspaketvorgaenger.apid %></td> -->
 		    <td> 
-		    	<% @vid=  arbeitspaketvorgaenger.apvorgaengerid %>
-		    	<% @v = Arbeitspaket.find(:all, :conditions => [ "id = ?", @vid]) %>
-		    	<%= @v.first.arbeitspaketname %>
+		    	<% @vid=  arbeitspaketvorgaenger.apvorgaengerid %> <!-- Vorgänger ID ermittlen -->
+		    	<% @vlist.push(@vid) %>
+		    	<!-- Namen des AP ermittlen -->
+		    	<% @v = Arbeitspaket.find(:all, :conditions => [ "id = ?", @vid]) %> 
+		    	<% if @v.first != nil %>
+		    		<%= @v.first.arbeitspaketname %>
+		    	<% end %>
 		    </td>
 		    <td>
-		    	<%= link_to 'Entfernen', arbeitspaketvorgaenger, method: :delete, data: { confirm: 'Are you sure?' } %>
+		    	<% if @v.first != nil %>
+		    		<%= link_to 'Entfernen', arbeitspaketvorgaenger, method: :delete, data: { confirm: 'Are you sure?' } %>
+		    	<% end %>
 		    </td>
 		  </tr>
 	  <% end %>

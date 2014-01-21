@@ -12,14 +12,16 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :apid %><br>
-    <%= f.number_field :apid, :value=>@apid%>
+    <%= f.hidden_field :apid, :value=>@apid%>
   </div>
   <div class="field">
-    <%= f.label :apvorgaengerid %><br>
-    <%= f.collection_select :apvorgaengerid, Arbeitspaket.all, :id, :arbeitspaketname %>
+    <!-- Alle potentiellen Vorgänger ohne sich selbst -->
+    <% @vorg = Arbeitspaket.find(:all, :conditions => [ "id NOT IN (?) AND ID != ?", @vlist, @apid]) %> 
+
+    <%= f.label :Vorgänger %><br>
+    <%= f.collection_select(:apvorgaengerid, @vorg, :id, :arbeitspaketname, :include_blank => true) %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Hinzufügen"%>
   </div>
 <% end %>

@@ -1,0 +1,27 @@
+<h1>Listing ressourcefunctions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ressourcefunctions.each do |ressourcefunction| %>
+      <tr>
+        <td><%= ressourcefunction.name %></td>
+        <td><%= link_to 'Show', ressourcefunction %></td>
+        <td><%= link_to 'Edit', edit_ressourcefunction_path(ressourcefunction) %></td>
+        <td><%= link_to 'Destroy', ressourcefunction, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ressourcefunction', new_ressourcefunction_path %>

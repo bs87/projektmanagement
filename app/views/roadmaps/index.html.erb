@@ -106,7 +106,7 @@ th, td {
     <!-- Projektliste -->
 
 
-<% @ap_map    = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
+      <% @ap_map    = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
       <% @aplist    = Array.new %><!-- AP Liste zum Bearbeten wenn AP-FAZ gesetzt wird -->
       <% @aplist_it = Array.new %><!-- AP Liste für Schleife (Wird nicht bearbeitet) -->
 
@@ -128,7 +128,7 @@ th, td {
       <%end%>
 
       <!-- Ermittlung der anderen APs ( ID und FAZ in hashmap)-->
-      <% while !@aplist.empty? %>
+      <% @aplist_it.each do |aps| %>
         <% @aplist_it.each do |ap| %>
           <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
           
@@ -162,6 +162,8 @@ th, td {
         <% end %>
       <% end %>
 
+
+
      
 <br>
 <div class="well sidebar-nav">
@@ -175,10 +177,13 @@ th, td {
   <% @projekts.each do |projekte| %>
       <% if projekte.projektleiter == current_user.email %> 
         <li> 
-         <li > <%= link_to  projekte.projektname, roadmaps_path(:id=>projekte.id),'data-no-turbolink' => true%></li> 
+         <li > 
+          <%= link_to  projekte.projektname, 
+          roadmaps_path(:id=>projekte.id),'data-no-turbolink' => true%>
+         </li> 
 
-         <% end %>
-         <% end %>
+      <% end %>
+  <% end %>
   </ul>
 </div>
 </div>

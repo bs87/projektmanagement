@@ -17,7 +17,7 @@
   </div>
   <div>
     <%= f.label :Funktion %><br>
-    <%= f.select :ressourcefunktion, [['Bauleiter','Bauleiter'],['Projektleiter','Projektleiter'],['Designer','Designer'],['Statiker','Statiker'],['Bauarbeiter','Bauarbeiter'],['Kranführer','Kranführer'] ] %>
+    <%= f.collection_select :ressourcefunktion, Ressourcefunction.all, :id, :name, :include_blank => true   %>
   </div>
   <div class="field">
     <%= f.label :Ressourcebeschreibung %><br>

@@ -1,42 +1,36 @@
-<h1>Ressource Allocation Matrix</h1>
+<h1>RAM</h1>
 <br>
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Beginn</th>
       <th>Dauer</th>
-      <th>Ende</th>
       <th>Vorgaenger</th>
+      <th><!-- Edit Vorgaenger Button --><th>
       <th>Ressourcenname</th>
       <th>Kapazität</th>
       <th><th>
-      <th></th>
-      <th></th>
-      <th></th> 
     </tr>
   </thead>
 
-  <tbody>
-    <% @arbeitspakets.each do |arbeitspaket| %>
-      <tr>
-        <td><%= arbeitspaket.arbeitspaketname %></td>
-        <td> toDo </td>
-        <td><%= arbeitspaket.arbeitspaketdauer %></td>
-        <td> toDo</td>
-        <td> toDo</td> 
-        <td> 
-
-          <%= link_to 'Vorgänger editieren', new_arbeitspaketvorgaenger_path(:apid=>arbeitspaket.id) %>
-
-        </td>
+  <tbody>     <% @arbeitspakets.each do |arbeitspaket| %>       <tr>
+<td><%= link_to arbeitspaket.arbeitspaketname, arbeitspaket  %></td>
+<td><%= arbeitspaket.arbeitspaketdauer %></td>         <td>            <!--
+Vorgänger -->           <% @vorgaenger = Arbeitspaketvorgaenger.find(:all,
+:conditions => [ "apid = ?", arbeitspaket.id]) %>           <ul>           <%
+@vorgaenger.each do |v| %>             <% @vorgaengername =
+Arbeitspaket.find(:all, :conditions => [ "id = ?", v.apvorgaengerid]) %>
+<li><%= @vorgaengername.first.arbeitspaketname %></li>           <% end %>
+</ul>         </td>         <td>            <%= link_to 'Edit Vorg',
+new_arbeitspaketvorgaenger_path(:apid=>arbeitspaket.id), :class=>"btn btn-
+default" %>         </td>
  
         <!-- Alle AP/Ress Beziehungen von AP -->
         <% @ressourcen = Verantwortlichkeiten.find( :all, :conditions => [ "arbeitspaketid = ?", arbeitspaket.id]) %>
         
 
         <!-- Ressourcenname und Funktion -->
-        <td class="field">
+        <td >
         <% @ressourcen.each do |res| %> 
           <% @reso = Ressourcen.find(:all, :conditions=> ["id =?", res.ressourceid]) %>
           <% if @reso.present? %>
@@ -44,29 +38,26 @@
           <% end %> 
         <% end %>
         <% if !@ressourcen.present?%>
-          <%= "keine" %>  
+          <i> <%= "keine" %>  </i>
         <% end %>
-        <td>
+        </td>
 
         <!-- Ressourcenname und Funktion -->
-        <td class="field">
+        <td>
         <% @ressourcen.each do |res| %> 
           <% if @ressourcen.present? %>
                 <%= res.intensitaet %><br>
           <% end %>
         <% end %>
         <% if !@ressourcen.present?%>
-          <%= "keine" %>  
+          <i> <%= "keine" %>  </i> 
         <% end %>
         <td>
-          <%=  link_to 'Ressourcen bearbeiten', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id) %>
+          <%=  link_to 'Edit Ress', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id), :class=>"btn btn-default" %>
         <td>
         
 
-        
-        <td><%= link_to 'Show', arbeitspaket %></td>
-        <td><%= link_to 'Edit', edit_arbeitspaket_path(arbeitspaket) %></td>
-        <td><%= link_to 'Destroy', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <td><%= link_to '', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' },:class => "icon-remove" %>
         </td>
       </tr>
     <% end %>

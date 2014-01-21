@@ -19,68 +19,7 @@
       </p>
       <br>
 
-      
-      
-      <% @ap_map    = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
-      <% @aplist    = Array.new %><!-- AP Liste zum Bearbeten wenn AP-FAZ gesetzt wird -->
-      <% @aplist_it = Array.new %><!-- AP Liste für Schleife (Wird nicht bearbeitet) -->
-
-      <!-- Liste aller APs befüllen-->
-      <% @arbeitspakets.each do |ap| %>
-        <% @aplist.push( ap.id ) %>
-        <% @aplist_it.push( ap.id ) %>
-      <%end%>
-
- 
-      <!-- Ermittlung des/der ersten APs ( ID und FAZ) -->
-      <% @aplist.each do |ap| %>
-        <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
-        <% if @vorgaenger.empty? %> <!-- Wenn kein Vorgaenger, dann Erste AP -->
-            <% @erste_ap = Arbeitspaket.find(:all, :conditions => [ "id = ?", ap]) %>
-            <% @ap_map[ap] = 0 %>
-            <% @aplist.delete(ap) %> <!-- Entfernen des APs aus Array, da FAZ festgelegt -->
-        <% end %>
-      <%end%>
-
-      <!-- Ermittlung der anderen APs ( ID und FAZ in hashmap)-->
-      <% while !@aplist.empty? %>
-        <% @aplist_it.each do |ap| %>
-          <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
-          
-          <!-- Prüfen ob alle Vorgänger schon gesetzt sind -->
-          <% @alle_vorgaenger_gesetzt = true %>
-          <% @vorgaenger.each do |vrg| %>  <!-- Prüfen ob alle Vorgaenger bereits gesetzt sind -->
-
-            <% if @aplist.include? vrg.apvorgaengerid %>
-              <% @alle_vorgaenger_gesetzt = false %>
-            <% end %>
-          <% end %>
-
-          <!-- Wenn alle Vorgaenger bereits gesetzt sind, dann berechnung FAZ -->
-          <% if @alle_vorgaenger_gesetzt == true%>
-            <% @faz = 0 %>
-
-            <!-- Über alle Vorgänger iterieren und FAZ berechnen -->
-            <% @vorgaenger.each do |vrg| %> 
-              <% @fazVorgaenger = @ap_map[vrg.apvorgaengerid] %>
-              <% @apdauer = Arbeitspaket.find(:all, :conditions => [ "id = ?", vrg.apvorgaengerid]) %>
-              <% @faz_temp = @fazVorgaenger + @apdauer.first.arbeitspaketdauer %>
-              <%if @faz_temp > @faz %>
-                <% @faz = @faz_temp %>
-              <% end %>
-            <% end %>
-
-            <% @ap_map[ap] = @faz %>
-            <% @aplist.delete(ap) %>
-
-          <% end %>
-        <% end %>
-      <% end %>
-
-      <br>
-      <%= "Finale Hashmap: " %>
-      <%= @ap_map %>
-      <br><br>
+    
 
     <% else %>
 

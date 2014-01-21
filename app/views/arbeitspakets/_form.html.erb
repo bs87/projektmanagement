@@ -1,3 +1,39 @@
+<script type="text/javascript" src="/assets/jquery.js"></script>
+<script type="text/javascript" src="/assets/bootstrap.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+   var anzahlwerte = getParam("anzahlwerte");
+    $(".schaetzwerte").keyup(function(){
+      
+      var summe = 0;
+      for (var i = 1; i <= anzahlwerte; i++) {
+        summe = summe + parseFloat( $("#".concat(i)).val() );
+      }
+      var mittelwert = summe / anzahlwerte;
+      var varsum = 0;
+      for (var i = 1; i <= anzahlwerte; i++) {
+        varsum = varsum + (parseFloat( $("#".concat(i)).val()-mittelwert))*
+                          (parseFloat( $("#".concat(i)).val()-mittelwert));
+      }
+      
+
+      var varianz = varsum/anzahlwerte;
+      $("#arbeitspaketdauer").val(mittelwert);
+      $("#varianz").val(varianz);
+    });
+})
+
+function getParam(variable){ 
+     var query = window.location.search.substring(1);  
+     var vars = query.split("&"); 
+      for (var i=0;i<vars.length;i++) {   
+            var pair = vars[i].split("=");  
+            if(pair[0] == variable){return pair[1];}
+       }       return(false);
+}
+</script>
+
 <%= form_for(@arbeitspaket) do |f| %>
   <% if @arbeitspaket.errors.any? %>
     <div id="error_explanation">
@@ -19,13 +55,44 @@
     <%= f.label :arbeitspaketbeschreibung %><br>
     <%= f.text_field :arbeitspaketbeschreibung %>
   </div>
-  <div class="field">
-    <%= f.label :arbeitspaketverantwortlicher %><br>
-    <%= f.text_field :arbeitspaketverantwortlicher %>
-  </div>
-  <div class="field">
-    <%= f.label :arbeitspaketdauer %><br>
-    <%= f.text_field  :arbeitspaketdauer %>
+
+
+  <h5> Delphi - Aufwandsschätzung </h5>
+  <div class="well sidebar-nav">
+    <div class="dropdown">
+      <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
+        Anzahl Schätzwerte
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <li>
+          <%= link_to 0, new_arbeitspaket_path(:anzahlwerte=>0), 'data-no-turbolink' => true %>
+        </li>
+        <% 15.times do |i| %>
+          <li> 
+           <li > 
+            <%= link_to i+1, new_arbeitspaket_path(:anzahlwerte=>i+1), 'data-no-turbolink' => true %>
+           </li> 
+        <% end %>
+
+      </ul>
+    </div>
+  
+    <br>
+    <% if @anzahlwerte!= nil %>
+      <% @anzahlwerte.to_i.times do |i| %>
+        <%= "Wert " + (i+1).to_s %>
+        <%= number_field_tag (i+1), nil, class: 'schaetzwerte', value: 0 %><br>
+      <% end %>
+      <%= "Varianz"  %>
+        <%= number_field_tag ("varianz") %>  <br>
+    <%end%>
+
+    <br>
+    <div class="field">
+      <%= f.label :arbeitspaketdauer %><br>
+      <%= f.text_field :arbeitspaketdauer, :id=>"arbeitspaketdauer" %>
+    </div>
   </div>
   <div>
     <%= f.label :ArbeitspaketTyp %><br>
@@ -40,10 +107,11 @@
     <%= f.text_field :arbeitspaketausgangsdokumente %>
   </div>
   <div class="field">
-    <%= f.label :aufgabeid %><br>
-    <%= f.number_field :aufgabeid, :value => @aid, :readonly=> true%>
+    <%= f.hidden_field :aufgabeid, :value => @aid, :readonly=> true%>
   </div>
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
+

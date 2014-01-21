@@ -1,6 +1,6 @@
-<h1>Ressource Allocation Matrix</h1>
+<h1>Ressourcenverwaltung</h1><br>
 
-    <div class="container">
+  <div class="container">
     <% flash.each do |name, msg| %>
       <div class="alert alert-<%= name == :notice ? "success" : "error" %>">
       <a class="close" data-dismiss="alert">x</a>
@@ -9,7 +9,7 @@
     <% end %>
   </div>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Name</th>
@@ -19,7 +19,6 @@
       <th>Kuerzel</th>
       <th>Gen.</th>
       <th>Kapazität</th>
-      <th>Gruppe</th>
       <th>Kosten</th>
       <th> </th>
       <th> </th>
@@ -29,18 +28,15 @@
 
   <tbody>
     <% @ressourcens.each do |ressourcen| %>
-      <tr>
-        <td><%= ressourcen.ressourcename %></td>
+      <tr class="table-striped">
+        <td><%= link_to ressourcen.ressourcename, ressourcen %></td>
         <td><%= ressourcen.ressourcefunktion %></td>
         <td><%= ressourcen.ressourcebeschreibung %></td>
         <td><%= ressourcen.ressourceart %></td>
         <td><%= ressourcen.ressourcekuerzel %></td>
         <td><%= ressourcen.ressourcegenerisch %></td>
         <td><%= ressourcen.ressourcemax %></td>
-        <td><%= ressourcen.gruppen_id %></td>
         <td><%= ressourcen.kosten %></td>
-        <td><%= link_to 'Show', ressourcen %></td>
-        <td><%= link_to 'Edit', edit_ressourcen_path(ressourcen) %></td>
         <td><%= link_to 'Destroy', ressourcen, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
@@ -49,6 +45,6 @@
 
 <br>
 
-<%= link_to 'Ressource anlegen', new_ressourcen_path %>
-<%= link_to 'Benutzerkonto zuordnen', new_ressourcen_path(:useraccount=>'true') %>
+<%= link_to 'Ressource anlegen', new_ressourcen_path, :class =>'btn btn-lg btn-success ' %>
+<%= link_to 'Benutzerkonto zuordnen', new_ressourcen_path(:useraccount=>'true'), :class => 'btn btn-lg btn-success ' %>
 

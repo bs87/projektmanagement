@@ -9,7 +9,8 @@
 #User.create!(email: 'admin@afda.de', password: 'dafdddafsdf')
 Role.delete_all
 Role.create!(id: 1, name: 'admin')
-Role.create!(id: 2 ,name: 'reguser')
+Role.create!(id: 2, name: 'reguser')
+
 
 User.delete_all
 User.create!(id: 1, email: 'admin@pm.de', password: '12345678', vorname: 'hugo', nachname: 'boss', roleid: 1)
@@ -61,7 +62,15 @@ Arbeitspaketvorgaenger.delete_all
 Arbeitspaketvorgaenger.create!( id: 1, apid: 2, apvorgaengerid: 1)
 Arbeitspaketvorgaenger.create!( id: 2, apid: 3, apvorgaengerid: 2)
 Arbeitspaketvorgaenger.create!( id: 3, apid: 4, apvorgaengerid: 3)
-Arbeitspaketvorgaenger.create!( id: 4, apid: 5, apvorgaengerid: 3)
-Arbeitspaketvorgaenger.create!( id: 5, apid: 6, apvorgaengerid: 4)
+Arbeitspaketvorgaenger.create!( id: 4, apid: 5, apvorgaengerid: 4)
+Arbeitspaketvorgaenger.create!( id: 5, apid: 5, apvorgaengerid: 4)
 Arbeitspaketvorgaenger.create!( id: 6, apid: 6, apvorgaengerid: 5)
+
+Ressourcefunction.delete_all
+Ressourcefunction.create!(id:1, name: "Bauleiter")
+Ressourcefunction.create!(id:2, name: "Projektleiter")
+Ressourcefunction.create!(id:3, name: "Statiker")
+Ressourcefunction.create!(id:4, name: "Bauarbeiter")
+Ressourcefunction.create!(id:5, name: "Kranführer")
+Ressourcefunction.create!(id:6, name: "Programmierer")
 

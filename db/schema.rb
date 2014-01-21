@@ -11,7 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140118215244) do
+
+ActiveRecord::Schema.define(version: 20140119163439) do
+
 
   create_table "arbeitspakets", force: true do |t|
     t.string   "arbeitspaketname",                 limit: 45
@@ -58,6 +60,12 @@ ActiveRecord::Schema.define(version: 20140118215244) do
     t.string   "projektbeschreibung"
     t.integer  "roadstops_roadstopsid"
     t.integer  "aufgaben_aufgabenid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ressourcefunctions", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

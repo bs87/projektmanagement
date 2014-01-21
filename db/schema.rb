@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140103235837) do
+ActiveRecord::Schema.define(version: 20140119163439) do
 
   create_table "arbeitspakets", force: true do |t|
     t.string   "arbeitspaketname",                 limit: 45
     t.string   "arbeitspaketbeschreibung",         limit: 45
     t.integer  "arbeitspaketverantwortlicher"
     t.date     "arbeitspaketbeginn"
-    t.date     "arbeitspaketdauer"
+    t.integer  "arbeitspaketdauer"
     t.date     "arbeitspaketende"
     t.integer  "arbeitspaketnr"
     t.string   "arbeitspaketziel",                 limit: 45
@@ -28,6 +28,14 @@ ActiveRecord::Schema.define(version: 20140103235837) do
     t.integer  "aufgabeid"
     t.integer  "verantwortlichkeiten_Arbeitsid"
     t.string   "verantwortlichkeiten_Ressourceid", limit: 45
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "arbeitspakettyp"
+  end
+
+  create_table "arbeitspaketvorgaengers", force: true do |t|
+    t.integer  "apid"
+    t.integer  "apvorgaengerid"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -54,6 +62,12 @@ ActiveRecord::Schema.define(version: 20140103235837) do
     t.datetime "updated_at"
   end
 
+  create_table "ressourcefunctions", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "ressourcens", force: true do |t|
     t.string   "ressourcename",         limit: 45
     t.string   "ressourcebeschreibung", limit: 45
@@ -63,6 +77,9 @@ ActiveRecord::Schema.define(version: 20140103235837) do
     t.integer  "ressourcemax"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "gruppen_id"
+    t.float    "kosten"
+    t.string   "ressourcefunktion"
   end
 
   create_table "roadstops", force: true do |t|
@@ -101,6 +118,7 @@ ActiveRecord::Schema.define(version: 20140103235837) do
     t.string   "nachname"
     t.integer  "projekt_projektid"
     t.integer  "arbeitspaket_arbeitspaketid"
+    t.integer  "roleid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -115,10 +133,9 @@ ActiveRecord::Schema.define(version: 20140103235837) do
 
   create_table "verantwortlichkeitens", force: true do |t|
     t.integer  "arbeitspaketid"
-    t.string   "ressourceid",             limit: 45
+    t.string   "ressourceid",    limit: 45
     t.integer  "intensitaet"
-    t.string   "beschreibung",            limit: 45
-    t.integer  "ressourcen_ressourcenid"
+    t.string   "beschreibung",   limit: 45
     t.datetime "created_at"
     t.datetime "updated_at"
   end

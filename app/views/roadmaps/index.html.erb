@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 
 <html lang="en">
@@ -19,16 +16,24 @@ table.table-collapsed{
 border: 1px solid #dddddd;
 border-collapse: separate;
 border-left: 0;
--webkit-border-radius: 4px;
--moz-border-radius: 4px;
-border-radius: 4px;
+-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+border-radius: 0px;
     table-layout: fixed;
     
 }
-th, td {
-    border: 1px solid #dddddd;
+.table th, .table td {
+    border: 0,5px solid #dddddd;
     overflow: hidden;
-    width: 130px;
+    text-align: left;
+    width: 140px;
+    height: 40px;
+    padding: 0px;
+}
+
+  
+.centered{
+    margin: 0 auto;
 }
 </style>
     </head>
@@ -41,68 +46,8 @@ th, td {
        <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
 <% else %>
 
-<% @projektdauer = 0 %> 
-<% if @projekt.projektleiter == current_user.email %> 
-     
-            <% @aufgaben.each do |aufgabe| %>
-              <% if  @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
-                <% @vorgaenger1 = aufgabe.id %>
-                <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                   <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
-                      <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
-                    
-                      <% @arbeitspakets.each do |arbeitspaket| %>
-                        <% if aufgabe.id == arbeitspaket.aufgabeid %>
-                        <% @projektdauer = @projektdauer + arbeitspaket.arbeitspaketdauer %>
-                       
-                           <% end %>                         
-                        <% end %>
-                     
-                
-                  <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
-                    <!-- Ebene 2 -->
-                    
-                      <% @aufgaben.each do |aufgabe| %>
-                        <% if  @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger1 %>
-                          <% @vorgaenger2 = aufgabe.id %>
-                          <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                        
-                            <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
-                            <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
-                              
-                                <% @arbeitspakets.each do |arbeitspaket| %>
-                                  <% if aufgabe.id == arbeitspaket.aufgabeid %>  
-                                     <% @projektdauer = @projektdauer + arbeitspaket.arbeitspaketdauer %>
-                                      <% end %>              
-                                  <% end %>
-                            
-                            <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
 
-                              <!-- Ebene 3 -->
-                              
-                                <% @aufgaben.each do |aufgabe| %>
-                                  <% if  @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
-                                    <% @vorgaenger3 = aufgabe.id %>
-                                    <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                            
 
-                                      <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
-                                      
-                                        <% @arbeitspakets.each do |arbeitspaket| %>
-                                          <% if aufgabe.id == arbeitspaket.aufgabeid %>     
-                                      <% @projektdauer = @projektdauer + arbeitspaket.arbeitspaketdauer %>
-                                      <% end %>                      
-                                          <% end %>
-                                        <% end %>
-                                    
-                                <% end %>
-                            <% end %>
-                         <% end %>
-                      <%end%>
-                  <% end %>
-    <%end%>
-                  <% end %>
-                  <% end %>
     <!-- Projektliste -->
 
 
@@ -164,9 +109,110 @@ th, td {
 
 
 
+      <% @ap_mapvorgaenger    = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
+
+<% @projektdauer = 0 %> 
+<% if @projekt.projektleiter == current_user.email %> 
+            <% @aufgaben.each do |aufgabe| %>
+              <% if  @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
+                <% @vorgaenger1 = aufgabe.id %>
+                <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                   <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                      <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
+                    
+                      <% @arbeitspakets.each do |arbeitspaket| %>
+                        <% if aufgabe.id == arbeitspaket.aufgabeid %>
+
+                                    <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                    <% if @ap_mapvorgaenger.has_key? @faz %>
+                                      <% if @ap_mapvorgaenger[@faz] < arbeitspaket.arbeitspaketdauer %>
+                                          <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                      <% end %> 
+                                    <% else %>
+                                            <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>                  
+                                  <% end %> 
+                                 
+                       
+                        <% end %>                         
+                        <% end %>
+                     
+                
+                  <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+                    <!-- Ebene 2 -->
+                    
+                      <% @aufgaben.each do |aufgabe| %>
+                        <% if  @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger == @vorgaenger1 %>
+                          <% @vorgaenger2 = aufgabe.id %>
+                          <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                        
+                            <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                            <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
+                              
+                                <% @arbeitspakets.each do |arbeitspaket| %>
+                                  <% if aufgabe.id == arbeitspaket.aufgabeid %>  
+                                  <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                    <% if @ap_mapvorgaenger.has_key? @faz %>
+                                      <% if @ap_mapvorgaenger[@faz] < arbeitspaket.arbeitspaketdauer %>
+                                          <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                      <% end %> 
+                                    <% else %>
+                                            <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>                  
+                                  <% end %> 
+                                      <% end %>              
+                                  <% end %>
+                            
+                            <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                              <!-- Ebene 3 -->
+                              
+                                <% @aufgaben.each do |aufgabe| %>
+                                  <% if  @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
+                                    <% @vorgaenger3 = aufgabe.id %>
+                                    <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                            
+
+                                      <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
+                                      
+                                        <% @arbeitspakets.each do |arbeitspaket| %>
+                                          <% if aufgabe.id == arbeitspaket.aufgabeid %> 
+                                            <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                    <% if @ap_mapvorgaenger.has_key? @faz %>
+                                      <% if @ap_mapvorgaenger[@faz] < arbeitspaket.arbeitspaketdauer %>
+                                          <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                      <% end %> 
+                                    <% else %>
+                                            <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>                  
+                                  <% end %> 
+    
+                                      <% end %>                      
+                                          <% end %>
+                                        <% end %>
+                                    
+                                <% end %>
+                            <% end %>
+                         <% end %>
+                      <%end%>
+                  <% end %>
+    <%end%>
+                  <% end %>
+               
+
+<% @ap_mapvorgaenger.each_value do |value| %>
+<%  @projektdauer = @projektdauer + value%>
+<% end %>
+
+<% end %>
+
+
+
+
+
+
+
+
      
 <br>
-<div class="well sidebar-nav">
+<div class="well sidebar-nav ">
   <div class="dropdown">
   <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
     Projekt auswählen ...
@@ -195,7 +241,7 @@ th, td {
 <br>
 <span class="sr-only icon-star-empty"> Release</span>
 <br>
-<div class="well sidebar-nav">
+<div class="centered">
 <table class="table table-hover table-bordered">
 <thead>
           <tr>
@@ -298,7 +344,7 @@ th, td {
                                         <% @arbeitspakets.each do |arbeitspaket| %>
                                           <% if aufgabe.id == arbeitspaket.aufgabeid %>     
                                               <tr class="error"> 
-                                                < <td><i class="icon-arrow-right" ><% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                                 <td><i class="icon-arrow-right" ><% if arbeitspaket.arbeitspakettyp == "Standard" %>
                                      <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
@@ -347,12 +393,14 @@ th, td {
           <tr>
           <% @i = 0 %>
           <% @startdate = Date.parse @projekt.projektstart  %>
+
           <% while @i < @projektdauer %> 
              <%@day =  @startdate + @i.days %> 
             <% if @day == Date.today %>
-            <th style="color:blue; font-weight:bold" > <%=  @day %>  </th>
+            <% @aktuellerstatus = @i%>
+            <th style="color:blue; font-weight:bold; text-align:center" > <%=  @day %>  </th>
             <% else %>
-            <th  > <%=  @day %>  </th>
+            <th  style="text-align:center" > <%=  @day %>  </th>
             
             <% end %>
             <% @i = @i + 1 %> 
@@ -364,7 +412,6 @@ th, td {
  <tbody> 
 
  <% if @projekt.projektleiter == current_user.email %> 
-
     
             <% @aufgaben.each do |aufgabe| %>
               <% if  @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
@@ -376,23 +423,43 @@ th, td {
                    
                       <% @arbeitspakets.each do |arbeitspaket| %>
                         <% if aufgabe.id == arbeitspaket.aufgabeid %>
-
+                        <% @counter = 0 %>
                                 <tr>
                                 <% @faz = @ap_map.values_at(arbeitspaket.id) %>
                               
                                 <% @k = 0 %>
                                   <% while @k <   @faz[0] %> 
                                     <td> </td>
+                                    <% @counter = @counter + 1 %>
                                     <% @k = @k + 1 %> 
                                     <% end %> 
                                     <% @i = 0 %>
                                     <% while @i < arbeitspaket.arbeitspaketdauer %> 
-                                     <td   <div class="progress" >
-                                                <div class="bar bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
-                                                  <span class="sr-only"><%= arbeitspaket.arbeitspaketname %></span>
+                                    <% if  @aktuellerstatus > @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                        <% if  @aktuellerstatus == @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                        <% if  @aktuellerstatus < @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                      <span class="sr-only " style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                       <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
+                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Release" %>
+                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <% end %>
                                                 </div>
                                               </div>          
                                       <% @i = @i + 1 %> 
+                                      <% @counter = @counter + 1 %>
                                       <% end %>  
                                       <% @c = @projektdauer - arbeitspaket.arbeitspaketdauer - @faz[0] %> 
                                       <% @d = 0  %>
@@ -420,37 +487,47 @@ th, td {
                                 
                       <% @arbeitspakets.each do |arbeitspaket| %>
                         <% if aufgabe.id == arbeitspaket.aufgabeid %>
-                            
+                           <% @counter = 0 %> 
                                <tr> 
                                 <% @faz = @ap_map.values_at(arbeitspaket.id) %>
                                
                                 <% @k = 0 %>
                                   <% while @k <   @faz[0] %> 
                                     <td> </td>
-                                    <% @k = @k + 1 %> 
+                                   <% @counter = @counter + 1 %>
+                                   <% @k = @k + 1 %> 
                                     <% end %> 
                                    
                               <td 
                                       <% @i = 0 %>
                                     <% while @i < arbeitspaket.arbeitspaketdauer %> 
-                                     <td     <div class="progress">
-                                                <div class="bar bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
-                                                  <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                                  <span class="sr-only "><%= arbeitspaket.arbeitspaketname %></span>
-                                                  <% end %>
+                                    <% if  @aktuellerstatus > @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                        <% if  @aktuellerstatus == @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                        <% if  @aktuellerstatus < @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                      <span class="sr-only " style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span class="sr-only icon-map-marker"><%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span class="sr-only icon-star-empty"><%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
                                       <% end %>
-                                      
-                                                 
                                                 </div>
                                               </div>          
                                       <% @i = @i + 1 %> 
-                                       <% end %>
-                                           <% @c = @projektdauer - arbeitspaket.arbeitspaketdauer - @faz[0] %> 
+                                      <% @counter = @counter + 1 %>
+                                      <% end %>  
+                                      <% @c = @projektdauer - arbeitspaket.arbeitspaketdauer - @faz[0] %> 
                                       <% @d = 0  %>
                                       <% while @d <   @c %> 
                                     <td> </td>
@@ -475,24 +552,45 @@ th, td {
                                        
                       <% @arbeitspakets.each do |arbeitspaket| %>
                         <% if aufgabe.id == arbeitspaket.aufgabeid %>
+                        <% @counter = 0 %>
                              <tr>
                                   <% @faz = @ap_map.values_at(arbeitspaket.id) %> 
                                 <% @k = 0 %>
                                   <% while @k <   @faz[0] %> 
                                     <td> </td>
-                                    <% @k = @k + 1 %> 
+                                    <% @counter = @counter + 1 %>
+                                     <% @k = @k + 1 %> 
                                     <% end %>   
                               <td 
                                         <% @i = 0 %>
                                     <% while @i < arbeitspaket.arbeitspaketdauer %> 
-                                     <td     <div class="progress">
-                                                <div class="bar bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
-                                                  <span class="sr-only"><%= arbeitspaket.arbeitspaketname %></span>
+                                     <% if  @aktuellerstatus > @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                        <% if  @aktuellerstatus == @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                        <% if  @aktuellerstatus < @counter %>
+                                     <td <div class="progress" >
+                                      <div class="bar bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                      <span class="sr-only " style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                       <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
+                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Release" %>
+                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <% end %>
                                                 </div>
                                               </div>          
-                                      <% @i = @i + 1 %>  
-                                       <% end %>    
-                                           <% @c = @projektdauer - arbeitspaket.arbeitspaketdauer - @faz[0] %> 
+                                      <% @i = @i + 1 %> 
+                                      <% @counter = @counter + 1 %>
+                                      <% end %>  
+                                      <% @c = @projektdauer - arbeitspaket.arbeitspaketdauer - @faz[0] %> 
                                       <% @d = 0  %>
                                       <% while @d <   @c %> 
                                     <td> </td>

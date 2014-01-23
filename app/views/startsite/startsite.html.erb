@@ -11,22 +11,24 @@
     <!-- Jumbotron -->
     <% if current_user %>
       <h1> Willkommen</h1><br>
-
+<div class="well sidebar-nav ">
       <p>
       VPM (Virtual Projectmanager) ist ein webbasiertes Online-Tool für kleine und mittelstänige Unternehmen. Das Werkzeug bietet umfangreiche Planungsmöglichkeiten für beliebig viele Projekte. Darunter fallen neben der Projektverwaltung auch Ressourcenmanagement, Kosteschätzung und Roadmap.</p>
       <p>
       Das Rollensystem soll außerdem auch Mitarbeitern die Überwachung und den Stand der jeweiligen Arbeitspakete ermöglichen.
       </p>
+      </div>
       <br>
 
     
 
     <% else %>
 
-   <div class="jumbotron fluid">
-       
 
-<%= image_tag("shutterstock.jpg", height: '400', width: '400', :alt => "rss feed") %>
+       
+ <div style="vertical-align:middle; align=center ; position:auto"  >
+   
+   <p align="center"><%= image_tag("shutterstock.jpg", height: '400', width: '400', :align=> "middle") %></p> 
       </div>
 
       <hr>

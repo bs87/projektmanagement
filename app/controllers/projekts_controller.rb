@@ -4,6 +4,13 @@ class ProjektsController < ApplicationController
   # GET /projekts
   # GET /projekts.json
   def index
+     if params[:id].nil? 
+    @projekt = Projekt.find(:all, :conditions => [ "projektleiter = ?", current_user.email]).first 
+  else
+    @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
+  end
+ 
+    @tree = params[:view]
     @projekts = Projekt.all
     @aufgaben = Aufgaben.all
     @arbeitspakets = Arbeitspaket.all
@@ -13,7 +20,32 @@ class ProjektsController < ApplicationController
   # GET /projekts/1.json
   def show
   end
+   
 
+   def pdfuebersicht
+    if params[:id].nil? 
+    @projekt = Projekt.find(:all, :conditions => [ "projektleiter = ?", current_user.email]).first 
+  else
+    @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
+  end
+    @projekts = Projekt.all
+    @aufgaben = Aufgaben.all
+    @arbeitspakets = Arbeitspaket.all
+
+  
+  respond_to do |format|
+    format.html
+    format.pdf do
+ render :pdf => @projekt.projektname ,
+               :template => 'projekts/pdfuebersicht.html.erb',
+               :orientation => 'portrait',
+               :page_size                      => 'A4', 
+               :layout => false,
+               :print_media_type => true
+    
+   end
+  end
+end
   # GET /projekts/new
   def new
     @projekt = Projekt.new
@@ -74,6 +106,6 @@ class ProjektsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def projekt_params
-      params.require(:projekt).permit(:projektname, :projektleiter, :projektstart, :projektende, :projektbeschreibung, :roadstops_roadstopsid, :aufgaben_aufgabenid)
+      params.require(:projekt).permit(:projektname, :projektleiter, :projektstart, :projektende, :projektbeschreibung, :roadstops_roadstopsid, :aufgaben_aufgabenid, :view)
     end
 end

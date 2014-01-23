@@ -22,12 +22,15 @@ gem 'jquery-rails', '~> 2.1'
 gem 'protected_attributes'
 gem 'jquery-turbolinks'
 gem 'turbolinks'
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'
 
 group   :developement do
 gem 'rspec-rails'
 gem 'faker'
 gem 'guard-rspec'
 gem 'factory_girl_rails', :require => false
+
 end
 
 

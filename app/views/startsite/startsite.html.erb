@@ -10,82 +10,9 @@
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
     <!-- Jumbotron -->
     <% if current_user %>
-<<<<<<< HEAD
-      <h1> Willkommen</h1><br><br>
-
-
-      <!-- ########################## Hashmap erstellen ##################### -->
-      <!-- ###################################################################-->
-      <% @ap_map    = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
-      <% @aplist    = Array.new %><!-- AP Liste zum Bearbeten wenn AP-FAZ gesetzt wird -->
-      <% @aplist_it = Array.new %><!-- AP Liste für Schleife (Wird nicht bearbeitet) -->
-
-      <!-- Liste aller APs befüllen-->
-      <% @arbeitspakets.each do |ap| %>
-        <% @aplist.push( ap.id ) %>
-        <% @aplist_it.push( ap.id ) %>
-      <%end%>
-
- 
-      <!-- Ermittlung des/der ersten APs ( ID und FAZ) -->
-      <% @aplist.each do |ap| %>
-        <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
-        <% if @vorgaenger.empty? %> <!-- Wenn kein Vorgaenger, dann Erste AP -->
-            <% @erste_ap = Arbeitspaket.find(:all, :conditions => [ "id = ?", ap]) %>
-            <% @ap_map[ap] = 0 %>
-            <% @aplist.delete(ap) %> <!-- Entfernen des APs aus Array, da FAZ festgelegt -->
-        <% end %>
-      <%end%>
-
-      <!-- Ermittlung der anderen APs ( ID und FAZ in hashmap)-->
-      <% @aplist_it.each do |aps| %>
-        <% @aplist_it.each do |ap| %>
-          <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
-          
-          <!-- Prüfen ob alle Vorgänger schon gesetzt sind -->
-          <% @alle_vorgaenger_gesetzt = true %>
-          <% @vorgaenger.each do |vrg| %>  <!-- Prüfen ob alle Vorgaenger bereits gesetzt sind -->
-
-            <% if @aplist.include? vrg.apvorgaengerid %>
-              <% @alle_vorgaenger_gesetzt = false %>
-            <% end %>
-          <% end %>
-
-          <!-- Wenn alle Vorgaenger bereits gesetzt sind, dann berechnung FAZ -->
-          <% if @alle_vorgaenger_gesetzt == true%>
-            <% @faz = 0 %>
-
-            <!-- Über alle Vorgänger iterieren und FAZ berechnen -->
-            <% @vorgaenger.each do |vrg| %> 
-              <% @fazVorgaenger = @ap_map[vrg.apvorgaengerid] %>
-              <% @apdauer = Arbeitspaket.find(:all, :conditions => [ "id = ?", vrg.apvorgaengerid]) %>
-              <% @faz_temp = @fazVorgaenger + @apdauer.first.arbeitspaketdauer %>
-              <%if @faz_temp > @faz %>
-                <% @faz = @faz_temp %>
-              <% end %>
-            <% end %>
-
-            <% @ap_map[ap] = @faz %>
-            <% @aplist.delete(ap) %>
-
-          <% end %>
-        <% end %>
-      <% end %>
-      <!-- ###################################################################-->
-
-
-
+      <h1> Willkommen </h1><br><br>
       <h4> Liste ihrer aktuell zugewiesenen Arbeitspakete </h4>
-=======
-      <h1> Willkommen</h1><br>
-<div class="well sidebar-nav ">
-      <p>
-      VPM (Virtual Projectmanager) ist ein webbasiertes Online-Tool für kleine und mittelstänige Unternehmen. Das Werkzeug bietet umfangreiche Planungsmöglichkeiten für beliebig viele Projekte. Darunter fallen neben der Projektverwaltung auch Ressourcenmanagement, Kosteschätzung und Roadmap.</p>
-      <p>
-      Das Rollensystem soll außerdem auch Mitarbeitern die Überwachung und den Stand der jeweiligen Arbeitspakete ermöglichen.
-      </p>
-      </div>
->>>>>>> bb74b5541c2021e08ba4625994c01f7c14227caf
+
       <br>
       <table class="table table-striped">
         <tr>

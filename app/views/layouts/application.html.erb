@@ -52,42 +52,21 @@
       </div>
     </div>
 
-     <%if current_user%>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <!--<li class="nav-header">Sidebar</li>-->
-              <% if current_user %>
-              <li><%= link_to 'Home', root_path %></li> 
-              <li><%= link_to 'Projekte', projekts_path ,'data-no-turbolink' => true,:id=> 'Projekte'%></li>
-              <li><%= link_to 'WBS', aufgabens_path,'data-no-turbolink' => true, :id=> 'Aufgaben'%></li>
-              <li><%= link_to 'RAM', verantwortlichkeitens_path %></li>
-              <li><%= link_to 'Roadmap', roadmaps_path,'data-no-turbolink' => true,:id=> 'Roadmap'%></li>
-              <%if current_user.email == "admin@pm.de"%>
-               <li><%= link_to 'Ressourcenverwaltung', ressourcens_path, :id=>'Aufgaben'%></li>
-               <% end %>
-              <li><%= link_to 'Einstellungen', edit_user_registration_path %></li>            
-              <%end%>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-        <%end%>
-        <div class="span9">
+    
+        <!-- <div class="span9">-->
 
     
        
-        <div class="center-block" style="margin-left:20px; margin-right:20px">
-            <%= stylesheet_link_tag "application", :media => "all" %>
+    <div class="center-block" style="margin-left:20px; margin-right:20px">
+        <%= stylesheet_link_tag "application", :media => "all" %>
 
-         <%= bootstrap_flash %>
-            <%= yield %>
-        </div>
-      </div>
+     <%= bootstrap_flash %>
+        <%= yield %>
     </div>
+  </div>
+</div>
 
-    </div> <!-- /container -->
+</div> <!-- /container -->
 
-  </body>
+</body>
 </html>

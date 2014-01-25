@@ -20,6 +20,7 @@ class RoadmapsController < ApplicationController
     @projekts = Projekt.all
     @aufgaben = Aufgaben.all
     @arbeitspakets = Arbeitspaket.all
+    @arbeitspaketvorgaenger = Arbeitspaketvorgaenger.all
   end
 
 end

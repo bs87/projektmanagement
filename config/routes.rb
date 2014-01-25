@@ -8,7 +8,7 @@ Projektmanagement::Application.routes.draw do
   get "roadmap/create"
   get "roadmap/show"
   get "roadmap/index"
-
+ get "projekts/pdfuebersicht"
 
   resources :ressourcefunctions
 

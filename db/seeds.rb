@@ -23,7 +23,7 @@ Ressourcen.create!(id: 2, ressourcename: 'Krusty Clown', ressourcefunktion: 'Des
 Ressourcen.create!(id: 3, ressourcename: 'Tingeltangel Bob', ressourcefunktion: 'Projektleiter', ressourcebeschreibung: '15 Jahre Erfahrung', ressourceart: 'Arbeit', ressourcekuerzel: 'PL', ressourcegenerisch: 1, ressourcemax: 100, kosten: 120, gruppen_id: nil)
 
 Projekt.delete_all
-Projekt.create!( id: 1, projektname: 'Brückenbau', projektleiter: 'homer@pm.de', projektstart: '03.02.2014', projektbeschreibung: 'Bau der Berliner Brücke' )
+Projekt.create!( id: 1, projektname: 'Brückenbau', projektleiter: 'homer@pm.de', projektstart: '2014-01-15', projektbeschreibung: 'Bau der Berliner Brücke' )
 
 Aufgaben.delete_all
 Aufgaben.create!( id: 1, aufgabenname: 'Definition', aufgabenbeschreibung: 'Beschreibung Definition', aufgabenvorgaenger: nil, projektsid: 1 )

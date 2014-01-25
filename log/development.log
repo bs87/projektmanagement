@@ -1,0 +1,227 @@
+  [1m[36m (187.2ms)[0m  [1mDROP TABLE `arbeitspakets`[0m
+  [1m[35m (622.5ms)[0m  CREATE TABLE `arbeitspakets` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `arbeitspaketname` varchar(45), `arbeitspaketbeschreibung` varchar(45), `arbeitspaketverantwortlicher` int(11), `arbeitspaketbeginn` date, `arbeitspaketdauer` int(11), `arbeitspaketende` date, `arbeitspaketnr` int(11), `arbeitspaketziel` varchar(45), `arbeitspaketkuerzel` varchar(45), `arbeitspaketeingangsdokumente` varchar(45), `arbeitspaketausgangsdokumente` varchar(45), `aufgabeid` int(11), `verantwortlichkeiten_Arbeitsid` int(11), `verantwortlichkeiten_Ressourceid` varchar(45), `created_at` datetime, `updated_at` datetime, `arbeitspakettyp` varchar(255), `produkt_id` int(11)) ENGINE=InnoDB
+  [1m[36m (187.7ms)[0m  [1mDROP TABLE `arbeitspaketvorgaengers`[0m
+  [1m[35m (422.2ms)[0m  CREATE TABLE `arbeitspaketvorgaengers` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `apid` int(11), `apvorgaengerid` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (153.5ms)[0m  [1mDROP TABLE `aufgabens`[0m
+  [1m[35m (509.6ms)[0m  CREATE TABLE `aufgabens` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `aufgabenname` varchar(45), `aufgabenbeschreibung` varchar(45), `aufgabenvorgaenger` int(11), `aufgabennr` int(11), `projektsid` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (154.3ms)[0m  [1mDROP TABLE `produktkategories`[0m
+  [1m[35m (454.2ms)[0m  CREATE TABLE `produktkategories` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `projekt_id` int(11), `vorgaenger_id` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (155.5ms)[0m  [1mDROP TABLE `produkts`[0m
+  [1m[35m (454.2ms)[0m  CREATE TABLE `produkts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `typ` varchar(255), `ap_id` int(11), `kat_id` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (154.2ms)[0m  [1mDROP TABLE `projekts`[0m
+  [1m[35m (409.9ms)[0m  CREATE TABLE `projekts` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `projektname` varchar(255), `projektleiter` varchar(255), `projektstart` varchar(255), `projektende` varchar(255), `projektbeschreibung` varchar(255), `roadstops_roadstopsid` int(11), `aufgaben_aufgabenid` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (210.8ms)[0m  [1mDROP TABLE `ressourcefunctions`[0m
+  [1m[35m (398.9ms)[0m  CREATE TABLE `ressourcefunctions` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (143.2ms)[0m  [1mDROP TABLE `ressourcens`[0m
+  [1m[35m (784.5ms)[0m  CREATE TABLE `ressourcens` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `ressourcename` varchar(45), `ressourcebeschreibung` varchar(45), `ressourceart` varchar(45), `ressourcekuerzel` varchar(45), `ressourcegenerisch` tinyint(1), `ressourcemax` int(11), `created_at` datetime, `updated_at` datetime, `gruppen_id` int(11), `ressourcefunktion` varchar(255)) ENGINE=InnoDB
+  [1m[36m (189.0ms)[0m  [1mDROP TABLE `roadstops`[0m
+  [1m[35m (409.6ms)[0m  CREATE TABLE `roadstops` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `roadstopspart` varchar(45), `roadstopsdate` int(11), `projektid` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (154.4ms)[0m  [1mDROP TABLE `roles`[0m
+  [1m[35m (476.5ms)[0m  CREATE TABLE `roles` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `resource_id` int(11), `resource_type` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (798.0ms)[0m  [1mCREATE INDEX `index_roles_on_name_and_resource_type_and_resource_id` USING btree ON `roles` (`name`, `resource_type`, `resource_id`) [0m
+  [1m[35m (1001.0ms)[0m  CREATE INDEX `index_roles_on_name` USING btree ON `roles` (`name`) 
+  [1m[36m (194.2ms)[0m  [1mDROP TABLE `users`[0m
+  [1m[35m (409.8ms)[0m  CREATE TABLE `users` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `email` varchar(255) DEFAULT '' NOT NULL, `encrypted_password` varchar(255) DEFAULT '' NOT NULL, `reset_password_token` varchar(255), `reset_password_sent_at` datetime, `remember_created_at` datetime, `sign_in_count` int(11) DEFAULT 0 NOT NULL, `current_sign_in_at` datetime, `last_sign_in_at` datetime, `current_sign_in_ip` varchar(255), `last_sign_in_ip` varchar(255), `created_at` datetime, `updated_at` datetime, `vorname` varchar(255), `nachname` varchar(255), `projekt_projektid` int(11), `arbeitspaket_arbeitspaketid` int(11), `roleid` int(11)) ENGINE=InnoDB
+  [1m[36m (608.9ms)[0m  [1mCREATE UNIQUE INDEX `index_users_on_email` USING btree ON `users` (`email`) [0m
+  [1m[35m (709.2ms)[0m  CREATE UNIQUE INDEX `index_users_on_reset_password_token` USING btree ON `users` (`reset_password_token`) 
+  [1m[36m (198.7ms)[0m  [1mDROP TABLE `users_roles`[0m
+  [1m[35m (568.1ms)[0m  CREATE TABLE `users_roles` (`user_id` int(11), `role_id` int(11)) ENGINE=InnoDB
+  [1m[36m (765.2ms)[0m  [1mCREATE INDEX `index_users_roles_on_user_id_and_role_id` USING btree ON `users_roles` (`user_id`, `role_id`) [0m
+  [1m[35m (154.3ms)[0m  DROP TABLE `verantwortlichkeitens`
+  [1m[36m (432.9ms)[0m  [1mCREATE TABLE `verantwortlichkeitens` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `arbeitspaketid` int(11), `ressourceid` varchar(45), `intensitaet` int(11), `beschreibung` varchar(45), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.4ms)[0m  SELECT version FROM `schema_migrations`
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35mSQL (0.5ms)[0m  DELETE FROM `roles`
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `roles` (`created_at`, `id`, `name`, `updated_at`) VALUES ('2014-01-25 16:41:02', 1, 'admin', '2014-01-25 16:41:02')
+  [1m[36m (96.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `roles` (`created_at`, `id`, `name`, `updated_at`) VALUES ('2014-01-25 16:41:02', 2, 'reguser', '2014-01-25 16:41:02')[0m
+  [1m[35m (83.4ms)[0m  COMMIT
+  [1m[36mSQL (0.5ms)[0m  [1mDELETE FROM `users`[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'admin@pm.de' LIMIT 1[0m
+  [1m[35mUser Exists (0.5ms)[0m  SELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'admin@pm.de' LIMIT 1
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO `users` (`created_at`, `email`, `encrypted_password`, `id`, `nachname`, `roleid`, `updated_at`, `vorname`) VALUES ('2014-01-25 16:41:03', 'admin@pm.de', '$2a$10$jRXN/S5HG0YVs4EbjNKicuRmeleZcEmKbhF3.eFo8fSG3i.gRWsQG', 1, 'boss', 1, '2014-01-25 16:41:03', 'hugo')[0m
+  [1m[35m (73.0ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'homer@pm.de' LIMIT 1
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'homer@pm.de' LIMIT 1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `users` (`created_at`, `email`, `encrypted_password`, `id`, `nachname`, `roleid`, `updated_at`, `vorname`) VALUES ('2014-01-25 16:41:03', 'homer@pm.de', '$2a$10$a86t/buLvcURZ69gROlFmO6J4KrdioS5gzwq7um6GtZddL61hyHZ2', 2, 'simpson', 2, '2014-01-25 16:41:03', 'homer')
+  [1m[36m (82.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.6ms)[0m  [1mSELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'marge@pm.de' LIMIT 1[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'marge@pm.de' LIMIT 1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `users` (`created_at`, `email`, `encrypted_password`, `id`, `nachname`, `roleid`, `updated_at`, `vorname`) VALUES ('2014-01-25 16:41:03', 'marge@pm.de', '$2a$10$NceXFxHnnBKh19WK2x4p1eKhO0xNOvHfBVYmj5UC2LNcjolcOQzS6', 3, 'simpson', 2, '2014-01-25 16:41:03', 'marge')[0m
+  [1m[35m (71.0ms)[0m  COMMIT
+  [1m[36mSQL (273.3ms)[0m  [1mDELETE FROM `ressourcens`[0m
+WARNING: Can't mass-assign protected attributes for Ressourcen: kosten, gruppen_id
+
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `ressourcens` (`created_at`, `id`, `ressourceart`, `ressourcebeschreibung`, `ressourcefunktion`, `ressourcegenerisch`, `ressourcekuerzel`, `ressourcemax`, `ressourcename`, `updated_at`) VALUES ('2014-01-25 16:41:04', 1, 'Arbeit', '3 Jahre Erfahrung', 'Bauleiter', 1, 'SE', 100, 'Mr. Burns', '2014-01-25 16:41:04')[0m
+  [1m[35m (44.7ms)[0m  COMMIT
+WARNING: Can't mass-assign protected attributes for Ressourcen: kosten, gruppen_id
+
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `ressourcens` (`created_at`, `id`, `ressourceart`, `ressourcebeschreibung`, `ressourcefunktion`, `ressourcegenerisch`, `ressourcekuerzel`, `ressourcemax`, `ressourcename`, `updated_at`) VALUES ('2014-01-25 16:41:04', 2, 'Arbeit', '25 Jahre Erfahrung, Photoshop Zertifikat', 'Designer', 1, 'DE', 100, 'Krusty Clown', '2014-01-25 16:41:04')
+  [1m[36m (73.1ms)[0m  [1mCOMMIT[0m
+WARNING: Can't mass-assign protected attributes for Ressourcen: kosten, gruppen_id
+
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `ressourcens` (`created_at`, `id`, `ressourceart`, `ressourcebeschreibung`, `ressourcefunktion`, `ressourcegenerisch`, `ressourcekuerzel`, `ressourcemax`, `ressourcename`, `updated_at`) VALUES ('2014-01-25 16:41:04', 3, 'Arbeit', '15 Jahre Erfahrung', 'Projektleiter', 1, 'PL', 100, 'Tingeltangel Bob', '2014-01-25 16:41:04')[0m
+  [1m[35m (71.6ms)[0m  COMMIT
+  [1m[36mSQL (91.5ms)[0m  [1mDELETE FROM `projekts`[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `projekts` (`created_at`, `id`, `projektbeschreibung`, `projektleiter`, `projektname`, `projektstart`, `updated_at`) VALUES ('2014-01-25 16:41:04', 1, 'Bau der Berliner Brücke', 'homer@pm.de', 'Brückenbau', '03.02.2014', '2014-01-25 16:41:04')[0m
+  [1m[35m (45.2ms)[0m  COMMIT
+  [1m[36mSQL (0.9ms)[0m  [1mDELETE FROM `aufgabens`[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung Definition', 'Definition', '2014-01-25 16:41:04', 1, 1, '2014-01-25 16:41:04')[0m
+  [1m[35m (43.2ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung Definition', 'Planung', '2014-01-25 16:41:04', 2, 1, '2014-01-25 16:41:04')
+  [1m[36m (82.7ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `aufgabenvorgaenger`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung Pläne erstellen', 'Pläne erstellen', 2, '2014-01-25 16:41:04', 5, 1, '2014-01-25 16:41:04')[0m
+  [1m[35m (85.0ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `aufgabenvorgaenger`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung Organisation', 'Organisation', 2, '2014-01-25 16:41:04', 6, 1, '2014-01-25 16:41:04')
+  [1m[36m (84.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung Durchführung', 'Durchführung', '2014-01-25 16:41:04', 3, 1, '2014-01-25 16:41:04')[0m
+  [1m[35m (84.6ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `aufgabenvorgaenger`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Materialbeschaffung Beschreibung', 'Materialbeschaffung', 3, '2014-01-25 16:41:05', 7, 1, '2014-01-25 16:41:05')
+  [1m[36m (41.1ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `aufgabenvorgaenger`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Grabungen Beschreibung', 'Grabungen', 3, '2014-01-25 16:41:05', 8, 1, '2014-01-25 16:41:05')[0m
+  [1m[35m (40.6ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `aufgabenvorgaenger`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung Pfeiler', 'Pfeiler aufstellen', 3, '2014-01-25 16:41:05', 9, 1, '2014-01-25 16:41:05')
+  [1m[36m (40.2ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung Definition', 'Abschluss', '2014-01-25 16:41:05', 4, 1, '2014-01-25 16:41:05')[0m
+  [1m[35m (42.2ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `aufgabenvorgaenger`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung QS', 'Qualitätssicherung', 4, '2014-01-25 16:41:05', 10, 1, '2014-01-25 16:41:05')
+  [1m[36m (41.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `aufgabens` (`aufgabenbeschreibung`, `aufgabenname`, `aufgabenvorgaenger`, `created_at`, `id`, `projektsid`, `updated_at`) VALUES ('Beschreibung Präsi', 'Präsentation', 4, '2014-01-25 16:41:05', 11, 1, '2014-01-25 16:41:05')[0m
+  [1m[35m (41.7ms)[0m  COMMIT
+  [1m[36mSQL (0.9ms)[0m  [1mDELETE FROM `arbeitspakets`[0m
+WARNING: Can't mass-assign protected attributes for Arbeitspaket: arbeitspaketsausgangsdokumente
+
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO `arbeitspakets` (`arbeitspaketbeschreibung`, `arbeitspaketdauer`, `arbeitspaketeingangsdokumente`, `arbeitspaketname`, `arbeitspakettyp`, `arbeitspaketziel`, `aufgabeid`, `created_at`, `id`, `updated_at`) VALUES ('Festlegung der Ziele', 3, 'Anforderungskatalog', 'Ziele festlegen', 'Standard', 'Ziele sind genau defniert', 1, '2014-01-25 16:41:05', 1, '2014-01-25 16:41:05')[0m
+  [1m[35m (44.4ms)[0m  COMMIT
+WARNING: Can't mass-assign protected attributes for Arbeitspaket: arbeitspaketsausgangsdokumente
+
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `arbeitspakets` (`arbeitspaketbeschreibung`, `arbeitspaketdauer`, `arbeitspaketname`, `arbeitspakettyp`, `arbeitspaketziel`, `aufgabeid`, `created_at`, `id`, `updated_at`) VALUES ('Festlegung der Ressourcen', 2, 'Ressourcen festlegen', 'Standard', 'Ressourcen sind genau defniert', 1, '2014-01-25 16:41:05', 2, '2014-01-25 16:41:05')
+  [1m[36m (48.5ms)[0m  [1mCOMMIT[0m
+WARNING: Can't mass-assign protected attributes for Arbeitspaket: arbeitspaketsausgangsdokumente
+
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `arbeitspakets` (`arbeitspaketbeschreibung`, `arbeitspaketdauer`, `arbeitspaketeingangsdokumente`, `arbeitspaketname`, `arbeitspakettyp`, `arbeitspaketziel`, `aufgabeid`, `created_at`, `id`, `produkt_id`, `updated_at`) VALUES ('Statik bestimmen', 5, 'Bauunterlagen', 'Statik Pläne erstellen', 'Standard', 'Statik ist berechnet', 5, '2014-01-25 16:41:05', 3, 1, '2014-01-25 16:41:05')[0m
+  [1m[35m (49.4ms)[0m  COMMIT
+WARNING: Can't mass-assign protected attributes for Arbeitspaket: arbeitspaketsausgangsdokumente
+
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `arbeitspakets` (`arbeitspaketbeschreibung`, `arbeitspaketdauer`, `arbeitspaketname`, `arbeitspakettyp`, `arbeitspaketziel`, `aufgabeid`, `created_at`, `id`, `updated_at`) VALUES ('Beschreibung Ansprechpartner ermittlen', 6, 'Ansprechpartner ermitteln', 'Release', 'Ansprechpartner sind ermittelt', 6, '2014-01-25 16:41:05', 4, '2014-01-25 16:41:05')
+  [1m[36m (75.9ms)[0m  [1mCOMMIT[0m
+WARNING: Can't mass-assign protected attributes for Arbeitspaket: arbeitspaketsausgangsdokumente
+
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `arbeitspakets` (`arbeitspaketbeschreibung`, `arbeitspaketdauer`, `arbeitspaketeingangsdokumente`, `arbeitspaketname`, `arbeitspakettyp`, `arbeitspaketziel`, `aufgabeid`, `created_at`, `id`, `updated_at`) VALUES ('Design bestimmen', 2, 'Design in CSS Format', 'Präsentationslayout Designen', 'Milestone', 'Design steht', 11, '2014-01-25 16:41:05', 5, '2014-01-25 16:41:05')[0m
+  [1m[35m (67.3ms)[0m  COMMIT
+WARNING: Can't mass-assign protected attributes for Arbeitspaket: arbeitspaketsausgangsdokumente
+
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `arbeitspakets` (`arbeitspaketbeschreibung`, `arbeitspaketdauer`, `arbeitspaketeingangsdokumente`, `arbeitspaketname`, `arbeitspakettyp`, `arbeitspaketziel`, `aufgabeid`, `created_at`, `id`, `updated_at`) VALUES ('Präsi halten', 1, 'PPP', 'Präsentation halten', 'Standard', 'Präsi gehalten', 11, '2014-01-25 16:41:05', 6, '2014-01-25 16:41:05')
+  [1m[36m (47.9ms)[0m  [1mCOMMIT[0m
+  [1m[35mSQL (0.9ms)[0m  DELETE FROM `verantwortlichkeitens`
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `verantwortlichkeitens` (`arbeitspaketid`, `beschreibung`, `created_at`, `id`, `intensitaet`, `ressourceid`, `updated_at`) VALUES (1, 'Beschreibung', '2014-01-25 16:41:05', 1, 50, 1, '2014-01-25 16:41:05')
+  [1m[36m (40.1ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `verantwortlichkeitens` (`arbeitspaketid`, `beschreibung`, `created_at`, `id`, `intensitaet`, `ressourceid`, `updated_at`) VALUES (1, 'Beschreibung', '2014-01-25 16:41:05', 2, 50, 2, '2014-01-25 16:41:05')[0m
+  [1m[35m (85.2ms)[0m  COMMIT
+  [1m[36mSQL (127.3ms)[0m  [1mDELETE FROM `arbeitspaketvorgaengers`[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `arbeitspaketvorgaengers` (`apid`, `apvorgaengerid`, `created_at`, `id`, `updated_at`) VALUES (2, 1, '2014-01-25 16:41:06', 1, '2014-01-25 16:41:06')[0m
+  [1m[35m (48.6ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `arbeitspaketvorgaengers` (`apid`, `apvorgaengerid`, `created_at`, `id`, `updated_at`) VALUES (3, 2, '2014-01-25 16:41:06', 2, '2014-01-25 16:41:06')
+  [1m[36m (40.9ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `arbeitspaketvorgaengers` (`apid`, `apvorgaengerid`, `created_at`, `id`, `updated_at`) VALUES (4, 3, '2014-01-25 16:41:06', 3, '2014-01-25 16:41:06')[0m
+  [1m[35m (40.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `arbeitspaketvorgaengers` (`apid`, `apvorgaengerid`, `created_at`, `id`, `updated_at`) VALUES (5, 4, '2014-01-25 16:41:06', 4, '2014-01-25 16:41:06')
+  [1m[36m (41.4ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `arbeitspaketvorgaengers` (`apid`, `apvorgaengerid`, `created_at`, `id`, `updated_at`) VALUES (5, 4, '2014-01-25 16:41:06', 5, '2014-01-25 16:41:06')[0m
+  [1m[35m (41.6ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `arbeitspaketvorgaengers` (`apid`, `apvorgaengerid`, `created_at`, `id`, `updated_at`) VALUES (6, 5, '2014-01-25 16:41:06', 6, '2014-01-25 16:41:06')
+  [1m[36m (41.3ms)[0m  [1mCOMMIT[0m
+  [1m[35mSQL (0.8ms)[0m  DELETE FROM `ressourcefunctions`
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `ressourcefunctions` (`created_at`, `id`, `name`, `updated_at`) VALUES ('2014-01-25 16:41:06', 1, 'Bauleiter', '2014-01-25 16:41:06')
+  [1m[36m (42.2ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `ressourcefunctions` (`created_at`, `id`, `name`, `updated_at`) VALUES ('2014-01-25 16:41:06', 2, 'Projektleiter', '2014-01-25 16:41:06')[0m
+  [1m[35m (85.9ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `ressourcefunctions` (`created_at`, `id`, `name`, `updated_at`) VALUES ('2014-01-25 16:41:06', 3, 'Statiker', '2014-01-25 16:41:06')
+  [1m[36m (140.6ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `ressourcefunctions` (`created_at`, `id`, `name`, `updated_at`) VALUES ('2014-01-25 16:41:06', 4, 'Bauarbeiter', '2014-01-25 16:41:06')[0m
+  [1m[35m (109.1ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `ressourcefunctions` (`created_at`, `id`, `name`, `updated_at`) VALUES ('2014-01-25 16:41:06', 5, 'Kranführer', '2014-01-25 16:41:06')
+  [1m[36m (86.1ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `ressourcefunctions` (`created_at`, `id`, `name`, `updated_at`) VALUES ('2014-01-25 16:41:06', 6, 'Programmierer', '2014-01-25 16:41:06')[0m
+  [1m[35m (42.4ms)[0m  COMMIT
+  [1m[36mSQL (0.9ms)[0m  [1mDELETE FROM `produktkategories`[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `produktkategories` (`created_at`, `id`, `name`, `projekt_id`, `updated_at`) VALUES ('2014-01-25 16:41:06', 1, 'Metallprodukte', 1, '2014-01-25 16:41:06')[0m
+  [1m[35m (47.7ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `produktkategories` (`created_at`, `id`, `name`, `projekt_id`, `updated_at`, `vorgaenger_id`) VALUES ('2014-01-25 16:41:06', 3, 'Eisenprodukte', 1, '2014-01-25 16:41:06', 1)
+  [1m[36m (85.5ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `produktkategories` (`created_at`, `id`, `name`, `projekt_id`, `updated_at`, `vorgaenger_id`) VALUES ('2014-01-25 16:41:07', 4, 'Stahlprodukte', 1, '2014-01-25 16:41:07', 1)[0m
+  [1m[35m (86.0ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `produktkategories` (`created_at`, `id`, `name`, `projekt_id`, `updated_at`) VALUES ('2014-01-25 16:41:07', 2, 'Plastikprodukte', 1, '2014-01-25 16:41:07')
+  [1m[36m (85.8ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `produktkategories` (`created_at`, `id`, `name`, `projekt_id`, `updated_at`, `vorgaenger_id`) VALUES ('2014-01-25 16:41:07', 5, 'Plastik', 1, '2014-01-25 16:41:07', 2)[0m
+  [1m[35m (97.4ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `produktkategories` (`created_at`, `id`, `name`, `projekt_id`, `updated_at`, `vorgaenger_id`) VALUES ('2014-01-25 16:41:07', 6, 'UnterstePlastikprodukte', 1, '2014-01-25 16:41:07', 5)
+  [1m[36m (41.6ms)[0m  [1mCOMMIT[0m
+  [1m[35mSQL (0.9ms)[0m  DELETE FROM `produkts`
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO `produkts` (`created_at`, `id`, `kat_id`, `name`, `typ`, `updated_at`) VALUES ('2014-01-25 16:41:07', 1, 1, 'Stange', 'release', '2014-01-25 16:41:07')
+  [1m[36m (46.3ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `produkts` (`created_at`, `id`, `kat_id`, `name`, `typ`, `updated_at`) VALUES ('2014-01-25 16:41:07', 2, 3, 'Eisenstange', 'release', '2014-01-25 16:41:07')[0m
+  [1m[35m (50.8ms)[0m  COMMIT
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO `produkts` (`created_at`, `id`, `kat_id`, `name`, `typ`, `updated_at`) VALUES ('2014-01-25 16:41:07', 3, 4, 'Stahlzange', 'release', '2014-01-25 16:41:07')
+  [1m[36m (74.0ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `produkts` (`created_at`, `id`, `kat_id`, `name`, `typ`, `updated_at`) VALUES ('2014-01-25 16:41:07', 4, 4, 'Stahlsaege', 'release', '2014-01-25 16:41:07')[0m
+  [1m[35m (42.3ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `produkts` (`created_at`, `id`, `kat_id`, `name`, `typ`, `updated_at`) VALUES ('2014-01-25 16:41:07', 5, 2, 'Plastikball', 'release', '2014-01-25 16:41:07')
+  [1m[36m (42.1ms)[0m  [1mCOMMIT[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `produkts` (`created_at`, `id`, `kat_id`, `name`, `typ`, `updated_at`) VALUES ('2014-01-25 16:41:07', 6, 5, 'Plastikhut', 'release', '2014-01-25 16:41:07')[0m
+  [1m[35m (41.7ms)[0m  COMMIT
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `produkts` (`created_at`, `id`, `kat_id`, `name`, `typ`, `updated_at`) VALUES ('2014-01-25 16:41:07', 7, 6, 'Plastikstil', 'release', '2014-01-25 16:41:07')
+  [1m[36m (41.7ms)[0m  [1mCOMMIT[0m

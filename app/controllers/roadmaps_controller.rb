@@ -12,7 +12,7 @@ class RoadmapsController < ApplicationController
   # GET /projekts.json
   def index
     
-    if params[:id].nil? 
+  if params[:id].nil? 
     @projekt = Projekt.find(:all, :conditions => [ "projektleiter = ?", current_user.email]).first 
   else
     @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 

@@ -29,11 +29,6 @@
       </ul>
     </div>
   </div>
-
-
-<<<<<<< HEAD
-
-
   <table class="table table-striped">
     <thead>
       <tr>
@@ -46,23 +41,6 @@
         <th>Kapazität</th>
         <th></th>
         <th></th>
-        <!-- Ressourcenname und Funktion -->
-        <td>
-        <% @ressourcen.each do |res| %> 
-          <% if @ressourcen.present? %>
-                <%= res.intensitaet %><br>
-          <% end %>
-        <% end %>
-        <% if !@ressourcen.present?%>
-          <i> <%= "keine" %>  </i> 
-        <% end %>
-        <td>
-          <%=  link_to 'Edit Ress', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id), :class=>"btn btn-default" %>
-        <td>
-        
-        <td><%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-remove " %>
-
-        </td>
       </tr>
     </thead>
 

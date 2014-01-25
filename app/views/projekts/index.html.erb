@@ -1,17 +1,329 @@
-<!DOCTYPE html>
 
-<%= javascript_include_tag 'jquery_ujs' %>
-<h1>Deine Projekte</h1><br><br>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    
+    <link rel="stylesheet" href="../assets/stylesheets/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../assets/stylesheets/jquery.jOrgChart.css"/>
 
-  <!-- Projektliste -->
+    <link href="../assets/css/prettify.css" type="text/css" rel="stylesheet" />
 
-  <% if @projekts == nil %> 
+    <script type="text/javascript" src="../assets/javascripts/prettify.js"></script>
+    <script src="../assets/javascripts/jquery.jOrgChart.js"></script>
+<script type="text/javascript" src="/assets/bootstrap.js?body=1"></script>
 
-     <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
-  <% else %>
-    <% @projekts.each do |projekt| %>   
-        <h3> <%= projekt.projektname %> </h3>
-       <div class="tree well">
+<script>
+    jQuery(document).bind('page:change', function() {
+        $("#org").jOrgChart({
+            chartElement : '#chart',
+            dragAndDrop : true
+        });
+    });
+    </script>
+<style>
+
+.tree {
+    min-height:20px;
+    max-height: 1000px ;
+    padding:19px;
+    margin-bottom:20px;
+    background-color:#fbfbfb;
+    border:1px solid #999;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:10px 5px 0 5px;
+    position:relative
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1px solid #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+}
+.tree li::after {
+    border-top:1px solid #999;
+    height:20px;
+    top:25px;
+    width:25px
+}
+.tree li span {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #999;
+    border-radius:5px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none
+}
+.tree li.parent_li>span {
+    cursor:pointer
+}
+.tree>ul>li::before, .tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:30px
+}
+.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000
+}
+}
+</style>
+
+</head>
+
+<h2>Deine Projekte</h2>
+
+<br>
+<div class="well sidebar-nav ">
+  <div class="dropdown">
+  <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
+    Projekt auswählen ...
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+    <% @projekts.each do |projekte| %>
+          <li>
+           <li >
+            <%= link_to projekte.projektname, projekts_path(:id=>projekte.id),'data-no-turbolink' => true%>
+           </li>
+    <% end %>
+  </ul>
+
+  <%= link_to 'Neues Projekt anlegen', new_projekt_path , :class => 'btn btn-lg btn-success ',:id => 'projektanlegen' %>
+  <% if @projekt != nil %>
+    <%= link_to 'PDF erstellen',projekts_pdfuebersicht_path(:id=>@projekt.id, :format => "pdf") , :class => 'btn btn-lg btn-success '%>
+  <% end %>
+
+</div>
+</div>
+
+<p></p>
+
+<div class="well sidebar-nav ">
+<p> Ansicht </p>
+<br>
+ <%= link_to "Organisationsansicht", projekts_path(:view=>"tree"),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+ <%= link_to "Baumansicht", projekts_path,'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+</div>
+    <!-- Projektliste -->
+    <% if @projekt == nil %>
+
+       <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
+<% else %>
+      <!-- Nur Projekte wo Benutzer Projektleiter ist -->
+      <% if @projekt.projektleiter == current_user.email %>
+<h2><%= @projekt.projektname %>
+  <%= link_to 'Produkte', produkts_path(:projekt=>@projekt.id) , :class => 'btn btn-lg btn-success ',:id => 'produkte' %>
+</h2>
+
+      <% if @tree != "tree" %>
+       <div class="tree well " >
+        <ul role="tree">
+        <li class="parent_li" role="treeitem">
+<br>
+          <!-- Projektname mit Optionen -->
+          <span style="background-color:#071346; color:#EEEEEE;" title="collapse this branche"><i class="icon-folder-open"></i><b><%= @projekt.projektname %></b></span>
+            <!-- Projektoptionen -->
+            <%= link_to '', @projekt, :class=>"icon-list-alt" %>
+            <%= link_to('', edit_projekt_path(@projekt), :class => "icon-wrench") %>
+            <%= link_to('', @projekt, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+        
+            <!-- Aufgabe Unterebene 1 -->
+            <ul role"tree">
+              <% @aufgaben.each do |aufgabe| %>
+                <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
+                  <% @vorgaenger1 = aufgabe.id %>
+                  <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                  <li class="parent_li" role="treeitem">
+                     <span style="background-color:#586baf;" title="collapse this branche"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %></span>
+                     <!-- Aufgaben Optionen -->
+                     <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
+                     <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                     <%= link_to('', aufgabe, :method => :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                    
+                    <!-- Aufgabe Unterebene 2 -->
+                     <ul role"tree">
+                      <% @aufgaben.each do |aufgabe| %>
+                        <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger1 %>
+                          <% @vorgaenger2 = aufgabe.id %>
+                          <li class="parent_li" role="treeitem">
+                           <span style="background-color:#95abea" title="collapse this branche"><i class="icon-minus-sign"></i>
+                             <%= aufgabe.aufgabenname %></span>
+                           <!-- Aufgaben Optionen -->
+                           <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
+                           <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                           <%= link_to('', aufgabe, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+
+                            <!-- Aufgabe Unterebene 3 -->
+                            <ul>
+                              <% @aufgaben.each do |aufgabe| %>
+                                <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger2 %>
+                                  <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                                  <li class="parent_li" role="treeitem">
+                                      <span style="background-color:#b7cdfc;"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %> </span>
+                                      <!-- Aufgaben Optionen -->
+                                      <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
+                                      <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                                      <%= link_to('', aufgabe, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                  </li>
+                                <% end %>
+                              <% end %>
+                   
+                                <li> <%= link_to ' Neue Aufgabe', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>@projekt.id),:class => "btn btn-small icon-plus-sign" %>
+                                </li>
+                   
+                            </ul>
+                          </li>
+                        <% end %>
+                      <%end%>
+                 
+                        <li> <%= link_to ' Neue Aufgabe', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>@projekt.id), :class => "btn btn-small icon-plus-sign" %>
+                        </li>
+                  
+                    </ul>
+                  </li>
+                <% end %>
+              <% end %>
+              <li > <%= link_to 'Neue Aufgabe', new_aufgaben_path(:ebene=>nil, :id=>@projekt.id), :class=>"btn btn-small icon-plus-sign" %>
+              </li>
+            </ul>
+        </li>
+      
+      </div>
+  
+  </ul>
+ 
+
+<br>
+
+
+<% else %>
+
+<ul id="org" style="display: none;">
+    
+      <% if @projekt.projektleiter == current_user.email %>
+        <li>
+          <span style=" font-weight:bold"> <%= @projekt.projektname %> </span>
+          <!-- Ebene 1 -->
+          <ul>
+            <% @aufgaben.each do |aufgabe| %>
+              <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
+                <% @vorgaenger1 = aufgabe.id %>
+                <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                <li>
+                  <span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                  <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                   <br>
+                   <%= link_to '+', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>@projekt.id),:class => "btn btn-success btn-mini icon-white " %>
+
+                    <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
+                  
+
+
+                  <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                    <!-- Ebene 2 -->
+                    <ul>
+                      <% @aufgaben.each do |aufgabe| %>
+                        <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger1 %>
+                          <% @vorgaenger2 = aufgabe.id %>
+                          <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                          <li>
+                            <span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                            <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                             <br>
+                              <%= link_to '+', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>@projekt.id), :class => "btn btn-success btn-mini icon-white" %>
+
+                              <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
+                              
+
+                            <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                              <!-- Ebene 3 -->
+                              <ul>
+                                <% @aufgaben.each do |aufgabe| %>
+                                  <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
+                                    <% @vorgaenger3 = aufgabe.id %>
+                                    <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                                    <li>
+                                     <span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                                       <br>
+                                      <%= link_to '+', new_aufgaben_path(:ebene=>nil, :id=>@projekt.id), :class => "btn btn-success btn-mini icon-white" %>
+
+                                      <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
+                                    
+
+                                    </li>
+                                  <% end %>
+                                <% end %>
+                              </ul>
+
+                            <% end %>
+                          </li>
+                        <% end %>
+                      <%end%>
+                    </ul>
+
+                  <% end %>
+                </li>
+              <%end%>
+            <%end%>
+          </ul>
+        </li>
+      <% end %>
+    
+  </ul>
+ <div class="well sidebar-nav">
+   <div id="chart" class="orgChart"></div>
+   </div >
+
+        
+    <%end%>
+      
+        <%end%>
+<% end %>
+
+    </script>
+    <script>$(function () {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+ </script>
+ <script>
+    $(document).on('page:load',(function() {
+     $(".expand").click(function(e) {
+        $(this).toggleClass("expanded");
+        $(this).children("ul:first").slideToggle("300");
+        e.stopPropagation();
+     });
+    }); //$(document).ready
+  </script>
 
 
 
@@ -30,7 +342,7 @@
     jQuery(document).bind('page:change', function() {
         $("#org").jOrgChart({
             chartElement : '#chart',
-            dragAndDrop  : true
+            dragAndDrop : true
         });
     });
     </script>
@@ -115,18 +427,20 @@
   <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 
   <% @projekts.each do |projekte| %>
-      <% if projekte.projektleiter == current_user.email %> 
-        <li> 
-         <li > 
-          <%= link_to  projekte.projektname, projekts_path(:id=>projekte.id),'data-no-turbolink' => true%>
+      <% if projekte.projektleiter == current_user.email %>
+        <li>
+         <li >
+          <%= link_to projekte.projektname, projekts_path(:id=>projekte.id),'data-no-turbolink' => true%>
 
-         </li> 
+         </li>
 
       <% end %>
   <% end %>
   </ul>
   <%= link_to 'Neues Projekt anlegen', new_projekt_path , :class => 'btn btn-lg btn-success ',:id => 'projektanlegen' %>
+    <% if @projekt != nil %>
     <%= link_to 'PDF erstellen',projekts_pdfuebersicht_path(:id=>@projekt.id, :format => "pdf") , :class => 'btn btn-lg btn-success '%>
+    <% end %>
 
 </div>
 </div>
@@ -134,13 +448,13 @@
 <p></p>
 
 <div class="well sidebar-nav ">
-<p> Ansicht      </p>
+<p> Ansicht </p>
 <br>
- <%= link_to  "Organisationsansicht", projekts_path(:view=>"tree"),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
- <%= link_to  "Baumansicht", projekts_path,'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+ <%= link_to "Organisationsansicht", projekts_path(:view=>"tree"),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+ <%= link_to "Baumansicht", projekts_path,'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
 </div>
     <!-- Projektliste -->
-    <% if @projekt == nil %> 
+    <% if @projekt == nil %>
 
        <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
 <% else %>
@@ -148,61 +462,60 @@
       <% if @projekt.projektleiter == current_user.email %>
 <h2><%= @projekt.projektname %></h2>
 
-      <% if @tree != "tree" %> 
+      <% if @tree != "tree" %>
        <div class="tree well " >
-
-        <ul role="tree">       
-        <li class="parent_li" role="treeitem"> 
+        <ul role="tree">
+        <li class="parent_li" role="treeitem">
 <br>
           <!-- Projektname mit Optionen -->
-          <span style="background-color:#071346; color:#EEEEEE;" title="collapse this branche"><i class="icon-folder-open"></i><b><%= @projekt.projektname %></b></span>  
-            <!-- Projektoptionen --> 
-            <%= link_to '', @projekt, :class=>"icon-list-alt" %>  
-            <%= link_to('', edit_projekt_path(@projekt), :class => "icon-wrench") %> 
-            <%= link_to('', @projekt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>  
+          <span style="background-color:#071346; color:#EEEEEE;" title="collapse this branche"><i class="icon-folder-open"></i><b><%= @projekt.projektname %></b></span>
+            <!-- Projektoptionen -->
+            <%= link_to '', @projekt, :class=>"icon-list-alt" %>
+            <%= link_to('', edit_projekt_path(@projekt), :class => "icon-wrench") %>
+            <%= link_to('', @projekt, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
         
             <!-- Aufgabe Unterebene 1 -->
             <ul role"tree">
               <% @aufgaben.each do |aufgabe| %>
-                <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>  
+                <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
                   <% @vorgaenger1 = aufgabe.id %>
                   <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                  <li class="parent_li" role="treeitem">  
+                  <li class="parent_li" role="treeitem">
                      <span style="background-color:#586baf;" title="collapse this branche"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %></span>
                      <!-- Aufgaben Optionen -->
-                     <%= link_to '', aufgabe, :class=>"icon-list-alt" %> 
-                     <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %> 
-                     <%= link_to('', aufgabe, :method => :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                     <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
+                     <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                     <%= link_to('', aufgabe, :method => :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
                     
                     <!-- Aufgabe Unterebene 2 -->
                      <ul role"tree">
                       <% @aufgaben.each do |aufgabe| %>
-                        <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger1 %> 
+                        <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger1 %>
                           <% @vorgaenger2 = aufgabe.id %>
                           <li class="parent_li" role="treeitem">
                            <span style="background-color:#95abea" title="collapse this branche"><i class="icon-minus-sign"></i>
                              <%= aufgabe.aufgabenname %></span>
                            <!-- Aufgaben Optionen -->
-                           <%= link_to '', aufgabe, :class=>"icon-list-alt" %> 
-                           <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %> 
-                           <%= link_to('', aufgabe, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                           <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
+                           <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                           <%= link_to('', aufgabe, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
 
                             <!-- Aufgabe Unterebene 3 -->
                             <ul>
                               <% @aufgaben.each do |aufgabe| %>
-                                <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger2 %> 
-                                  <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %> 
+                                <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger==@vorgaenger2 %>
+                                  <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
                                   <li class="parent_li" role="treeitem">
                                       <span style="background-color:#b7cdfc;"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %> </span>
                                       <!-- Aufgaben Optionen -->
-                                      <%= link_to '', aufgabe, :class=>"icon-list-alt" %> 
-                                      <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %> 
-                                      <%= link_to('', aufgabe, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                      <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
+                                      <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                                      <%= link_to('', aufgabe, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
                                   </li>
                                 <% end %>
                               <% end %>
                    
-                                <li> <%= link_to ' Neue Aufgabe', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>@projekt.id),:class => "btn btn-small icon-plus-sign"  %> 
+                                <li> <%= link_to ' Neue Aufgabe', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>@projekt.id),:class => "btn btn-small icon-plus-sign" %>
                                 </li>
                    
                             </ul>
@@ -210,27 +523,21 @@
                         <% end %>
                       <%end%>
                  
-                        <li>  <%= link_to  ' Neue Aufgabe', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>@projekt.id), :class => "btn btn-small icon-plus-sign" %> 
+                        <li> <%= link_to ' Neue Aufgabe', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>@projekt.id), :class => "btn btn-small icon-plus-sign" %>
                         </li>
                   
                     </ul>
                   </li>
                 <% end %>
               <% end %>
-              <li > <%= link_to 'Neue Aufgabe', new_aufgaben_path(:ebene=>nil, :id=>@projekt.id), :class=>"btn btn-small icon-plus-sign" %> 
+              <li > <%= link_to 'Neue Aufgabe', new_aufgaben_path(:ebene=>nil, :id=>@projekt.id), :class=>"btn btn-small icon-plus-sign" %>
               </li>
             </ul>
         </li>
-<<<<<<< HEAD
-    </div>
-    <p><%= link_to 'Produkte', produkts_path(:projekt=>projekt.id) , :class => 'btn btn-lg btn-success ',:id => 'produkte' %></p>
-  <% end %>
-=======
       
       </div>
   
->>>>>>> bb74b5541c2021e08ba4625994c01f7c14227caf
-  </ul>     
+  </ul>
  
 
 <br>
@@ -238,22 +545,22 @@
 
 <% else %>
 
-<ul id="org" style="display: none;">   
+<ul id="org" style="display: none;">
     
-      <% if @projekt.projektleiter == current_user.email %> 
-        <li> 
-          <span  style=" font-weight:bold"> <%= @projekt.projektname %> </span>
+      <% if @projekt.projektleiter == current_user.email %>
+        <li>
+          <span style=" font-weight:bold"> <%= @projekt.projektname %> </span>
           <!-- Ebene 1 -->
           <ul>
             <% @aufgaben.each do |aufgabe| %>
               <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
                 <% @vorgaenger1 = aufgabe.id %>
                 <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                <li> 
-                  <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                <li>
+                  <span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
                   <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
                    <br>
-                   <%= link_to '+', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>@projekt.id),:class => "btn btn-success btn-mini icon-white " %> 
+                   <%= link_to '+', new_aufgaben_path(:ebene=>@vorgaenger2, :id=>@projekt.id),:class => "btn btn-success btn-mini icon-white " %>
 
                     <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
                   
@@ -267,11 +574,11 @@
                         <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger1 %>
                           <% @vorgaenger2 = aufgabe.id %>
                           <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                          <li> 
-                            <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                          <li>
+                            <span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
                             <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
                              <br>
-                              <%= link_to '+', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>@projekt.id), :class => "btn btn-success btn-mini icon-white"  %>
+                              <%= link_to '+', new_aufgaben_path(:ebene=>@vorgaenger1, :id=>@projekt.id), :class => "btn btn-success btn-mini icon-white" %>
 
                               <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
                               
@@ -284,10 +591,10 @@
                                   <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
                                     <% @vorgaenger3 = aufgabe.id %>
                                     <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                                    <li> 
-                                     <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                                    <li>
+                                     <span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
                                        <br>
-                                      <%= link_to '+', new_aufgaben_path(:ebene=>nil, :id=>@projekt.id), :class => "btn btn-success btn-mini icon-white"  %>
+                                      <%= link_to '+', new_aufgaben_path(:ebene=>nil, :id=>@projekt.id), :class => "btn btn-success btn-mini icon-white" %>
 
                                       <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
                                     
@@ -308,18 +615,18 @@
               <%end%>
             <%end%>
           </ul>
-        </li> 
+        </li>
       <% end %>
     
   </ul>
  <div class="well sidebar-nav">
-   <div id="chart" class="orgChart"></div>  
-   </div > 
+   <div id="chart" class="orgChart"></div>
+   </div >
 
         
     <%end%>
       
-        <%end%>  
+        <%end%>
 <% end %>
 
     </script>
@@ -344,17 +651,8 @@
         $(this).toggleClass("expanded");
         $(this).children("ul:first").slideToggle("300");
         e.stopPropagation();
-     }); 
+     });
     }); //$(document).ready
   </script>
 
-<<<<<<< HEAD
 
-<br>
-
-<% end %>
-
-<p><%= link_to 'Neues Projekt anlegen', new_projekt_path , :class => 'btn btn-lg btn-success ',:id => 'projektanlegen' %></p>
-=======
-      
->>>>>>> bb74b5541c2021e08ba4625994c01f7c14227caf

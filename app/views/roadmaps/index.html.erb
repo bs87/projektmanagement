@@ -37,8 +37,8 @@ th, td {
 <h1>Roadmap</h1>
 
 
-<% if @projekts == nil %> 
-       <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
+<% if @projekts.nil? || @projekt.nil? %> 
+ <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
 <% else %>
 
 <% @projektdauer = 0 %> 

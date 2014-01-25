@@ -1,68 +1,129 @@
+<script type="text/javascript" src="/assets/jquery.js"></script>
+<script type="text/javascript" src="/assets/bootstrap.js"></script>
+<link href="../assets/css/bootstrap.css" rel="stylesheet">
+
+
 <h1>RAM</h1>
 <br>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Dauer</th>
-      <th>Vorgaenger</th>
-      <th><!-- Edit Vorgaenger Button --><th>
-      <th>Ressourcenname</th>
-      <th>Kapazität</th>
-      <th><th>
-    </tr>
-  </thead>
 
-  <tbody>     <% @arbeitspakets.each do |arbeitspaket| %>       <tr>
-<td><%= link_to arbeitspaket.arbeitspaketname, arbeitspaket  %></td>
-<td><%= arbeitspaket.arbeitspaketdauer %></td>         <td>            <!--
-Vorgänger -->           <% @vorgaenger = Arbeitspaketvorgaenger.find(:all,
-:conditions => [ "apid = ?", arbeitspaket.id]) %>           <ul>           <%
-@vorgaenger.each do |v| %>             <% @vorgaengername =
-Arbeitspaket.find(:all, :conditions => [ "id = ?", v.apvorgaengerid]) %>
-<li><%= @vorgaengername.first.arbeitspaketname %></li>           <% end %>
-</ul>         </td>         <td>            <%= link_to 'Edit Vorg',
-new_arbeitspaketvorgaenger_path(:apid=>arbeitspaket.id), :class=>"btn btn-
-default" %>         </td>
- 
-        <!-- Alle AP/Ress Beziehungen von AP -->
-        <% @ressourcen = Verantwortlichkeiten.find( :all, :conditions => [ "arbeitspaketid = ?", arbeitspaket.id]) %>
-        
+  <!-- Dropdown für Projektauswahl -->
+<% if @projekts.nil? || @projekt.nil? %> 
+ <% flash[:notice] ="Sie leiten keine eigenen Projekte" %>
+<% else %>
+  <div class="well sidebar-nav">
+    <div class="dropdown">
+      <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
+        Projekt auswählen ...
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <% @projekts.each do |projekte| %>
+            <% #if projekte.projektleiter == current_user.email %> 
+              <li> 
+               <li > 
+                <%= link_to  projekte.projektname, 
+                verantwortlichkeitens_path(:id=>projekte.id),'data-no-turbolink' => true%>
+              </li> 
+            <% #end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 
-        <!-- Ressourcenname und Funktion -->
-        <td >
-        <% @ressourcen.each do |res| %> 
-          <% @reso = Ressourcen.find(:all, :conditions=> ["id =?", res.ressourceid]) %>
-          <% if @reso.present? %>
-            <%= @reso.first.ressourcename + " (" + @reso.first.ressourcefunktion + ")" %><br>
-          <% end %> 
-        <% end %>
-        <% if !@ressourcen.present?%>
-          <i> <%= "keine" %>  </i>
-        <% end %>
-        </td>
 
-        <!-- Ressourcenname und Funktion -->
-        <td>
-        <% @ressourcen.each do |res| %> 
-          <% if @ressourcen.present? %>
-                <%= res.intensitaet %><br>
-          <% end %>
-        <% end %>
-        <% if !@ressourcen.present?%>
-          <i> <%= "keine" %>  </i> 
-        <% end %>
-        <td>
-          <%=  link_to 'Edit Ress', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id), :class=>"btn btn-default" %>
-        <td>
-        
 
-        <td><%= link_to '', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' },:class => "icon-remove" %>
-        </td>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Lieferobjekt</th>
+        <th>Dauer</th>
+        <th>Vorgaenger</th>
+        <th><!-- Edit Vorgaenger Button --></th>
+        <th width="25%">Ressourcenname</th>
+        <th>Kapazität</th>
+        <th></th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>     
+      <% @arbeitspakets.each do |arbeitspaket| %>
+        <!-- Nur APs listen die in Projekt sind -->
+        <% @aufgabeid= arbeitspaket.aufgabeid %>
+        <% @aufgabe = Aufgaben.find(:all, :conditions=>["id", @aufgabeid]).first %>
+        <% if @projekt.id == @aufgabe.projektsid %>   
+          <tr>
+            <td><%= link_to arbeitspaket.arbeitspaketname, arbeitspaket  %></td>
+            <!-- Lieferobjekt --> 
+            <td>
+              <% @lieferobjekt = Produkt.find(:all, :conditions=> ["id = ?", arbeitspaket.produkt_id]).first %>
+              <% if @lieferobjekt.nil? %>
+                <%= "keins" %>
+              <% else %>
+                <%= @lieferobjekt.name %>
+              <% end %>
+            </td>
+            <td><%= arbeitspaket.arbeitspaketdauer %></td>         
+            <td>            
+              <!--Vorgängername -->           
+              <% @vorgaenger = Arbeitspaketvorgaenger.find(:all,:conditions => [ "apid = ?", arbeitspaket.id]) %>           
+              <ul>           
+                  <%@vorgaenger.each do |v| %>             
+                    <% @vorgaengername =Arbeitspaket.find(:all, :conditions => [ "id = ?", v.apvorgaengerid]) %>
+                    <li><%= @vorgaengername.first.arbeitspaketname %></li>           
+                <% end %>
+              </ul>         
+            </td>  
+            <!-- Vorgaenger-->      
+            <td>            
+              <%= link_to 'Edit Vorg',
+              new_arbeitspaketvorgaenger_path(:apid=>arbeitspaket.id), :class=>"btn btn-
+              default" %>         
+            </td>
+       
+            <!-- Alle AP/Ress Beziehungen von AP -->
+            <% @ressourcen = Verantwortlichkeiten.find( :all, :conditions => [ "arbeitspaketid = ?", arbeitspaket.id]) %>
+            
+
+            <!-- Ressourcenname und Funktion -->
+            <td >
+            <% @ressourcen.each do |res| %> 
+              <% @reso = Ressourcen.find(:all, :conditions=> ["id =?", res.ressourceid]) %>
+              <% if @reso.present? %>
+                <%= "- "+ @reso.first.ressourcename + " (" + @reso.first.ressourcefunktion + ")" %><br>
+              <% end %> 
+            <% end %>
+            <% if !@ressourcen.present?%>
+              <i> <%= "keine" %>  </i>
+            <% end %>
+            </td>
+
+            <!-- Ressourcenname und Funktion -->
+            <td>
+            <% @ressourcen.each do |res| %> 
+              <% if @ressourcen.present? %>
+                    <%= res.intensitaet %><br>
+              <% end %>
+            <% end %>
+            <% if !@ressourcen.present?%>
+              <i> <%= "keine" %>  </i> 
+            <% end %>
+            <td>
+              <%=  link_to 'Edit Ress', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id), :class=>"btn btn-default" %>
+            <td>
+              
+
+            <td><%= link_to '', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' },:class => "icon-remove" %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
 
 
 <br>

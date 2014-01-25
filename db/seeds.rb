@@ -48,7 +48,7 @@ Arbeitspaket.create!( id: 1, arbeitspaketname: 'Ziele festlegen', arbeitspaketbe
 Arbeitspaket.create!( id: 2, arbeitspaketname: 'Ressourcen festlegen', arbeitspaketbeschreibung: 'Festlegung der Ressourcen', arbeitspaketdauer: 2, arbeitspaketziel: 'Ressourcen sind genau defniert', arbeitspaketeingangsdokumente: nil, arbeitspaketsausgangsdokumente: 'Ressourcenplan', aufgabeid: 1, arbeitspakettyp: 'Standard' )
 
 #Planung
-Arbeitspaket.create!( id: 3, arbeitspaketname: 'Statik Pläne erstellen', arbeitspaketbeschreibung: 'Statik bestimmen', arbeitspaketdauer: 5, arbeitspaketziel: 'Statik ist berechnet', arbeitspaketeingangsdokumente: 'Bauunterlagen', arbeitspaketsausgangsdokumente: 'Statikzeichnung', aufgabeid: 5, arbeitspakettyp: 'Standard' )
+Arbeitspaket.create!( id: 3, arbeitspaketname: 'Statik Pläne erstellen', arbeitspaketbeschreibung: 'Statik bestimmen', arbeitspaketdauer: 5, arbeitspaketziel: 'Statik ist berechnet', arbeitspaketeingangsdokumente: 'Bauunterlagen', arbeitspaketsausgangsdokumente: 'Statikzeichnung', aufgabeid: 5, arbeitspakettyp: 'Standard', produkt_id: 1 )
 Arbeitspaket.create!( id: 4, arbeitspaketname: 'Ansprechpartner ermitteln', arbeitspaketbeschreibung: 'Beschreibung Ansprechpartner ermittlen', arbeitspaketdauer: 6, arbeitspaketziel: 'Ansprechpartner sind ermittelt', arbeitspaketeingangsdokumente: nil, arbeitspaketsausgangsdokumente: 'Liste der Ansprechpartner', aufgabeid: 6, arbeitspakettyp: 'Release' )
 Arbeitspaket.create!( id: 5, arbeitspaketname: 'Präsentationslayout Designen', arbeitspaketbeschreibung: 'Design bestimmen', arbeitspaketdauer: 2, arbeitspaketziel: 'Design steht', arbeitspaketeingangsdokumente: 'Design in CSS Format', arbeitspaketsausgangsdokumente: 'Pflichtenheft', aufgabeid: 11, arbeitspakettyp: 'Milestone' )
 Arbeitspaket.create!( id: 6, arbeitspaketname: 'Präsentation halten', arbeitspaketbeschreibung: 'Präsi halten', arbeitspaketdauer: 1, arbeitspaketziel: 'Präsi gehalten', arbeitspaketeingangsdokumente: 'PPP', arbeitspaketsausgangsdokumente: nil, aufgabeid: 11, arbeitspakettyp: 'Standard' )
@@ -74,3 +74,19 @@ Ressourcefunction.create!(id:4, name: "Bauarbeiter")
 Ressourcefunction.create!(id:5, name: "Kranführer")
 Ressourcefunction.create!(id:6, name: "Programmierer")
 
+Produktkategorie.delete_all
+Produktkategorie.create!(id:1, name: "Metallprodukte", projekt_id: 1, vorgaenger_id: nil )
+Produktkategorie.create!(id:3, name: "Eisenprodukte", projekt_id: 1, vorgaenger_id: 1 )
+Produktkategorie.create!(id:4, name: "Stahlprodukte", projekt_id: 1, vorgaenger_id: 1 )
+Produktkategorie.create!(id:2, name: "Plastikprodukte", projekt_id: 1, vorgaenger_id: nil )
+Produktkategorie.create!(id:5, name: "Plastik", projekt_id: 1, vorgaenger_id: 2 )
+Produktkategorie.create!(id:6, name: "UnterstePlastikprodukte", projekt_id: 1, vorgaenger_id: 5 )
+
+Produkt.delete_all
+Produkt.create!(id:1, name:"Stange", kat_id: 1, typ: "release", ap_id: nil )
+Produkt.create!(id:2, name:"Eisenstange", kat_id: 3, typ: "release", ap_id: nil )
+Produkt.create!(id:3, name:"Stahlzange", kat_id: 4, typ: "release", ap_id: nil )
+Produkt.create!(id:4, name:"Stahlsaege", kat_id: 4, typ: "release", ap_id: nil )
+Produkt.create!(id:5, name:"Plastikball", kat_id: 2, typ: "release", ap_id: nil )
+Produkt.create!(id:6, name:"Plastikhut", kat_id: 5, typ: "release", ap_id: nil )
+Produkt.create!(id:7, name:"Plastikstil", kat_id: 6, typ: "release", ap_id: nil )

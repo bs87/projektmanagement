@@ -94,9 +94,13 @@ function getParam(variable){
       <%= f.text_field :arbeitspaketdauer, :id=>"arbeitspaketdauer" %>
     </div>
   </div>
-  <div>
+  <div class="field">
     <%= f.label :ArbeitspaketTyp %><br>
     <%= f.select :arbeitspakettyp, [['Standard','Standard'],['Milestone','Milestone'],['Release','Release']] %>
+  </div>
+  <div class="field">
+    <%= f.label :produkt %><br>
+    <%= f.collection_select(:produkt_id, Produkt.all, :id, :name, :include_blank => true) %>
   </div>
   <div class="field">
     <%= f.label :eingangsdokumente %><br>

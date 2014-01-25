@@ -40,17 +40,9 @@
     <%= f.label :Ressourcegenerisch %><br>
     <%= f.check_box :ressourcegenerisch, :checked=>true %>
   </div>
-   <div class="field">
-    <%= f.label :Gruppe %><br>
-    <%= f.select :gruppen_id, [['', nil ],['Testgruppe',1] ] %>
-  </div>
   <div class="field">
     <%= f.label :Ressourcemax %><br>
     <%= f.text_field :ressourcemax %>
-  </div>
-  <div class="field">
-    <%= f.label :Kosten %><br>
-    <%= f.text_field :kosten %>
   </div>
   <div class="actions">
     <%= f.submit %>

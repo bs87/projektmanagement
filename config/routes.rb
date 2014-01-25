@@ -1,5 +1,9 @@
 
 Projektmanagement::Application.routes.draw do 
+  resources :produktkategories
+
+  resources :produkts
+
     get "roadmap/new"
   get "roadmap/create"
   get "roadmap/show"

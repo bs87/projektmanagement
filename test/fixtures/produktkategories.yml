@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  projekt_id: 1
+  vorgaenger_id: 1
+
+two:
+  name: MyString
+  projekt_id: 1
+  vorgaenger_id: 1

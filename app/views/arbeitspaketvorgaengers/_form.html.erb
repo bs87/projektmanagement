@@ -16,7 +16,11 @@
   </div>
   <div class="field">
     <!-- Alle potentiellen Vorgänger ohne sich selbst -->
-    <% @vorg = Arbeitspaket.find(:all, :conditions => [ "id NOT IN (?) AND ID != ?", @vlist, @apid]) %> 
+    <% if @vlist.empty? %>
+      <% @vorg = Arbeitspaket.find(:all, :conditions => [ "ID != ?", @apid]) %> 
+    <% else %>
+      <% @vorg = Arbeitspaket.find(:all, :conditions => [ "id NOT IN (?) AND ID != ?", @vlist, @apid]) %> 
+    <% end %>
 
     <%= f.label :Vorgänger %><br>
     <%= f.collection_select(:apvorgaengerid, @vorg, :id, :arbeitspaketname, :include_blank => true) %>

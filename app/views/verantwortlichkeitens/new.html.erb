@@ -1,4 +1,9 @@
 <h1>Ressourcen bearbeiten</h1>
+
+<% if @overmax %> 
+ 	<% flash[:error] ="Kapazität für Ressource überschreitet das verfügbare Maximum!" %>
+<% end %>
+
 <table>
 	<% @vressourcens.each do |ressource| %>
 	  <% @ressourcens = Ressourcen.find(:all, :conditions => [ "id = ?", ressource.ressourceid ]) %>

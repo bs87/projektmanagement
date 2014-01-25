@@ -19,7 +19,6 @@
       <th>Kuerzel</th>
       <th>Gen.</th>
       <th>Kapazität</th>
-      <th>Kosten</th>
       <th> </th>
       <th> </th>
       <th> </th>
@@ -30,13 +29,17 @@
     <% @ressourcens.each do |ressourcen| %>
       <tr class="table-striped">
         <td><%= link_to ressourcen.ressourcename, ressourcen %></td>
-        <td><%= ressourcen.ressourcefunktion %></td>
+        <td>
+          <% @funktion = Ressourcefunction.find(:all, :conditions=>["id = ?", ressourcen.ressourcefunktion ]).first %>
+          <% if !@funktion.nil? %>
+            <%= @funktion.name %>
+          <% end %>
+        </td>
         <td><%= ressourcen.ressourcebeschreibung %></td>
         <td><%= ressourcen.ressourceart %></td>
         <td><%= ressourcen.ressourcekuerzel %></td>
         <td><%= ressourcen.ressourcegenerisch %></td>
         <td><%= ressourcen.ressourcemax %></td>
-        <td><%= ressourcen.kosten %></td>
         <td><%= link_to 'Destroy', ressourcen, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

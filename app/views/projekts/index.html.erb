@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <%= javascript_include_tag 'jquery_ujs' %>
-<h1>Deine Projekte</h1>
+<h1>Deine Projekte</h1><br><br>
 
-    <!-- Projektliste -->
+  <!-- Projektliste -->
 
-    <% if @projekts == nil %> 
+  <% if @projekts == nil %> 
 
-       <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
-<% else %>
-    <% @projekts.each do |projekt| %>
-      <!-- Nur Projekte wo Benutzer Projektleiter ist -->
-      <% if projekt.projektleiter == current_user.email %>
-      
+     <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
+  <% else %>
+    <% @projekts.each do |projekt| %>   
+        <h3> <%= projekt.projektname %> </h3>
        <div class="tree well">
         <ul role="tree">       
         <li class="parent_li" role="treeitem"> 
@@ -83,9 +81,9 @@
               </li>
             </ul>
         </li>
-      <% end %>
-      </div>
-    <% end %>
+    </div>
+    <p><%= link_to 'Produkte', produkts_path(:projekt=>projekt.id) , :class => 'btn btn-lg btn-success ',:id => 'produkte' %></p>
+  <% end %>
   </ul>     
  <script>$(function () {
     $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
@@ -111,6 +109,7 @@
      }); 
     }); //$(document).ready
   </script>
+
 
 <br>
 

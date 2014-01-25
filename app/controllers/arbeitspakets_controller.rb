@@ -30,10 +30,10 @@ class ArbeitspaketsController < ApplicationController
 
     #respond_to do |format|
       if @arbeitspaket.save
-       flash[:notice] ="Arbeitspaket was successfully created."
+        flash[:notice] ="Arbeitspaket was successfully created."
         #format.json { render action: 'show', status: :created, location: @arbeitspaket }
         redirect_to aufgabens_path
-        else
+      else
         format.html { render action: 'new' }
         format.json { render json: @arbeitspaket.errors, status: :unprocessable_entity }
       end
@@ -76,6 +76,6 @@ class ArbeitspaketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def arbeitspaket_params
-      params.require(:arbeitspaket).permit(:arbeitspaketname, :arbeitspaketbeschreibung, :arbeitspaketverantwortlicher, :arbeitspakettyp, :arbeitspaketbeginn, :arbeitspaketdauer, :arbeitspaketende, :arbeitspaketnr, :arbeitspaketkuerzel, :eingangsdokumente, :ausgangsdokumente, :aufgabeid, :verantwortlichkeitenid)
+      params.require(:arbeitspaket).permit(:produkt_id, :arbeitspaketname, :arbeitspaketbeschreibung, :arbeitspakettyp, :arbeitspaketdauer, :arbeitspaketeingangsdokumente, :arbeitspaketausgangsdokumente, :aufgabeid)
     end
 end

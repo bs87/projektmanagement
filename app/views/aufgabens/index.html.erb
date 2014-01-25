@@ -1,192 +1,182 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>jOrgChart - A jQuery OrgChart Plugin</title>
-    <link rel="stylesheet" href="../assets/stylesheets/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../assets/stylesheets/jquery.jOrgChart.css"/>
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>jOrgChart - A jQuery OrgChart Plugin</title>
+  <link rel="stylesheet" href="../assets/stylesheets/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../assets/stylesheets/jquery.jOrgChart.css"/>
 
-    <link href="../assets/css/prettify.css" type="text/css" rel="stylesheet" />
+  <link href="../assets/css/prettify.css" type="text/css" rel="stylesheet" />
 
-    <script type="text/javascript" src="../assets/javascripts/prettify.js"></script>
-    <script src="../assets/javascripts/jquery.jOrgChart.js"></script>
-<script type="text/javascript" src="/assets/bootstrap.js?body=1"></script>
+  <script type="text/javascript" src="../assets/javascripts/prettify.js"></script>
+  <script src="../assets/javascripts/jquery.jOrgChart.js"></script>
+  <script type="text/javascript" src="/assets/bootstrap.js?body=1"></script>
 
-
-
-    <script>
+  <script>
     jQuery(document).bind('page:change', function() {
         $("#org").jOrgChart({
             chartElement : '#chart',
             dragAndDrop  : true
         });
     });
-    </script>
-  </head>
+  </script>
+</head>
 
 <h1>Work Breakdown Structure</h1>
 <br><br>
-<% if @projekts == nil %> 
-
-       <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
+<% if @projekts==nil || @projekt==nil %> 
+  <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
 <% else %>
 
-<div class="well sidebar-nav">
-  <div class="dropdown">
-  <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
-    Projekt auswählen ...
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+  <div class="well sidebar-nav">
+    <div class="dropdown">
+      <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
+        Projekt auswählen ...
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 
-  <% @projekts.each do |projekte| %>
-      <% if projekte.projektleiter == current_user.email %> 
-        <li> 
-         <li > <%= link_to  projekte.projektname, aufgabens_path(:id=>projekte.id),'data-no-turbolink' => true%></li> 
-
-         <% end %>
-         <% end %>
-  </ul>
-</div>
-</div>
-
-<br><br>
- 
-<h2>Projektname: <%= @projekt.projektname %></h2>
-<br><br>
-
-  <ul id="org" style="display: none;">   
-    
-      <% if @projekt.projektleiter == current_user.email %> 
-        <li> 
-          <span  style=" font-weight:bold"> <%= @projekt.projektname %> </span>
-          <!-- Ebene 1 -->
-          <ul>
-            <% @aufgaben.each do |aufgabe| %>
-              <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
-                <% @vorgaenger1 = aufgabe.id %>
-                <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                <li> 
-                  <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
-                  <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
-                   <br>
-                   <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id),:class => "btn btn-success btn-mini icon-white " %> 
-
-                    <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
-                    <ul>
-                      <% @arbeitspakets.each do |arbeitspaket| %>
-                        <% if aufgabe.id == arbeitspaket.aufgabeid %>     
-                            <li style= "border-color: green"> 
-                               <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                     <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
-                                      <% end %>
-                                      <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
-                                      <% end %>
-                                      <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
-                                      <% end %> 
-                                  <br>
-                                       <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
-                            </li>                        
-                        <% end %>
-                      <% end %>
-                    </ul>
-
-
-                  <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
-
-                    <!-- Ebene 2 -->
-                    <ul>
-                      <% @aufgaben.each do |aufgabe| %>
-                        <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger1 %>
-                          <% @vorgaenger2 = aufgabe.id %>
-                          <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                          <li> 
-                            <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
-                            <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
-                             <br>
-                              <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class => "btn btn-success btn-mini icon-white"  %>
-
-                              <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
-                              <ul>
-                                <% @arbeitspakets.each do |arbeitspaket| %>
-                                  <% if aufgabe.id == arbeitspaket.aufgabeid %>     
-                                      <li style= "border-color: green" > 
-                                      <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                     <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
-                                      <% end %>
-                                      <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
-                                      <% end %>
-                                      <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
-                                      <% end %>
-                                        <br>
-                                       <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
-                                      </li>                        
-                                  <% end %>
-                                <% end %>
-                              </ul>
-
-                            <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
-
-                              <!-- Ebene 3 -->
-                              <ul>
-                                <% @aufgaben.each do |aufgabe| %>
-                                  <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
-                                    <% @vorgaenger3 = aufgabe.id %>
-                                    <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
-                                    <li> 
-                                     <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
-                                       <br>
-                                      <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class => "btn btn-success btn-mini icon-white"  %>
-
-                                      <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
-                                      <ul>
-                                        <% @arbeitspakets.each do |arbeitspaket| %>
-                                          <% if aufgabe.id == arbeitspaket.aufgabeid %>     
-                                              <li style= "border-color: green"> 
-                                               <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                     <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
-                                      <% end %>
-                                      <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
-                                      <% end %>
-                                      <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
-                                      <% end %>
-                                                  <br>
-                                       <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
-                                              </li>                         
-                                          <% end %>
-                                        <% end %>
-                                      </ul>
-
-                                    </li>
-                                  <% end %>
-                                <% end %>
-                              </ul>
-
-                            <% end %>
-                          </li>
-                        <% end %>
-                      <%end%>
-                    </ul>
-
-                  <% end %>
-                </li>
-              <%end%>
-            <%end%>
-          </ul>
-        </li> 
-      <% end %>
-    
-  </ul>
- <div class="well sidebar-nav">
-   <div id="chart" class="orgChart"></div>  
-   </div > 
- <% end %>
-        
+        <% @projekts.each do |projekte| %>
+            <li> 
+            <li > <%= link_to  projekte.projektname, aufgabens_path(:id=>projekte.id),'data-no-turbolink' => true%></li>
       
+        <% end %>
+
+      </ul>
+    </div>
+  </div>
+
+  <br><br>
+  
+  <h2>Projektname: <%= @projekt.projektname %></h2>
+  <br><br>
+  <ul id="org" style="display: none;">   
+      <li> 
+        <span  style=" font-weight:bold"> <%= @projekt.projektname %> </span>
+        <!-- Ebene 1 -->
+        <ul>
+          <% @aufgaben.each do |aufgabe| %>
+            <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
+              <% @vorgaenger1 = aufgabe.id %>
+              <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+              <li> 
+                <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                 <br>
+                 <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id),:class => "btn btn-success btn-mini icon-white " %> 
+
+                  <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
+                  <ul>
+                    <% @arbeitspakets.each do |arbeitspaket| %>
+                      <% if aufgabe.id == arbeitspaket.aufgabeid %>     
+                          <li style= "border-color: green"> 
+                             <% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                   <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
+                                    <% end %>
+                                    <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
+                                    <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                    <% end %>
+                                    <% if arbeitspaket.arbeitspakettyp == "Release" %>
+                                    <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                    <% end %> 
+                                <br>
+                                     <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
+                          </li>                        
+                      <% end %>
+                    <% end %>
+                  </ul>
+
+                <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                  <!-- Ebene 2 -->
+                  <ul>
+                    <% @aufgaben.each do |aufgabe| %>
+                      <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger1 %>
+                        <% @vorgaenger2 = aufgabe.id %>
+                        <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                        <li> 
+                          <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                          <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                           <br>
+                            <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class => "btn btn-success btn-mini icon-white"  %>
+
+                            <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
+                            <ul>
+                              <% @arbeitspakets.each do |arbeitspaket| %>
+                                <% if aufgabe.id == arbeitspaket.aufgabeid %>     
+                                    <li style= "border-color: green" > 
+                                    <% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                   <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
+                                    <% end %>
+                                    <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
+                                    <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                    <% end %>
+                                    <% if arbeitspaket.arbeitspakettyp == "Release" %>
+                                    <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                    <% end %>
+                                      <br>
+                                     <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
+                                    </li>                        
+                                <% end %>
+                              <% end %>
+                            </ul>
+
+                          <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                            <!-- Ebene 3 -->
+                            <ul>
+                              <% @aufgaben.each do |aufgabe| %>
+                                <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
+                                  <% @vorgaenger3 = aufgabe.id %>
+                                  <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                                  <li> 
+                                   <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                                     <br>
+                                    <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class => "btn btn-success btn-mini icon-white"  %>
+
+                                    <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
+                                    <ul>
+                                      <% @arbeitspakets.each do |arbeitspaket| %>
+                                        <% if aufgabe.id == arbeitspaket.aufgabeid %>     
+                                          <li style= "border-color: green"> 
+                                            <% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                              <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
+                                            <% end %>
+                                            <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
+                                              <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                            <% end %>
+                                            <% if arbeitspaket.arbeitspakettyp == "Release" %>
+                                              <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                            <% end %>
+                                            <br>
+                                            <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
+                                            </li>                         
+                                        <% end %>
+                                      <% end %>
+                                    </ul>
+
+                                  </li>
+                                <% end %>
+                              <% end %>
+                            </ul>
+
+                          <% end %>
+                        </li>
+                      <% end %>
+                    <%end%>
+                  </ul>
+
+                <% end %>
+              </li>
+            <%end%>
+          <%end%>
+        </ul>
+      </li> 
+  </ul>
+  <div class="well sidebar-nav">
+    <div id="chart" class="orgChart"></div>  
+  </div > 
+<% end %>
+            
  <script>
     $(document).ready(function() {
      $(".expand").click(function(e) {
@@ -195,5 +185,4 @@
         e.stopPropagation();
      }); 
     }); //$(document).ready
-
-    </script>
+  </script>

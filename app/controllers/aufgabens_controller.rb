@@ -4,13 +4,36 @@ class AufgabensController < ApplicationController
   # GET /aufgabens
   # GET /aufgabens.json
   def index
-        if params[:id].nil? 
-    @projekt = Projekt.find(:all, :conditions => [ "projektleiter = ?", current_user.email]).first 
-  else
-    @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
-  end
+    if current_user.roleid == 1
+      @projekts = Projekt.all
+      if params[:id].nil? 
+        @projekt = Projekt.first
+      else
+        @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
+      end
+    else
+      @projekts = Projekt.find(:all, :conditions => [ "projektleiter = ?", current_user.email]) 
+      
+      #Projekte wo Benutzer Als Ress zugeordnet ist
+      #@eigene_ress_id = Ressourcen.find(:all, :conditions => ["ressourcename = ?", current_user.email ]).first
+      #@eigene_verant = Verantwortlichkeiten.find(:all, :conditions => [ "ressourceid = ?", @eigene_ress_id] )
+      #@eigene_verant.each do |ev|
+      #  @eigene_ap = Arbeitspaket.find(:all, :conditions => [ "id=?", ev.arbeitspaketid ])
+      #end
+      #@projekts_mitwirkend = Projekt.find(:all, :conditions=> [""])
+      
+
+      if params[:id].nil? 
+        @projekt = Projekt.find(:all, :conditions => [ "projektleiter = ?", current_user.email]).first 
+      else
+        @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
+      end
+    end
+
+
+
     @aufgaben = Aufgaben.all
-    @projekts = Projekt.all
+    #@projekts = Projekt.all
     @arbeitspakets = Arbeitspaket.all
   end
 
@@ -21,8 +44,6 @@ class AufgabensController < ApplicationController
 
   # GET /aufgabens/new
   def new
-
-
     @aufgaben = Aufgaben.new
     @ebene = params[:ebene]
     @pid = params[:id]
@@ -37,9 +58,7 @@ class AufgabensController < ApplicationController
   def create
     @aufgaben = Aufgaben.new(aufgaben_params)
 
-                       
 
-    
          # if !@nachfolger1.present? 
   
     #respond_to do |format|

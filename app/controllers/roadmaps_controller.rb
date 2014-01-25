@@ -8,7 +8,7 @@ class RoadmapsController < ApplicationController
   def show
   end
 
-# GET /projekts
+  # GET /projekts
   # GET /projekts.json
   def index
     

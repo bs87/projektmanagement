@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<% javascript_include_tag 'jquery_ujs' %>
+<% @projekt = Projekt.find(:all, :conditions=>["id=?", @projektid]).first %>
+
+<h1><%= @projekt.projektname + " Produktliste"%></h1>
+
+  <tbody>
+      
+      <div class="tree well">
+        <ul role="tree">       
+        <li class="parent_li" role="treeitem"> 
+
+          <!-- Produktbaum Kopf  -->
+          <span style="background-color:#071346; color:#EEEEEE;" title="collapse this branche"><i class="icon-folder-open"></i><b><%= "Produktbaum" %></b></span>  
+        
+            <!-- kategorie Unterebene 1 -->
+            <ul role"tree">
+              <% @produktkats.each do |kategorie| %>
+                <% if kategorie.vorgaenger_id ==nil %>  
+                  <% @vorgaenger1 = kategorie.id %>
+                  <li class="parent_li" role="treeitem">  
+                     <span style="background-color:#586baf;" title="collapse this branche"><i class="icon-minus-sign"></i><%= kategorie.name %></span>
+                     <!-- kategorien Optionen -->
+                     <%= link_to '', kategorie, :class=>"icon-list-alt" %> 
+                     <%= link_to '', edit_produktkategory_path(kategorie), :class=>"icon-wrench" %> 
+                     <%= link_to('', kategorie, :method => :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                    
+                    <!-- kategorie Unterebene 2 -->
+                     <ul role"tree">
+                      <% @produktkats.each do |kategorie| %>
+                        <% if kategorie.vorgaenger_id==@vorgaenger1 %> 
+                          <% @vorgaenger2 = kategorie.id %>
+                          <li class="parent_li" role="treeitem">
+                           <span style="background-color:#95abea" title="collapse this branche"><i class="icon-minus-sign"></i>
+                             <%= kategorie.name %></span>
+                           <!-- kategorien Optionen -->
+                           <%= link_to '', kategorie, :class=>"icon-list-alt" %> 
+                           <%= link_to '', edit_produktkategory_path(kategorie), :class=>"icon-wrench" %> 
+                           <%= link_to('', kategorie, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+
+                            <!-- kategorie Unterebene 3 -->
+                            <ul>
+                              <% @produktkats.each do |kategorie| %>
+                                <% if  kategorie.vorgaenger_id==@vorgaenger2 %> 
+                                  <li class="parent_li" role="treeitem">
+                                      <span style="background-color:#b7cdfc;"><i class="icon-minus-sign"></i><%= kategorie.name %> </span>
+                                      <!-- kategorien Optionen -->
+                                      <%= link_to '', kategorie, :class=>"icon-list-alt" %> 
+                                      <%= link_to '', edit_produktkategory_path(kategorie), :class=>"icon-wrench" %> 
+                                      <%= link_to('', kategorie, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                    
+
+                                    <ul>
+                                      <!-- Produkte für Kategorie der Ebene 3-->
+                                      <% @produkte.each do |produkt| %>
+                                        <% if produkt.kat_id == kategorie.id %>     
+                                            <li style= "border-color: green"> 
+                                               <span  style="color:blue; font-weight:bold"><%= produkt.name %> </span>
+                                               <%= link_to('', edit_produkt_path(produkt), :class => "icon-wrench") %>
+                                               <%= link_to('', produkt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                            </li>                        
+                                        <% end %>
+                                      <% end %>
+                                    </ul>
+
+                                  </li>
+                                <% end %>
+                              <% end %>
+
+                  
+                              <!-- Produkte für Kategorie der Ebene 2-->
+                              <% @produkte.each do |produkt| %>
+                                <% if produkt.kat_id == kategorie.id %>     
+                                    <li style= "border-color: green"> 
+                                       <span  style="color:blue; font-weight:bold"><%= produkt.name %> </span>
+                                       <%= link_to('', edit_produkt_path(produkt), :class => "icon-wrench") %>
+                                       <%= link_to('', produkt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                    </li>                        
+                                <% end %>
+                              <% end %>
+
+                              <li> <%= link_to ' Neue kategorie', new_produktkategory_path(:vorgaenger=>@vorgaenger2, :projektid=>@projektid),:class => "btn btn-small icon-plus-sign"  %> 
+                              </li>
+                   
+                            </ul>
+                          </li>
+                        <% end %>
+                      <%end%>
+                 
+                      <!-- Produkte für Kategorie der Ebene 1 -->
+                        <% @produkte.each do |produkt| %>
+                          <% if produkt.kat_id == kategorie.id %>     
+                              <li style= "border-color: green"> 
+                                 <span  style="color:blue; font-weight:bold"><%= produkt.name %> </span>
+                                 <%= link_to('', edit_produkt_path(produkt), :class => "icon-wrench") %>
+                                 <%= link_to('', produkt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                              </li>                        
+                          <% end %>
+                        <% end %>
+                        
+
+                        <li>  <%= link_to  ' Neue kategorie', new_produktkategory_path(:vorgaenger=>@vorgaenger1, :projektid=>@projektid), :class => "btn btn-small icon-plus-sign" %> 
+                        </li>
+                  
+                    </ul>
+                  </li>
+                <% end %>
+              <% end %>
+
+
+              <li > <%= link_to 'Neue kategories', new_produktkategory_path(:vorgaenger=>nil, :projektid=>@projektid), :class=>"btn btn-small icon-plus-sign" %> 
+              </li>
+            </ul>
+        </li>
+    </div>
+  
+</ul>    
+
+
+ <script>$(function () {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+ </script>
+ <script>
+    $(document).on('page:load',(function() {
+     $(".expand").click(function(e) {
+        $(this).toggleClass("expanded");
+        $(this).children("ul:first").slideToggle("300");
+        e.stopPropagation();
+     }); 
+    }); //$(document).ready
+  </script>
+
+  </tbody>
+</table>
+
+<br>
+
+

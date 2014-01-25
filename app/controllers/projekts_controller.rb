@@ -4,7 +4,11 @@ class ProjektsController < ApplicationController
   # GET /projekts
   # GET /projekts.json
   def index
-    @projekts = Projekt.all
+    if current_user.roleid ==1
+      @projekts = Projekt.all
+    else
+      @projekts = Projekt.find(:all, :conditions=>["projektleiter=?", current_user.email])
+    end
     @aufgaben = Aufgaben.all
     @arbeitspakets = Arbeitspaket.all
   end

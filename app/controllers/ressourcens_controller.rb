@@ -5,11 +5,11 @@ class RessourcensController < ApplicationController
   # GET /ressourcens.json
   def index
     if current_user.email != "admin@pm.de"
-    flash[:error] ="Zugriff verweigert."
-    redirect_to root_url
-  else
-    @ressourcens = Ressourcen.all
-  end
+      flash[:error] ="Zugriff verweigert."
+      redirect_to root_url
+    else
+      @ressourcens = Ressourcen.all
+    end
   end
 
   # GET /ressourcens/1
@@ -77,6 +77,6 @@ class RessourcensController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ressourcen_params
-      params.require(:ressourcen).permit(:ressourcename, :ressourcefunktion, :ressourcebeschreibung, :ressourceart, :ressourcekuerzel, :ressourcegenerisch, :ressourcemax, :kosten, :gruppen_id)
+      params.require(:ressourcen).permit(:ressourcename, :ressourcefunktion, :ressourcebeschreibung, :ressourceart, :ressourcekuerzel, :ressourcegenerisch, :ressourcemax)
     end
 end

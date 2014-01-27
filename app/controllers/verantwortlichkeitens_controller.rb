@@ -32,16 +32,16 @@ class VerantwortlichkeitensController < ApplicationController
   def show
   end
 
+  def deleteress
+
+  end 
+
   # GET /verantwortlichkeitens/new
   def new
     @verantwortlichkeiten = Verantwortlichkeiten.new
     @apid = params[:apid]
     @overmax = params[:overmax]
     @vressourcens = Verantwortlichkeiten.find(:all, :conditions => [ "arbeitspaketid = ?", @apid ])
-  end
-
-  # GET /verantwortlichkeitens/1/edit
-  def edit
   end
 
   # POST /verantwortlichkeitens
@@ -96,12 +96,14 @@ class VerantwortlichkeitensController < ApplicationController
   # DELETE /verantwortlichkeitens/1
   # DELETE /verantwortlichkeitens/1.json
   def destroy
-    
+    @verantwortlichkeiten = Verantwortlichkeiten.find(params[:id])
 
     #Gewünschte Intensitaet fuer AP
-    @intensitaet = verantwortlichkeiten_params.fetch(:intensitaet)   
+    @intensitaet = params[:intensitaet]
+    #@intensitaet = verantwortlichkeiten_params.fetch(:intensitaet)   
     #ApId für die zu erstellende Ressource
-    @ressourceid = verantwortlichkeiten_params.fetch(:ressourceid) 
+    @ressourceid = params[:ressourceid]
+    #@ressourceid = verantwortlichkeiten_params.fetch(:ressourceid) 
 
     #Vorhandene Intensitate der Ressource (max. Verfügbar)
     @ressource = Ressourcen.find(:all, :conditions => [ "id = ?", @ressourceid ])

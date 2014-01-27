@@ -1,5 +1,5 @@
 class ProduktkategoriesController < ApplicationController
-  before_action :set_produktkategory, only: [:show, :edit, :update, :destroy]
+  before_action :set_produktkategorie, only: [:show, :edit, :update, :destroy]
 
   # GET /produktkategories
   # GET /produktkategories.json
@@ -14,7 +14,7 @@ class ProduktkategoriesController < ApplicationController
 
   # GET /produktkategories/new
   def new
-    @produktkategory = Produktkategorie.new
+    @produktkategorie = Produktkategorie.new
     @projektid = params[:projektid]
     @vorgaenger = params[:vorgaenger]
   end
@@ -26,15 +26,15 @@ class ProduktkategoriesController < ApplicationController
   # POST /produktkategories
   # POST /produktkategories.json
   def create
-    @produktkategory = Produktkategorie.new(produktkategory_params)
+    @produktkategorie = Produktkategorie.new(produktkategorie_params)
 
     respond_to do |format|
-      if @produktkategory.save
-        format.html { redirect_to @produktkategory, notice: 'Produktkategorie was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @produktkategory }
+      if @produktkategorie.save
+        format.html { redirect_to @produktkategorie, notice: 'Produktkategorie was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @produktkategorie }
       else
         format.html { render action: 'new' }
-        format.json { render json: @produktkategory.errors, status: :unprocessable_entity }
+        format.json { render json: @produktkategorie.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -43,12 +43,12 @@ class ProduktkategoriesController < ApplicationController
   # PATCH/PUT /produktkategories/1.json
   def update
     respond_to do |format|
-      if @produktkategory.update(produktkategory_params)
-        format.html { redirect_to @produktkategory, notice: 'Produktkategorie was successfully updated.' }
+      if @produktkategorie.update(produktkategorie_params)
+        format.html { redirect_to @produktkategorie, notice: 'Produktkategorie was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @produktkategory.errors, status: :unprocessable_entity }
+        format.json { render json: @produktkategorie.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -56,7 +56,8 @@ class ProduktkategoriesController < ApplicationController
   # DELETE /produktkategories/1
   # DELETE /produktkategories/1.json
   def destroy
-    @produktkategory.destroy
+    @produktkategorie = Produktkategorie.find(params[:id])
+    @produktkategorie.destroy
     respond_to do |format|
       format.html { redirect_to produktkategories_url }
       format.json { head :no_content }
@@ -65,12 +66,12 @@ class ProduktkategoriesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_produktkategory
-      @produktkategory = Produktkategorie.find(params[:id])
+    def set_produktkategorie
+      @produktkategorie = Produktkategorie.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def produktkategory_params
-      params.require(:produktkategory).permit(:name, :projekt_id, :vorgaenger_id)
+    def produktkategorie_params
+      params.require(:produktkategorie).permit(:name, :projekt_id, :vorgaenger_id)
     end
 end

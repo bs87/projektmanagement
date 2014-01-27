@@ -15,7 +15,7 @@ class ProduktkategoriesController < ApplicationController
   # GET /produktkategories/new
   def new
     @produktkategory = Produktkategorie.new
-        @projektid = params[:projektid]
+    @projektid = params[:projektid]
     @vorgaenger = params[:vorgaenger]
   end
 

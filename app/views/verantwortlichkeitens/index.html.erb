@@ -1,7 +1,12 @@
-<script type="text/javascript" src="/assets/jquery.js"></script>
-<script type="text/javascript" src="/assets/bootstrap.js"></script>
-<link href="../assets/css/bootstrap.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="../assets/stylesheets/bootstrap.min.css"/>
+  <link rel="stylesheet" href="../assets/stylesheets/jquery.jOrgChart.css"/>
+
+  <link href="../assets/css/prettify.css" type="text/css" rel="stylesheet" />
+
+  <script type="text/javascript" src="../assets/javascripts/prettify.js"></script>
+  <script src="../assets/javascripts/jquery.jOrgChart.js"></script>
+  <script type="text/javascript" src="/assets/bootstrap.js"></script>
 
 <h1>RAM</h1>
 <br>
@@ -10,6 +15,7 @@
 <% if @projekts.nil? || @projekt.nil? %> 
  <% flash[:notice] ="Sie leiten keine eigenen Projekte" %>
 <% else %>
+
   <div class="well sidebar-nav">
     <div class="dropdown">
       <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
@@ -18,13 +24,12 @@
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <% @projekts.each do |projekte| %>
-            <% #if projekte.projektleiter == current_user.email %> 
-              <li> 
+        <li>
                <li > 
                 <%= link_to  projekte.projektname, 
                 verantwortlichkeitens_path(:id=>projekte.id),'data-no-turbolink' => true%>
               </li> 
-            <% #end %>
+
         <% end %>
       </ul>
     </div>
@@ -48,10 +53,10 @@
       <% @arbeitspakets.each do |arbeitspaket| %>
         <!-- Nur APs listen die in Projekt sind -->
         <% @aufgabeid= arbeitspaket.aufgabeid %>
-        <% @aufgabe = Aufgaben.find(:all, :conditions=>["id", @aufgabeid]).first %>
+        <% @aufgabe = Aufgaben.find(:all, :conditions=>["id=?", @aufgabeid]).first %>
         <% if @projekt.id == @aufgabe.projektsid %>   
           <tr>
-            <td><%= link_to arbeitspaket.arbeitspaketname, arbeitspaket  %></td>
+            <td><%= arbeitspaket.arbeitspaketname  %></td>
             <!-- Lieferobjekt --> 
             <td>
               <% @lieferobjekt = Produkt.find(:all, :conditions=> ["id = ?", arbeitspaket.produkt_id]).first %>
@@ -68,7 +73,9 @@
               <ul>           
                   <%@vorgaenger.each do |v| %>             
                     <% @vorgaengername =Arbeitspaket.find(:all, :conditions => [ "id = ?", v.apvorgaengerid]) %>
-                    <li><%= @vorgaengername.first.arbeitspaketname %></li>           
+                    <% if @vorgaengername.first  %>
+                      <li><%= @vorgaengername.first.arbeitspaketname %></li>    
+                    <% end %>       
                 <% end %>
               </ul>         
             </td>  

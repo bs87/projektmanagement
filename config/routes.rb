@@ -1,5 +1,7 @@
 
 Projektmanagement::Application.routes.draw do 
+  resources :tests
+
   resources :produktkategories
 
   resources :produkts

@@ -10,7 +10,7 @@ $(document).ready(function(){
       for (var i = 1; i <= anzahlwerte; i++) {
         summe = summe + parseFloat( $("#".concat(i)).val() );
       }
-      var mittelwert = summe / anzahlwerte;
+      var mittelwert = Math.round(summe / anzahlwerte);
       var varsum = 0;
       for (var i = 1; i <= anzahlwerte; i++) {
         varsum = varsum + (parseFloat( $("#".concat(i)).val()-mittelwert))*
@@ -66,12 +66,12 @@ function getParam(variable){
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
         <li>
-          <%= link_to 0, new_arbeitspaket_path(:anzahlwerte=>0), 'data-no-turbolink' => true %>
+          <%= link_to 0, new_arbeitspaket_path(:aufgabeid=>@aid, :anzahlwerte=>1), 'data-no-turbolink' => true %>
         </li>
         <% 15.times do |i| %>
           <li> 
            <li > 
-            <%= link_to i+1, new_arbeitspaket_path(:anzahlwerte=>i+1), 'data-no-turbolink' => true %>
+            <%= link_to i+1, new_arbeitspaket_path(:aufgabeid=>@aid, :anzahlwerte=>i+1), 'data-no-turbolink' => true %>
            </li> 
         <% end %>
 
@@ -99,8 +99,18 @@ function getParam(variable){
     <%= f.select :arbeitspakettyp, [['Standard','Standard'],['Milestone','Milestone'],['Release','Release']] %>
   </div>
   <div class="field">
+    <% @aufgabe = Aufgaben.find(:all, :conditions=>["id=?", @aid]).first %>
+    <% @projekt = Projekt.find(:all, :conditions=>["id=?", @aufgabe.projektsid]).first %>
+    <% @kats = Produktkategorie.find(:all, :conditions=>["projekt_id=?", @projekt.id]) %>
+    <% @produkte = Array.new %>
+    <% @kats.each do |kat| %>
+      <% @produkts = Produkt.find(:all, :conditions=>["kat_id=?", kat.id]) %>
+      <% @produkts.each do |prod| %>
+        <% @produkte.push( prod ) %>
+      <% end %>
+    <% end %>
     <%= f.label :produkt %><br>
-    <%= f.collection_select(:produkt_id, Produkt.all, :id, :name, :include_blank => true) %>
+    <%=f.collection_select(:produkt_id, @produkte, :id, :name, :include_blank => true) %>
   </div>
   <div class="field">
     <%= f.label :eingangsdokumente %><br>

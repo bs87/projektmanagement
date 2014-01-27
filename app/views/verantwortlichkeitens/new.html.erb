@@ -18,7 +18,8 @@
 	      <%= ressource.intensitaet %>
 	    </td>
 	    <td>
-	      <%= link_to 'Loeschen', ressource, method: :delete, data: { confirm: 'Are you sure?' } %>
+	    
+	      <%= button_to'Loeschen', ressource, :method=> :delete, :class=>"btn btn-danger btn-mini icon-white "%>
 	    <td>
 	  </tr>
 	<% end %>

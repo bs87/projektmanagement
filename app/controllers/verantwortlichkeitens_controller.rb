@@ -65,17 +65,15 @@ class VerantwortlichkeitensController < ApplicationController
     if @new_intensitaet<0
       redirect_to new_verantwortlichkeiten_path(:overmax=>true)
     else
-      respond_to do |format|
-        if @verantwortlichkeiten.save
-        
-          @ressource.first.update( :ressourcemax => @new_intensitaet )
-
-          format.html { redirect_to @verantwortlichkeiten, notice: 'Verantwortlichkeiten was successfully created.' }
-          format.json { render action: 'show', status: :created, location: @verantwortlichkeiten }
-        else
-          format.html { render action: 'new' }
-          format.json { render json: @verantwortlichkeiten.errors, status: :unprocessable_entity }
-        end
+      if @verantwortlichkeiten.save
+      
+        @ressource.first.update( :ressourcemax => @new_intensitaet )
+        redirect_to verantwortlichkeitens_path
+        #format.html { redirect_to @verantwortlichkeiten, notice: 'Verantwortlichkeiten was successfully created.' }
+        #format.json { render action: 'show', status: :created, location: @verantwortlichkeiten }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @verantwortlichkeiten.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -98,7 +96,7 @@ class VerantwortlichkeitensController < ApplicationController
   # DELETE /verantwortlichkeitens/1
   # DELETE /verantwortlichkeitens/1.json
   def destroy
-    @verantwortlichkeiten.destroy
+    
 
     #Gewünschte Intensitaet fuer AP
     @intensitaet = verantwortlichkeiten_params.fetch(:intensitaet)   
@@ -114,6 +112,8 @@ class VerantwortlichkeitensController < ApplicationController
   
     @ressource.first.update( :ressourcemax => @new_intensitaet )
 
+    @verantwortlichkeiten.destroy
+    
     respond_to do |format|
       format.html { redirect_to verantwortlichkeitens_url }
       format.json { head :no_content }

@@ -7,16 +7,22 @@ class ProjektsController < ApplicationController
 
     if current_user.roleid ==1
       @projekts = Projekt.all
-      @projekt = Projekt.first
+      if params[:id].nil? 
+        @projekt = Projekt.first
+      else
+        @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
+      end
     else
       @projekts = Projekt.find(:all, :conditions=>["projektleiter=?", current_user.email])
+    
+      if params[:id].nil? 
+        @projekt = Projekt.find(:all, :conditions => [ "projektleiter = ?", current_user.email]).first 
+      else
+        @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
+      end
     end
 
-    if params[:id].nil? 
-      @projekt = Projekt.find(:all, :conditions => [ "projektleiter = ?", current_user.email]).first 
-    else
-      @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
-    end
+    
  
     @tree = params[:view]
 
@@ -69,9 +75,9 @@ end
   def create
     @projekt = Projekt.new(projekt_params)
 
-
+    
     if @projekt.save
-      redirect_to projekts_path
+      redirect_to projekts_path(:id=>@id)
       #format.html { redirect_to @projekt, notice: 'Projekt was successfully created.' }
       #format.json { render action: 'show', status: :created, location: @projekt }
     else

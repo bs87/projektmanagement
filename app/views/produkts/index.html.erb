@@ -31,6 +31,7 @@
                       <% @produktkats.each do |kategorie| %>
                         <% if kategorie.vorgaenger_id==@vorgaenger1 %> 
                           <% @vorgaenger2 = kategorie.id %>
+                          <% @nachfolger2 = Produkt.find(:all, :conditions => [ "kat_id = ?", kategorie.id]) %>
                           <li class="parent_li" role="treeitem">
                            <span style="background-color:#95abea" title="collapse this branche"><i class="icon-minus-sign"></i>
                              <%= kategorie.name %></span>
@@ -54,14 +55,17 @@
                                     <ul>
                                       <!-- Produkte für Kategorie der Ebene 3-->
                                       <% @produkte.each do |produkt| %>
-                                        <% if produkt.kat_id == kategorie.id %>     
-                                            <li style= "border-color: green"> 
-                                               <span  style="color:blue; font-weight:bold"><%= produkt.name %> </span>
-                                               <%= link_to('', edit_produkt_path(produkt), :class => "icon-wrench") %>
-                                               <%= link_to('', produkt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
-                                            </li>                        
+                                        <% @nachfolger = false %>
+                                        <% if produkt.kat_id == kategorie.id %>   
+                                          <% @nachfolger = true %>  
+                                          <li style= "border-color: green"> 
+                                             <span  style="color:blue; font-weight:bold"><%= produkt.name %> </span>
+                                             <%= link_to('', edit_produkt_path(produkt), :class => "icon-wrench") %>
+                                             <%= link_to('', produkt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                          </li>               
                                         <% end %>
                                       <% end %>
+                                      <li> <%= link_to('Neues Produkt', new_produkt_path(:katid=>kategorie.id),:class => "btn btn-small icon-plus-sign")%> </li>
                                     </ul>
 
                                   </li>
@@ -79,6 +83,7 @@
                                     </li>                        
                                 <% end %>
                               <% end %>
+                              <li> <%= link_to('Neues Produkt', new_produkt_path(:katid=>kategorie.id),:class => "btn btn-small icon-plus-sign")%> </li>
 
                               <li> <%= link_to ' Neue kategorie', new_produktkategory_path(:vorgaenger=>@vorgaenger2, :projektid=>@projektid),:class => "btn btn-small icon-plus-sign"  %> 
                               </li>
@@ -98,7 +103,7 @@
                               </li>                        
                           <% end %>
                         <% end %>
-                        
+                        <li> <%= link_to('Neues Produkt', new_produkt_path(:katid=>kategorie.id),:class => "btn btn-small icon-plus-sign")%> </li>
 
                         <li>  <%= link_to  ' Neue kategorie', new_produktkategory_path(:vorgaenger=>@vorgaenger1, :projektid=>@projektid), :class => "btn btn-small icon-plus-sign" %> 
                         </li>

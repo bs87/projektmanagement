@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140123173957) do
+ActiveRecord::Schema.define(version: 20140126150930) do
 
   create_table "arbeitspakets", force: true do |t|
     t.string   "arbeitspaketname",                 limit: 45
@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 20140123173957) do
   create_table "projekts", force: true do |t|
     t.string   "projektname"
     t.string   "projektleiter"
-    t.string   "projektstart"
+    t.date     "projektstart"
     t.string   "projektende"
     t.string   "projektbeschreibung"
     t.integer  "roadstops_roadstopsid"
@@ -117,6 +117,12 @@ ActiveRecord::Schema.define(version: 20140123173957) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+  create_table "tests", force: true do |t|
+    t.date     "datum"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                       default: "", null: false

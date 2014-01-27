@@ -37,10 +37,8 @@
 
         <% @projekts.each do |projekte| %>
             <li> 
-            <li > <%= link_to  projekte.projektname, aufgabens_path(:id=>projekte.id),'data-no-turbolink' => true%></li>
-      
+            <li> <%= link_to  projekte.projektname, aufgabens_path(:id=>projekte.id),'data-no-turbolink' => true%></li>   
         <% end %>
-
       </ul>
     </div>
   </div>

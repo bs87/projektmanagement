@@ -4,9 +4,9 @@
       <h2><%= pluralize(@produktkategory.errors.count, "error") %> prohibited this produktkategory from being saved:</h2>
 
       <ul>
-      <% @produktkategory.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
+        <% @produktkategory.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>

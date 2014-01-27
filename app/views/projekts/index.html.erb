@@ -118,8 +118,10 @@
 <div class="well sidebar-nav ">
 <p> Ansicht </p>
 <br>
- <%= link_to "Organisationsansicht", projekts_path(:view=>"tree"),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
- <%= link_to "Baumansicht", projekts_path,'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+ <% if @projekt != nil %>
+ <%= link_to "Organisationsansicht", projekts_path(:view=>"tree", :id=>@projekt.id),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+ <%= link_to "Baumansicht", projekts_path(:id=>@projekt.id),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+ <% end %>
 </div>
     <!-- Projektliste -->
     <% if @projekt == nil %>
@@ -127,16 +129,16 @@
        <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
 <% else %>
       <!-- Nur Projekte wo Benutzer Projektleiter ist -->
-      <% if @projekt.projektleiter == current_user.email %>
-<h2><%= @projekt.projektname %>
-  <%= link_to 'Produkte', produkts_path(:projekt=>@projekt.id) , :class => 'btn btn-lg btn-success ',:id => 'produkte' %>
-</h2>
+      <% if @projekt.projektleiter != nil  %>
+        <h2><%= @projekt.projektname %>
+          <%= link_to 'Produkte', produkts_path(:projekt=>@projekt.id) , :class => 'btn btn-lg btn-success ',:id => 'produkte' %>
+        </h2>
 
       <% if @tree != "tree" %>
        <div class="tree well " >
         <ul role="tree">
         <li class="parent_li" role="treeitem">
-<br>
+        <br>
           <!-- Projektname mit Optionen -->
           <span style="background-color:#071346; color:#EEEEEE;" title="collapse this branche"><i class="icon-folder-open"></i><b><%= @projekt.projektname %></b></span>
             <!-- Projektoptionen -->

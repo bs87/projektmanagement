@@ -15,15 +15,15 @@
     <%= f.hidden_field :apid, :value=>@apid%>
   </div>
   <div class="field">
-  <% if @vlist.empty? %>
-    <!-- Alle potentiellen Vorgänger ohne sich selbst -->
-    <% if @vlist.empty? %>
+
+    <% if @vlist %>
       <% @vorg = Arbeitspaket.find(:all, :conditions => [ "ID != ?", @apid]) %> 
     <% else %>
       <% @vorg = Arbeitspaket.find(:all, :conditions => [ "id NOT IN (?) AND ID != ?", @vlist, @apid]) %> 
     <% end %>
     <%= f.label :Vorgänger %><br>
     <%= f.collection_select(:apvorgaengerid, @vorg, :id, :arbeitspaketname, :include_blank => true) %>
+
   </div>
   <div class="actions">
     <%= f.submit "Hinzufügen"%>

@@ -17,15 +17,11 @@
   </div>
   <div class="field">
     <%= f.label :typ %><br>
-    <%= f.text_field :typ %>
-  </div>
-  <div class="field">
-    <%= f.label :ap_id %><br>
-    <%= f.number_field :ap_id %>
+    <%= f.text_field :typ, :value=>"Liefergegenstand", :readonly=>true %>
   </div>
   <div class="field">
     <%= f.label :kat_id %><br>
-    <%= f.number_field :kat_id %>
+    <%= f.number_field :kat_id, :value=>@kat_id, :readonly=>true %>
   </div>
   <div class="actions">
     <%= f.submit %>

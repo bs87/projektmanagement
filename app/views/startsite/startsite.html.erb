@@ -57,7 +57,11 @@
             <% @vorgaenger.each do |vrg| %> 
               <% @fazVorgaenger = @ap_map[vrg.apvorgaengerid] %>
               <% @apdauer = Arbeitspaket.find(:all, :conditions => [ "id = ?", vrg.apvorgaengerid]) %>
-              <% @faz_temp = @fazVorgaenger + @apdauer.first.arbeitspaketdauer %>
+              <% if @apdauer.first %>
+                <% @faz_temp = @fazVorgaenger + @apdauer.first.arbeitspaketdauer %>
+              <% else %>
+                <% @faz_temp = 0 %>
+              <% end %>
               <%if @faz_temp > @faz %>
                 <% @faz = @faz_temp %>
               <% end %>

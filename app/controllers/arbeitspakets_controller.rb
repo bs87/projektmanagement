@@ -21,37 +21,40 @@ class ArbeitspaketsController < ApplicationController
 
   # GET /arbeitspakets/1/edit
   def edit
+    @aid = params[:aufgabeid]
+    @anzahlwerte = params[:anzahlwerte]
   end
 
   # POST /arbeitspakets
   # POST /arbeitspakets.json
   def create
     @arbeitspaket = Arbeitspaket.new(arbeitspaket_params) 
-
-    #respond_to do |format|
+@aufgabe = Aufgaben.find(:all, :conditions => [ "id = ?", @arbeitspaket.aufgabeid]).first  
+@pid = @aufgabe.projektsid
+    respond_to do |format|
       if @arbeitspaket.save
-        flash[:notice] ="Arbeitspaket was successfully created."
-        #format.json { render action: 'show', status: :created, location: @arbeitspaket }
-        redirect_to aufgabens_path
+        format.html { redirect_to aufgabens_path(:id => @pid), notice: 'Arbeitspaket was successfully created.' }
       else
-        format.html { render action: 'new' }
+        format.html { redirect_to new_arbeitspaket_path(:aufgabeid =>  @arbeitspaket.aufgabeid,:pid=>@pid), alert: 'Fehlerhafte Daten.' }
         format.json { render json: @arbeitspaket.errors, status: :unprocessable_entity }
       end
-    #end
+    end
   end
 
   # PATCH/PUT /arbeitspakets/1
   # PATCH/PUT /arbeitspakets/1.json
   def update
-    #respond_to do |format|
+    @aufgabe = Aufgaben.find(:all, :conditions => [ "id = ?", arbeitspaket_params.fetch(:aufgabeid)]).first  
+@pid = @aufgabe.projektsid
+    respond_to do |format|
       if @arbeitspaket.update(arbeitspaket_params)
-        format.html { redirect_to @arbeitspaket, notice: 'Arbeitspaket wurde erstellt.' }
+        format.html { redirect_to aufgabens_path(:id => @pid), notice: 'Arbeitspaket wurde geändert.' }
         #format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { redirect_to edit_arbeitspaket_path(:aufgabeid =>  @aufgabe.id,:pid=>@pid), alert: 'Fehlerhafte Daten.' }
         format.json { render json: @arbeitspaket.errors, status: :unprocessable_entity }
       end
-    #end
+    end
   end
 
   # DELETE /arbeitspakets/1
@@ -59,11 +62,11 @@ class ArbeitspaketsController < ApplicationController
   def destroy
     
     @arbeitspaket = Arbeitspaket.find(params[:id])
-   
+  @aufgabe = Aufgaben.find(:all, :conditions => [ "id = ?", @arbeitspaket.aufgabeid]).first  
+@pid = @aufgabe.projektsid
     @arbeitspaket.destroy
-    flash[:notice] ="Arbeitspaket wurde gelöscht."
     respond_to do |format|
-      format.html { redirect_to aufgabens_url }
+      format.html { redirect_to aufgabens_path(:id => @pid), notice: 'Arbeitspaket wurde gelöscht.' }
       format.json { head :no_content }
     end
   end

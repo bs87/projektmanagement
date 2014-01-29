@@ -7,48 +7,92 @@
     <title><%= content_for?(:title) ? yield(:title) : "Projektmanger2014" %></title>
     <meta name="description" content="">
     <meta name="author" content="">
-      
-    <!-- Le styles -->
-    <link href = "../assets/css/bootstrap.css" rel="stylesheet">
-    <script src  = "../assets/javascripts/jquery.js" type="text/javascript"></script>
 
+    <!-- Le styles -->
+    <link href = "/assets/bootstrap.css" rel="stylesheet">
+                    <link href = "/assets/bootstrap-combined.min.css" rel="stylesheet">
+
+
+        <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
 
 
-    <%= javascript_include_tag "application" %>
-    <script src="..assets/javascripts/rails.js" type="text/javascript"></script>
+
+<style>
+.navbar-inner2 {
+min-height: 40px;
+padding-left: 20px;
+padding-right: 20px;
+background-color: #fafafa;
+background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+background-repeat: repeat-x;
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+border: 3px solid #C2C2C2;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+
+}
+
+
+.navbar .nav > li > a {
+float: none;
+padding: 12px 25px 10px;
+color: #777777;
+
+}
+.navbar .nav>li>a {
+float: none;
+padding: 10px 15px 10px;
+color: #777;
+
+}
+.navbar .nav>li>a {
+float: none;
+padding: 10px 15px 10px;
+color: #777;
+
+}
+.navbar .btn, .navbar .btn-group {
+margin-top: 0px;
+}
+</style>
+
+
  </head>
   <body>
     <div class="navbar navbar-fluid-top">
-      <div class="navbar-inner">
+      <div class="navbar-inner2">
         <div class="container-fluid">
 
 
-          <a class="brand" href="/">Projektmanger2014 </a>
+          <span class="brand" style ="font-family: FontAwesome;font-weight: bold;color:black">Projektmanger2014 </span>
            <% if current_user %>
               <ul class="nav">
-              <li style="color:red; font-weight:bold"><%= link_to 'Home', root_path %></li> 
-              <li style="color:blue; font-weight:bold"><%= link_to 'Projekte', projekts_path ,'data-no-turbolink' => true,:id=> 'Projekte'%></li>
-              <li style="color:blue; font-weight:bold"><%= link_to 'WBS', aufgabens_path,'data-no-turbolink' => true, :id=> 'Aufgaben'%></li>
-              <li style="color:blue; font-weight:bold"><%= link_to 'RAM', verantwortlichkeitens_path ,'data-no-turbolink' => true,:id=> 'RAM'%></li>
-              <li style="color:blue; font-weight:bold"><%= link_to 'Roadmap', roadmaps_path,'data-no-turbolink' => true,:id=> 'Roadmap'%></li>
+              <li ><%= link_to ' Home', root_path, 'data-no-turbolink' => true ,:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-home "%></li> 
+              <li ><%= link_to ' Projekte', projekts_path ,'data-no-turbolink' => true,:id=> 'Projekte',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-cogs "%></li>
+              <li ><%= link_to ' WBS', aufgabens_path,'data-no-turbolink' => true, :id=> 'Aufgaben',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => " icon-sitemap "%></li>
+              <li ><%= link_to ' RAM', verantwortlichkeitens_path ,'data-no-turbolink' => true,:id=> 'RAM',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-group "%></li>
+              <li ><%= link_to ' Roadmap', roadmaps_path,'data-no-turbolink' => true,:id=> 'Roadmap',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-road "%></li>
               <%if current_user.email == "admin@pm.de"%>
-               <li><%= link_to 'Ressourcenverwaltung', ressourcens_path, :id=>'Aufgaben'%></li>
+               <li><%= link_to ' Ressourcenverwaltung', ressourcens_path, :id=>'Aufgaben',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-cog "%></li>
                <% end %>
-              <li style="color:blue; font-weight:bold"><%= link_to 'Einstellungen', edit_user_registration_path %></li>  
-              </ul>
-                <ul class="nav pull-right" style="float: right" "text-align:right" >
-               <li> <table style= "margin-top:5px"> <tr> <td> 
-                 <%= current_user.email %> 
-               </td><td>
-                 <%= link_to  "Logout", destroy_user_session_path, :class => "btn btn-danger btn-medium icon-white ", method: :delete  %> </td></tr></table></li>
-               
+              <li><%= link_to ' Einstellungen', edit_user_registration_path,:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => " icon-wrench " %></li> 
+              <li>  </li> 
+              <li>  </li> 
+
+              <li  > <%= link_to  " Logout", destroy_user_session_path(:id2 => current_user.id), :class => "btn  btn-danger icon-share-alt ",:style=>"font-family: FontAwesome;font-weight: bold;color:black", :method => :delete  %> </li>
               </ul>
 
                 <% else %>
                    <ul class="nav">
-              <li><%= link_to 'Anmelden', new_user_session_path  %></li>
-              <li><%= link_to 'Registrieren', new_user_registration_path  %></li>
+              <li ><%= link_to 'Anmelden', new_user_session_path ,:style=>"font-family: FontAwesome;font-weight: bold;color:black" %></li>
+              <li><%= link_to 'Registrieren', new_user_registration_path  ,:style=>"font-family: FontAwesome;font-weight: bold;color:black" %></li>
               </ul>
 
                <%end%>
@@ -62,7 +106,7 @@
     
        
     <div class="center-block" style="margin-left:20px; margin-right:20px">
-        <%= stylesheet_link_tag "application", :media => "all" %>
+
 
      <%= bootstrap_flash %>
         <%= yield %>

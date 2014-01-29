@@ -1,6 +1,10 @@
-<h1>Editing produkt</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Produkt bearbeiten</h2>
+  </div>
+  <div class="panel-body">
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @produkt %> |
-<%= link_to 'Back', produkts_path %>
+<%= link_to 'Zurück',  produkts_path(:projekt=>params[:projektid] ) , 'data-no-turbolink' => true%>
+</div>

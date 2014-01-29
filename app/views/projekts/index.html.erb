@@ -1,14 +1,7 @@
 
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     
-    <link rel="stylesheet" href="../assets/stylesheets/bootstrap.min.css"/>
-    <link rel="stylesheet" href="../assets/stylesheets/jquery.jOrgChart.css"/>
 
-    <link href="../assets/css/prettify.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="../assets/javascripts/rails.js"></script>
-    <script type="text/javascript" src="../assets/javascripts/prettify.js"></script>
-    <script src="../assets/javascripts/jquery.jOrgChart.js"></script>
-<script type="text/javascript" src="/assets/bootstrap.js?body=1"></script>
 
 <script>
     jQuery(document).bind('page:change', function() {
@@ -82,15 +75,18 @@
     border:1px solid #94a0b4;
     color:#000
 }
-}
 </style>
+
 
 </head>
 
-<h2>Deine Projekte</h2>
 
-<br>
-<div class="well sidebar-nav ">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Deine Projekte</h2>
+  </div>
+  <div class="panel-body">
+   
   <div class="dropdown">
   <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
     Projekt auswählen ...
@@ -104,25 +100,16 @@
            </li>
     <% end %>
   </ul>
-
-  <%= link_to 'Neues Projekt anlegen', new_projekt_path , :class => 'btn btn-lg btn-success ',:id => 'projektanlegen' %>
-  <% if @projekt != nil %>
-    <%= link_to 'PDF erstellen',projekts_pdfuebersicht_path(:id=>@projekt.id, :format => "pdf") , :class => 'btn btn-lg btn-success '%>
-  <% end %>
-
-</div>
+ <%= link_to 'Neues Projekt anlegen', new_projekt_path , :class => 'btn btn-lg btn-success ',:id => 'projektanlegen' %>
+   </div>
+  </div> 
 </div>
 
-<p></p>
 
-<div class="well sidebar-nav ">
-<p> Ansicht </p>
-<br>
- <% if @projekt != nil %>
- <%= link_to "Organisationsansicht", projekts_path(:view=>"tree", :id=>@projekt.id),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
- <%= link_to "Baumansicht", projekts_path(:id=>@projekt.id),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
- <% end %>
-</div>
+
+
+ 
+
     <!-- Projektliste -->
     <% if @projekt == nil %>
 
@@ -130,20 +117,39 @@
 <% else %>
       <!-- Nur Projekte wo Benutzer Projektleiter ist -->
       <% if @projekt.projektleiter != nil  %>
-        <h2><%= @projekt.projektname %>
-          <%= link_to 'Produkte', produkts_path(:projekt=>@projekt.id) , :class => 'btn btn-lg btn-success ',:id => 'produkte' %>
-        </h2>
 
-      <% if @tree != "tree" %>
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Projektname: <%= @projekt.projektname %>    
+ <span style="float: right" "text-align:right ;font-family: FontAwesome;font-weight: bold;" > <%= link_to ' Report erstellen',projekts_pdfuebersicht_path(:id=>@projekt.id, :format => "pdf") , :class => 'btn btn-info icon-book '%> </span> 
+    <span style="float: right" "text-align:right;font-family: FontAwesome;font-weight: bold;" >  <%= link_to ' Produkte  ', produkts_path(:projekt=>@projekt.id) , :class => 'btn btn-info icon-th' %>  </span>
+        
+</h3>
+  </div>
+
+   <br>
+  <% if @projekt != nil %>
+  
+  <%= link_to "Baumansicht", projekts_path(:id=>@projekt.id),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+  <%= link_to "Organisationsansicht", projekts_path(:view=>"tree", :id=>@projekt.id),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+ <% end %>
+ 
+
+
+
+
+
+<div class="panel-body">
+        <% if @tree != "tree" %>
        <div class="tree well " >
         <ul role="tree">
         <li class="parent_li" role="treeitem">
-        <br>
           <!-- Projektname mit Optionen -->
           <span style="background-color:#071346; color:#EEEEEE;" title="collapse this branche"><i class="icon-folder-open"></i><b><%= @projekt.projektname %></b></span>
             <!-- Projektoptionen -->
             <%= link_to '', @projekt, :class=>"icon-list-alt" %>
-            <%= link_to('', edit_projekt_path(@projekt), :class => "icon-wrench") %>
+            <%= link_to('', edit_projekt_path(@projekt,:projektid => @projekt.id), :class => "icon-wrench") %>
             <%= link_to('', @projekt, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
         
             <!-- Aufgabe Unterebene 1 -->
@@ -156,7 +162,7 @@
                      <span style="background-color:#586baf;" title="collapse this branche"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %></span>
                      <!-- Aufgaben Optionen -->
                      <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
-                     <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                     <%= link_to '', edit_aufgaben_path(aufgabe,:projektid => @projekt.id,:ebene =>aufgabe.aufgabenvorgaenger), :class=>"icon-wrench" %>
                      <%= link_to('', aufgabe, :method => :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
                     
                     <!-- Aufgabe Unterebene 2 -->
@@ -169,7 +175,7 @@
                              <%= aufgabe.aufgabenname %></span>
                            <!-- Aufgaben Optionen -->
                            <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
-                           <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                           <%= link_to '', edit_aufgaben_path(aufgabe,:projektid => @projekt.id,:ebene =>aufgabe.aufgabenvorgaenger), :class=>"icon-wrench" %>
                            <%= link_to('', aufgabe, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
 
                             <!-- Aufgabe Unterebene 3 -->
@@ -181,7 +187,7 @@
                                       <span style="background-color:#b7cdfc;"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %> </span>
                                       <!-- Aufgaben Optionen -->
                                       <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
-                                      <%= link_to '', edit_aufgaben_path(aufgabe), :class=>"icon-wrench" %>
+                                      <%= link_to '', edit_aufgaben_path(aufgabe,:projektid => @projekt.id,:ebene =>aufgabe.aufgabenvorgaenger), :class=>"icon-wrench" %>
                                       <%= link_to('', aufgabe, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
                                   </li>
                                 <% end %>
@@ -212,7 +218,7 @@
   </ul>
  
 
-<br>
+
 
 
 <% else %>
@@ -300,10 +306,19 @@
       
         <%end%>
 <% end %>
+</div>
+</div>
+ </div>
+        
+  </div>
+               
+
+
 
     </script>
     <script>$(function () {
     $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li ul > li').hide();
     $('.tree li.parent_li > span').on('click', function (e) {
         var children = $(this).parent('li.parent_li').find(' > ul > li');
         if (children.is(":visible")) {

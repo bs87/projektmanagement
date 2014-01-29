@@ -7,4 +7,14 @@ class UsersController < ApplicationController
       format.json { render json: @user }
     end
 end
+ 
+def destroy
+    @user = User.find(params[:id2])
+	@user.destroy
+    respond_to do |format|
+        format.html { redirect_to root_url}
+
+    end
+end
+
 end

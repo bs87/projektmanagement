@@ -48,7 +48,8 @@ class VerantwortlichkeitensController < ApplicationController
   # POST /verantwortlichkeitens.json
   def create
     @verantwortlichkeiten = Verantwortlichkeiten.new(verantwortlichkeiten_params)
-
+    @aufgabe = Aufgaben.find(:all, :conditions => [ "id = ?", @verantwortlichkeiten.arbeitspaketid]).first  
+    @pid = @aufgabe.projektsid
     #Gewünschte Intensitaet fuer AP
     @intensitaet = verantwortlichkeiten_params.fetch(:intensitaet)   
     #ApId für die zu erstellende Ressource
@@ -62,19 +63,19 @@ class VerantwortlichkeitensController < ApplicationController
     @new_intensitaet = @intensitaetmax.to_i-@intensitaet.to_i
 
     #Prüfen ob Max überschritten wird
+     respond_to do |format|
     if @new_intensitaet<0
       redirect_to new_verantwortlichkeiten_path(:overmax=>true)
     else
       if @verantwortlichkeiten.save
       
         @ressource.first.update( :ressourcemax => @new_intensitaet )
-        redirect_to verantwortlichkeitens_path
-        #format.html { redirect_to @verantwortlichkeiten, notice: 'Verantwortlichkeiten was successfully created.' }
-        #format.json { render action: 'show', status: :created, location: @verantwortlichkeiten }
+        format.html { redirect_to verantwortlichkeitens_path(:id => @pid), notice: 'Ressource was successfully created.' }
       else
-        format.html { render action: 'new' }
+        format.html { redirect_to new_verantwortlichkeiten_path(:apid=> @verantwortlichkeiten.arbeitspaketid, :id => @pid), error: 'intensität fehlt!.' }
         format.json { render json: @verantwortlichkeiten.errors, status: :unprocessable_entity }
       end
+    end
     end
   end
 
@@ -97,7 +98,8 @@ class VerantwortlichkeitensController < ApplicationController
   # DELETE /verantwortlichkeitens/1.json
   def destroy
     @verantwortlichkeiten = Verantwortlichkeiten.find(params[:id])
-
+@aufgabe = Aufgaben.find(:all, :conditions => [ "id = ?", @verantwortlichkeiten.arbeitspaketid]).first  
+    @pid = @aufgabe.projektsid
     #Gewünschte Intensitaet fuer AP
     @intensitaet = params[:intensitaet]
     #@intensitaet = verantwortlichkeiten_params.fetch(:intensitaet)   
@@ -117,7 +119,7 @@ class VerantwortlichkeitensController < ApplicationController
     @verantwortlichkeiten.destroy
     
     respond_to do |format|
-      format.html { redirect_to verantwortlichkeitens_url }
+      format.html { redirect_to verantwortlichkeitens_path(:id => @pid) , alert: 'Verantwortlichkeiten was successfully deleted.'}
       format.json { head :no_content }
     end
   end

@@ -48,11 +48,11 @@ function getParam(variable){
   <% end %>
 
   <div class="field">
-    <%= f.label :arbeitspaketname %><br>
-    <%= f.text_field :arbeitspaketname %>
+    <%= f.label :arbeitspaketname %>
+    <%= f.text_field :arbeitspaketname, :id=>'arbeitspaketname'  %>
   </div>
   <div class="field">
-    <%= f.label :arbeitspaketbeschreibung %><br>
+    <%= f.label :arbeitspaketbeschreibung %>
     <%= f.text_field :arbeitspaketbeschreibung %>
   </div>
 
@@ -90,12 +90,12 @@ function getParam(variable){
 
     <br>
     <div class="field">
-      <%= f.label :arbeitspaketdauer %><br>
+      <%= f.label :arbeitspaketdauer %>
       <%= f.text_field :arbeitspaketdauer, :id=>"arbeitspaketdauer" %>
     </div>
   </div>
   <div class="field">
-    <%= f.label :ArbeitspaketTyp %><br>
+    <%= f.label :ArbeitspaketTyp %>
     <%= f.select :arbeitspakettyp, [['Standard','Standard'],['Milestone','Milestone'],['Release','Release']] %>
   </div>
   <div class="field">
@@ -109,21 +109,21 @@ function getParam(variable){
         <% @produkte.push( prod ) %>
       <% end %>
     <% end %>
-    <%= f.label :produkt %><br>
-    <%=f.collection_select(:produkt_id, @produkte, :id, :name, :include_blank => true) %>
+    <%= f.label :produkt %>
+    <%=f.collection_select(:produkt_id, @produkte, :id, :name, :include_blank => true, :id=>'produkt' )   %>
   </div>
   <div class="field">
-    <%= f.label :eingangsdokumente %><br>
+    <%= f.label :eingangsdokumente %>
     <%= f.text_field :arbeitspaketeingangsdokumente %>
   </div>
   <div class="field">
-    <%= f.label :ausgangsdokumente %><br>
+    <%= f.label :ausgangsdokumente %>
     <%= f.text_field :arbeitspaketausgangsdokumente %>
   </div>
   <div class="field">
     <%= f.hidden_field :aufgabeid, :value => @aid, :readonly=> true%>
   </div>
-  <div class="actions">
+  <div class="field">
     <%= f.submit %>
   </div>
 <% end %>

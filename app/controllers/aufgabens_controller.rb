@@ -51,6 +51,8 @@ class AufgabensController < ApplicationController
 
   # GET /aufgabens/1/edit
   def edit
+     @ebene = params[:ebene]
+    @pid = params[:projektid]
   end
 
   # POST /aufgabens
@@ -60,36 +62,39 @@ class AufgabensController < ApplicationController
 
 
          # if !@nachfolger1.present? 
-  
-    #respond_to do |format|
-      if @aufgaben.save
-
-           @vorgaenger = aufgaben_params[:aufgabenvorgaenger]
+             @vorgaenger = aufgaben_params[:aufgabenvorgaenger]
             @aufgabenname = aufgaben_params[:aufgabenname]
           @projektsid = aufgaben_params[:projektsid]
+    respond_to do |format|
+      if @aufgaben.save
+
+
      
       @allpakete = Arbeitspaket.find(:all, :conditions => [ "aufgabeid = ?", @vorgaenger])
       @id = Aufgaben.where(aufgabenname: @aufgabenname , projektsid: @projektsid ) 
       @allpakete.each do |paket| 
-                paket.update_attribute(:aufgabeid,@aufgaben.id) 
-                paket.save
+      paket.update_attribute(:aufgabeid,@aufgaben.id) 
+      paket.save
          end         
-        #format.html { redirect_to @aufgaben, notice: 'Aufgaben was successfully created.' }
-        #format.json { render action: 'show', status: :created, location: @aufgaben }
-        redirect_to projekts_path
+        format.html { redirect_to projekts_path(:id => @projektsid), notice: 'Aufgaben was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @aufgaben }
+
       else
-        format.html { render action: 'new' }
+        format.html { redirect_to new_aufgaben_path(:id => @projektsid), alert: 'Name muss eingetragen werden.' }
         format.json { render json: @aufgaben.errors, status: :unprocessable_entity }
       end
-    #end
+    end
   end
 
   # PATCH/PUT /aufgabens/1
   # PATCH/PUT /aufgabens/1.json
   def update
+     @pid = params[:projektid]
+         @aufgaben = Aufgaben.find(params[:id])
+   @projektsid =@aufgaben.projektsid
     respond_to do |format|
       if @aufgaben.update(aufgaben_params)
-        format.html { redirect_to @aufgaben, notice: 'Aufgaben was successfully updated.' }
+        format.html { redirect_to projekts_path(:id => @projektsid), notice: 'Aufgaben was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -102,10 +107,10 @@ class AufgabensController < ApplicationController
   # DELETE /aufgabens/1.json
   def destroy
      @aufgaben = Aufgaben.find(params[:id])
-   
+   @projektsid =@aufgaben.projektsid
     @aufgaben.destroy
     respond_to do |format|
-      format.html { redirect_to projekts_url }
+      format.html { redirect_to projekts_path(:id => @projektsid) }
       format.json { head :no_content }
     end
   end

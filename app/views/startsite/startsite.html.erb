@@ -5,11 +5,10 @@
       <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
                     <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
-                                          <script type="text/javascript" src="/assets/jquery.js?body=1"></script>
-                                   <script type="text/javascript" src="/assets/bootstrap.js?body=1"></script>
+
     <!-- Jumbotron -->
     <% if current_user %>
-      <h1> Willkommen</h1><br><br>
+     
 
 
       <!-- ########################## Hashmap erstellen ##################### -->
@@ -75,22 +74,39 @@
       <% end %>
       <!-- ###################################################################-->
 
-
-
-      <h4> Liste ihrer aktuell zugewiesenen Arbeitspakete </h4>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 style ="font-family: FontAwesome;font-weight: bold;", class="panel-title">Willkommen => <%= current_user.email %></h2>
+  </div>
+ </div>
+ <br>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 style ="font-family: FontAwesome;font-weight: bold;" ,class="panel-title"> Liste ihrer aktuell zugewiesenen Arbeitspakete
+ </h3>
+  </div>
+<div class="panel-body">
       <br>
-      <table class="table table-striped">
+      <table class="table table-bordered table-hover">
         <tr>
-          <th> Projekt </th>
-          <th> Arbeitspaketname </th>
-          <th> Vorgaenger </th>
-          <th> Beginn </th>
-          <th> Ende </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Projekt </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Arbeitspaketname </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Vorgaenger </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Beginn </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Ende </th>
         </tr>
 
         <% if !@eigene_verant.empty? %>
           <% @eigene_verant.each do |ev| %>
-            <tr>
+          <% @aufgabe = Aufgaben.find(:all, :conditions=> ["id=?", @eigenes_ap.first.id]) %>
+              <% @projekt = Projekt.find(:all, :conditions=> ["id=?", @aufgabe.first.projektsid]).first %>
+              <% @startdate = @projekt.projektstart  %>
+              <% @enddate = @startdate + @ap_map.fetch( @eigenes_ap.first.id)+@eigenes_ap.first.arbeitspaketdauer%>
+              <% if  @enddate - Date.now < 10 %>
+            <tr class="error">
+            <% else %>
+             <tr>
+            <% end %>
               <% @eigenes_ap = Arbeitspaket.find(:all, :conditions=> [" id = ?", ev.arbeitspaketid]) %>
               <!--------------- Projekt -->
               <td>
@@ -100,8 +116,8 @@
                 <%= @projekt.first.projektname %> 
               </td>
               <!--------------- Arbeitspaketname -->
-              <td> <%= @eigenes_ap.first.arbeitspaketname %> </td>
-              <td> 
+              <td style ="font-family: FontAwesome;font-weight: bold;"> <%= @eigenes_ap.first.arbeitspaketname %> </td>
+              <td style ="font-family: FontAwesome;font-weight: bold;"> 
                 
                 <!------------- Vorgänger ------>           
                 <% @vorgaenger = Arbeitspaketvorgaenger.find(:all,:conditions => [ "apid = ?", ev.arbeitspaketid]) %>           
@@ -114,32 +130,32 @@
               </td> 
               
               <!------------ Beginn des AP -->
-              <% @aufgabe = Aufgaben.find(:all, :conditions=> ["id=?", @eigenes_ap.first.id]) %>
-              <% @projekt = Projekt.find(:all, :conditions=> ["id=?", @aufgabe.first.projektsid]).first %>
-              <% @startdate = @projekt.projektstart  %>
-              <td> <%= @startdate + @ap_map.fetch( @eigenes_ap.first.id)%> </td>
-              
+              <td style ="font-family: FontAwesome;font-weight: bold;"> <%= @startdate + @ap_map.fetch( @eigenes_ap.first.id)%> </td>
               <!------------ Ende  des AP ---->
-              <td> <%= @startdate + @ap_map.fetch( @eigenes_ap.first.id)+@eigenes_ap.first.arbeitspaketdauer%> </td>
+              <td style ="font-family: FontAwesome;font-weight: bold;">    <%=   @enddate      %>      </td>
             </tr>
           <% end %> 
         <% else %>
           <tr> 
-            <td><i> <%= "keine" %> </i></td>
-            <td><i> <%= "keine" %> </i></td>
-            <td><i> <%= "keine" %> </i></td>
-            <td><i> <%= "keine" %> </i></td>
-            <td><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"> <i> <%= "keine" %> </i></td>
           </tr>
         <% end %>
       </table>
-
+</div>
+</div>
+</div>
       <br>
     <% else %>
 
-      <div class="jumbotron fluid">   
-        <%= image_tag("shutterstock.jpg", height: '400', width: '400', :alt => "rss feed") %>
-      </div>
+         <div style="vertical-align:middle; align=center ; position:auto"  >
+    
+    <p align="center"><%= image_tag("shutterstock.jpg", height: '400', width: '400', :align=> "middle") %></p> 
+        </div>
+
       <hr>
       <!-- Example row of columns -->
       <div class="row-fluid">

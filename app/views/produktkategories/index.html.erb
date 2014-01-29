@@ -13,14 +13,14 @@
   </thead>
 
   <tbody>
-    <% @produktkategories.each do |produktkategorie| %>
+    <% @produktkategories.each do |produktkategory| %>
       <tr>
-        <td><%= produktkategorie.name %></td>
-        <td><%= produktkategorie.projekt_id %></td>
-        <td><%= produktkategorie.vorgaenger_id %></td>
-        <td><%= link_to 'Show', produktkategorie %></td>
-        <td><%= link_to 'Edit', edit_produktkategorie_path(produktkategorie) %></td>
-        <td>       <%= link_to('Destroy', produktkategorie, :method => :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %></td>
+        <td><%= produktkategory.name %></td>
+        <td><%= produktkategory.projekt_id %></td>
+        <td><%= produktkategory.vorgaenger_id %></td>
+        <td><%= link_to 'Show', produktkategory %></td>
+        <td><%= link_to 'Edit', edit_produktkategory_path(produktkategory) %></td>
+        <td><%= link_to 'Destroy', produktkategory, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +28,4 @@
 
 <br>
 
-<%= link_to 'New Produktkategorie', new_produktkategorie_path %>
+<%= link_to 'New Produktkategorie', new_produktkategory_path %>

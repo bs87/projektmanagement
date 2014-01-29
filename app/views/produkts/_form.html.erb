@@ -21,9 +21,9 @@
   </div>
   <div class="field">
     <%= f.label :kat_id %><br>
-    <%= f.number_field :kat_id, :value=>@kat_id, :readonly=>true %>
+    <%= f.hidden_field :kat_id, :value=>@kat_id, :readonly=>true %>
   </div>
-  <div class="actions">
+  <div class="field">
     <%= f.submit %>
   </div>
 <% end %>

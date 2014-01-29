@@ -1,6 +1,10 @@
-<h1>Editing projekt</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Projekt bearbeiten</h2>
+  </div>
+  <div class="panel-body">
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @projekt %> |
-<%= link_to 'Back', projekts_path %>
+<%= link_to 'Zurück', projekts_path(:id=>params[:projektid] ) , 'data-no-turbolink' => true%>
+</div>

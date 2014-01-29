@@ -27,13 +27,14 @@ class ArbeitspaketvorgaengersController < ApplicationController
   # POST /arbeitspaketvorgaengers.json
   def create
     @arbeitspaketvorgaenger = Arbeitspaketvorgaenger.new(arbeitspaketvorgaenger_params)
-
+    @aufgabe = Aufgaben.find(:all, :conditions => [ "id = ?", @arbeitspaketvorgaenger.apid]).first  
+    @pid = @aufgabe.projektsid
     respond_to do |format|
       if @arbeitspaketvorgaenger.save
-        format.html { redirect_to @arbeitspaketvorgaenger, notice: 'Arbeitspaketvorgaenger was successfully created.' }
+        format.html { redirect_to verantwortlichkeitens_path(:id => @pid), notice: 'Arbeitspaketvorgaenger was successfully created.' }
         format.json { render action: 'show', status: :created, location: @arbeitspaketvorgaenger }
-      else
-        format.html { render action: 'new' }
+      else 
+        format.html { redirect_to new_arbeitspaketvorgaenger_path(:apid=>@arbeitspaketvorgaenger.apid, :id => @pid), error: 'Arbeitspaketvorgaenger auswählen!.' }
         format.json { render json: @arbeitspaketvorgaenger.errors, status: :unprocessable_entity }
       end
     end
@@ -56,9 +57,11 @@ class ArbeitspaketvorgaengersController < ApplicationController
   # DELETE /arbeitspaketvorgaengers/1
   # DELETE /arbeitspaketvorgaengers/1.json
   def destroy
+    @aufgabe = Aufgaben.find(:all, :conditions => [ "id = ?", @arbeitspaketvorgaenger.apid]).first  
+    @pid = @aufgabe.projektsid
     @arbeitspaketvorgaenger.destroy
     respond_to do |format|
-      format.html { redirect_to arbeitspaketvorgaengers_url }
+      format.html { redirect_to verantwortlichkeitens_path(:id => @pid), alert: 'Arbeitspaketvorgaenger was successfully deleted.' }
       format.json { head :no_content }
     end
   end

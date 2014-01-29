@@ -1,5 +1,10 @@
-<h1>New produktkategorie</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Neues Produktkategorie anlegen</h2>
+  </div>
+  <div class="panel-body">
 
 <%= render 'form' %>
 
-<%= link_to 'Back', produktkategories_path %>
+<%= link_to 'Back',produkts_path(:projekt=>params[:projektid] ) , 'data-no-turbolink' => true%>
+</div>

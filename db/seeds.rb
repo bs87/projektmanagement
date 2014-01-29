@@ -49,9 +49,9 @@ Arbeitspaket.create!( id: 2, arbeitspaketname: 'Ressourcen festlegen', arbeitspa
 
 #Planung
 Arbeitspaket.create!( id: 3, arbeitspaketname: 'Statik Pläne erstellen', arbeitspaketbeschreibung: 'Statik bestimmen', arbeitspaketdauer: 5, arbeitspaketziel: 'Statik ist berechnet', arbeitspaketeingangsdokumente: 'Bauunterlagen', arbeitspaketsausgangsdokumente: 'Statikzeichnung', aufgabeid: 5, arbeitspakettyp: 'Standard', produkt_id: 1 )
-Arbeitspaket.create!( id: 4, arbeitspaketname: 'Ansprechpartner ermitteln', arbeitspaketbeschreibung: 'Beschreibung Ansprechpartner ermittlen', arbeitspaketdauer: 6, arbeitspaketziel: 'Ansprechpartner sind ermittelt', arbeitspaketeingangsdokumente: nil, arbeitspaketsausgangsdokumente: 'Liste der Ansprechpartner', aufgabeid: 6, arbeitspakettyp: 'Release' )
-Arbeitspaket.create!( id: 5, arbeitspaketname: 'Präsentationslayout Designen', arbeitspaketbeschreibung: 'Design bestimmen', arbeitspaketdauer: 2, arbeitspaketziel: 'Design steht', arbeitspaketeingangsdokumente: 'Design in CSS Format', arbeitspaketsausgangsdokumente: 'Pflichtenheft', aufgabeid: 11, arbeitspakettyp: 'Milestone' )
-Arbeitspaket.create!( id: 6, arbeitspaketname: 'Präsentation halten', arbeitspaketbeschreibung: 'Präsi halten', arbeitspaketdauer: 1, arbeitspaketziel: 'Präsi gehalten', arbeitspaketeingangsdokumente: 'PPP', arbeitspaketsausgangsdokumente: nil, aufgabeid: 11, arbeitspakettyp: 'Standard' )
+Arbeitspaket.create!( id: 4, arbeitspaketname: 'Ansprechpartner ermitteln', arbeitspaketbeschreibung: 'Beschreibung Ansprechpartner ermittlen', arbeitspaketdauer: 6, arbeitspaketziel: 'Ansprechpartner sind ermittelt', arbeitspaketeingangsdokumente: nil, arbeitspaketsausgangsdokumente: 'Liste der Ansprechpartner', aufgabeid: 6, arbeitspakettyp: 'Release', produkt_id: 3 )
+Arbeitspaket.create!( id: 5, arbeitspaketname: 'Präsentationslayout Designen', arbeitspaketbeschreibung: 'Design bestimmen', arbeitspaketdauer: 2, arbeitspaketziel: 'Design steht', arbeitspaketeingangsdokumente: 'Design in CSS Format', arbeitspaketsausgangsdokumente: 'Pflichtenheft', aufgabeid: 11, arbeitspakettyp: 'Milestone', produkt_id: 4 )
+Arbeitspaket.create!( id: 6, arbeitspaketname: 'Präsentation halten', arbeitspaketbeschreibung: 'Präsi halten', arbeitspaketdauer: 1, arbeitspaketziel: 'Präsi gehalten', arbeitspaketeingangsdokumente: 'PPP', arbeitspaketsausgangsdokumente: nil, aufgabeid: 11, arbeitspakettyp: 'Standard' , produkt_id: 1)
 
 
 Verantwortlichkeiten.delete_all

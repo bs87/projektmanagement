@@ -1,6 +1,10 @@
-<h1>Editing arbeitspaketvorgaenger</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Arbeitspaketvorgaenger bearbeiten</h2>
+  </div>
+  <div class="panel-body">
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @arbeitspaketvorgaenger %> |
-<%= link_to 'Back', arbeitspaketvorgaengers_path %>
+<%= link_to 'Zurück', projekts_path(:id	=>params[:pid] ) , 'data-no-turbolink' => true%>
+</div>

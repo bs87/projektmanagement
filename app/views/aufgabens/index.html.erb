@@ -2,14 +2,18 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
   <title>jOrgChart - A jQuery OrgChart Plugin</title>
-  <link rel="stylesheet" href="../assets/stylesheets/bootstrap.min.css"/>
-  <link rel="stylesheet" href="../assets/stylesheets/jquery.jOrgChart.css"/>
+              <title>jOrgChart - A jQuery OrgChart Plugin</title>
+    <link rel="stylesheet" href="/assets/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/jquery.jOrgChart.css"/>
+    <link href="/assets/prettify.css" type="text/css" rel="stylesheet" />
 
-  <link href="../assets/css/prettify.css" type="text/css" rel="stylesheet" />
+    
+       <script src="/assets/prettify.js"></script>
 
-  <script type="text/javascript" src="../assets/javascripts/prettify.js"></script>
-  <script src="../assets/javascripts/jquery.jOrgChart.js"></script>
-  <script type="text/javascript" src="/assets/bootstrap.js?body=1"></script>
+    <script src="/assets/jquery.jOrgChart.js"></script>
+
+
+
 
   <script>
     jQuery(document).bind('page:change', function() {
@@ -19,21 +23,44 @@
         });
     });
   </script>
+
+<style>
+media="all"
+form {
+margin: 0 0 0px;
+}
+form {
+margin: 0 0 0px;
+}
+form {
+margin: 0 0 0px;
+}
+form {
+margin-bottom: 0px;
+}
+</style>
+
+
 </head>
 
-<h1>Work Breakdown Structure</h1>
-<br><br>
+
+
 <% if @projekts==nil || @projekt==nil %> 
   <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
 <% else %>
 
-  <div class="well sidebar-nav">
-    <div class="dropdown">
-      <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
-        Projekt auswählen ...
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+ <div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Work Breakdown Structure</h2>
+  </div>
+  <div class="panel-body">
+   
+  <div class="dropdown">
+  <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
+    Projekt auswählen ...
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 
         <% @projekts.each do |projekte| %>
             <li> 
@@ -42,14 +69,17 @@
       </ul>
     </div>
   </div>
+  </div>
 
-  <br><br>
-  
-  <h2>Projektname: <%= @projekt.projektname %></h2>
-  <br><br>
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Projektname: <%= @projekt.projektname %> </h3>
+  </div>
+<div class="panel-body">
   <ul id="org" style="display: none;">   
       <li> 
-        <span  style=" font-weight:bold"> <%= @projekt.projektname %> </span>
+        <span  style ="font-family: FontAwesome;font-weight: bold;"> <%= @projekt.projektname %> </span>
         <!-- Ebene 1 -->
         <ul>
           <% @aufgaben.each do |aufgabe| %>
@@ -57,10 +87,10 @@
               <% @vorgaenger1 = aufgabe.id %>
               <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
               <li> 
-                <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                <span  style ="font-family: FontAwesome;font-weight: bold;"> <%= aufgabe.aufgabenname %> </span>
                 <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
                  <br>
-                 <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id),:class => "btn btn-success btn-mini icon-white " %> 
+                 <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id,:pid=>@projekt.id),:class => "btn btn-success btn-mini icon-white " %> 
 
                   <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
                   <ul>
@@ -68,16 +98,17 @@
                       <% if aufgabe.id == arbeitspaket.aufgabeid %>     
                           <li style= "border-color: green"> 
                              <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                   <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
+                                   <span  style="color:blue; font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span> 
                                     <% end %>
                                     <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                    <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                    <span  class=" icon-map-marker", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                     <% end %>
                                     <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                    <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                    <span  class=" icon-star-empty", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                     <% end %> 
                                 <br>
-                                     <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
+                                    <%= button_to '-', arbeitspaket,  method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger btn-mini icon-trash" %>  
+                                    <%= link_to '', edit_arbeitspaket_path(arbeitspaket,:aufgabeid=>aufgabe.id,:pid=>@projekt.id),:class => "btn btn-info btn-mini icon-wrench" %>  
                           </li>                        
                       <% end %>
                     <% end %>
@@ -92,27 +123,28 @@
                         <% @vorgaenger2 = aufgabe.id %>
                         <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
                         <li> 
-                          <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                          <span  style ="font-family: FontAwesome;font-weight: bold;"> <%= aufgabe.aufgabenname %> </span>
                           <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
                            <br>
-                            <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class => "btn btn-success btn-mini icon-white"  %>
-
+                            <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id,:pid=>@projekt.id), :class => "btn btn-success btn-mini icon-white"  %>
                             <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
                             <ul>
                               <% @arbeitspakets.each do |arbeitspaket| %>
                                 <% if aufgabe.id == arbeitspaket.aufgabeid %>     
                                     <li style= "border-color: green" > 
                                     <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                   <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
+                                   <span  style="color:blue;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span> 
                                     <% end %>
                                     <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                    <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                    <span  class=" icon-map-marker", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                     <% end %>
                                     <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                    <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                    <span  class=" icon-star-empty", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                     <% end %>
-                                      <br>
-                                     <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
+                                   
+                                      <%= button_to '-', arbeitspaket,  method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger btn-mini icon-trash" %>  
+                                    <%= link_to '', edit_arbeitspaket_path(arbeitspaket,:aufgabeid=>aufgabe.id,:pid=>@projekt.id),:class => "btn btn-info btn-mini icon-wrench" %>  
+
                                     </li>                        
                                 <% end %>
                               <% end %>
@@ -127,9 +159,9 @@
                                   <% @vorgaenger3 = aufgabe.id %>
                                   <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
                                   <li> 
-                                   <span  style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span>
+                                   <span style ="font-family: FontAwesome;font-weight: bold;"> <%= aufgabe.aufgabenname %> </span>
                                      <br>
-                                    <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id), :class => "btn btn-success btn-mini icon-white"  %>
+                                    <%= link_to '+', new_arbeitspaket_path(:aufgabeid=>aufgabe.id,:pid=>@projekt.id), :class => "btn btn-success btn-mini icon-white"  %>
 
                                     <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
                                     <ul>
@@ -137,16 +169,17 @@
                                         <% if aufgabe.id == arbeitspaket.aufgabeid %>     
                                           <li style= "border-color: green"> 
                                             <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                              <span  style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span> 
+                                              <span  style="color:blue; font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span> 
                                             <% end %>
                                             <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                              <span  class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                              <span  class=" icon-map-marker", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                             <% end %>
                                             <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                              <span  class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                              <span  class=" icon-star-empty", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                             <% end %>
                                             <br>
-                                            <%= button_to '-', arbeitspaket,  :method =>  :delete, :class => "btn btn-danger btn-mini icon-white " %>
+                                             <%= button_to '-', arbeitspaket,  method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger btn-mini icon-trash" %>  
+                                    <%= link_to '', edit_arbeitspaket_path(arbeitspaket,:aufgabeid=>aufgabe.id,:pid=>@projekt.id),:class => "btn btn-info btn-mini icon-wrench" %> 
                                             </li>                         
                                         <% end %>
                                       <% end %>
@@ -173,6 +206,8 @@
   <div class="well sidebar-nav">
     <div id="chart" class="orgChart"></div>  
   </div > 
+  </div>
+  </div>
 <% end %>
             
  <script>

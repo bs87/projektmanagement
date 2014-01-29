@@ -1,10 +1,6 @@
 <html lang="en">
 
     <head>
-       <script type="text/javascript" src="/assets/jquery.js?body=1"></script>
-
-<script type="text/javascript" src="/assets/bootstrap.js?body=1"></script>
-    <link href="../assets/css/bootstrap.css" rel="stylesheet">
 
 <style>
 table.table-collapsed{
@@ -37,7 +33,6 @@ border-radius: 0px;
     </head>
 
 
-<h1>Roadmap</h1>
 
 
 <% if @projekts == nil || @projekt==nil %>
@@ -204,10 +199,13 @@ border-radius: 0px;
 
 <% end %>
 
-     
-<br>
-<div class="well sidebar-nav ">
-  <div class="dropdown">
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Roadmap</h2>
+  </div>
+  <div class="panel-body">
+ <div class="dropdown">
   <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
     Projekt auswählen ...
     <span class="caret"></span>
@@ -222,25 +220,38 @@ border-radius: 0px;
      </li>
   <% end %>
   </ul>
-</div>
+  </div>
+  </div> 
 </div>
 
-<h2>Projektname: <%= @projekt.projektname %></h2>
-<br>
 
-<span class="sr-only icon-map-marker"> Milestone</span>
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Projektname: <%= @projekt.projektname %> </h3>
+  </div>
+  <div class="panel-body">
+<span class="sr-only icon-map-marker"style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> Milestone</span>
 <br>
-<span class="sr-only icon-star-empty"> Release</span>
+<span class="sr-only icon-star-empty"style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> Release</span>
 <br>
-<div class="centered">
+</div>
+<div class="centered">  
+<% if @projekt != nil %>
+  <%= link_to "Tabellenansicht", roadmaps_path(:id=>@projekt.id),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+  <%= link_to "Gantt-Diagramm", roadmaps_path(:view=>"gantt", :id=>@projekt.id),'data-no-turbolink' => true, :type=>"button", :class=>"btn btn-default"%>
+ <% end %>
+ 
+<div class="panel-body">
+        <% if @gantt != "gantt" %>
+
 <table class="table table-hover table-bordered">
 <thead>
           <tr>
-            <th>Projektteil</th>
-            <th>Dauer</th>
-            <th>Status</th>
-            <th>Startdatum</th>
-            <th>Zieldatum</th>
+            <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;" >Projektteil</th>
+            <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Dauer</th>
+            <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Startdatum</th>
+            <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Zieldatum</th>
           </tr>
  </thead>
 
@@ -255,7 +266,10 @@ border-radius: 0px;
                 <% @vorgaenger1 = aufgabe.id %>
                 <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
                <tr class="success">
-                 <td> <span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span></td>
+                 <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;" > <span style=" font-family: FontAwesome;font-weight: bold;"> <%= aufgabe.aufgabenname %> </span></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
                  </tr>
                   <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
                       <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
@@ -263,22 +277,22 @@ border-radius: 0px;
                       <% @arbeitspakets.each do |arbeitspaket| %>
                         <% if aufgabe.id == arbeitspaket.aufgabeid %>
                         <tr class="error">
-                            <td ><i class="icon-arrow-right">  <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                  <span style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span>
+                            <td style="vertical-align: middle; font-family: FontAwesome;font-weight: bold;;"><i class="icon-arrow-right">  <% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                  <span style="color:blue; font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <span class=" icon-map-marker", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <span class=" icon-star-empty", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                       
                                       <% end %>
                                       </td>
-                                      <td><%= arbeitspaket.arbeitspaketdauer %> </td>
-                                     <td> </td>
+                                      <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
+                                    
                                        <% @faz = @ap_map.values_at(arbeitspaket.id) %>
-                                   <td><%= @startdate + @faz[0].days %> </td>
-                                   <td> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
                                 </tr>
                         <% end %>
                       <% end %>
@@ -291,7 +305,10 @@ border-radius: 0px;
                           <% @vorgaenger2 = aufgabe.id %>
                           <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
                         <tr class="success">
-                            <td ><span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span></td>
+                            <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;" ><span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             </tr >
                             <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
                             <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
@@ -300,20 +317,20 @@ border-radius: 0px;
                                   <% if aufgabe.id == arbeitspaket.aufgabeid %>
                                   <tr class="error">
                                         <td><i class="icon-arrow-right" ><% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                     <span style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span>
+                                     <span style="color:blue;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <span class=" icon-map-marker", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <span class=" icon-star-empty", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                        <% end %>
                                       </td>
-                                      <td><%= arbeitspaket.arbeitspaketdauer %> </td>
-                                     <td> </td>
+                                      <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
+                                     
                                        <% @faz = @ap_map.values_at(arbeitspaket.id) %>
-                                   <td><%= @startdate + @faz[0].days %> </td>
-                                   <td> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
                                       </tr>
                                   <% end %>
                                 <% end %>
@@ -326,32 +343,34 @@ border-radius: 0px;
                                     <% @vorgaenger3 = aufgabe.id %>
                                     <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
                                     <tr class="success">
-                                      <td> <span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span></td>
+                                      <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <span style=" font-family: FontAwesome;font-weight: bold;"> <%= aufgabe.aufgabenname %> </span></td>
+                                      <td></td>
+                                       <td></td>
+                                       <td></td>
                                       </tr>
-
                                       <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
                                       
                                         <% @arbeitspakets.each do |arbeitspaket| %>
                                           <% if aufgabe.id == arbeitspaket.aufgabeid %>
                                               <tr class="error">
                                                  <td><i class="icon-arrow-right" ><% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                     <span style="color:blue; font-weight:bold"><%= arbeitspaket.arbeitspaketname %> </span>
+                                     <span style="color:blue; font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span class=" icon-map-marker", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <span class=" icon-map-marker", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span class=" icon-star-empty", style="color:blue; font-weight:bold"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <span class=" icon-star-empty", style="color:blue; font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
                                       
                                       <% end %>
 
    
                                       </td>
-                                      <td><%= arbeitspaket.arbeitspaketdauer %> </td>
-                                     <td> </td>
+                                      <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
+                                     
                                        <% @faz = @ap_map.values_at(arbeitspaket.id) %>
-                                   <td><%= @startdate + @faz[0].days %> </td>
-                                   <td> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
                                                  </tr>
                                           <% end %>
                                         <% end %>
@@ -374,11 +393,11 @@ border-radius: 0px;
 
 
 
+<%else%>
 
 
 
-
-<<table class="table table-bordered">
+<table class="table table-bordered">
 <thead>
           <tr>
           <% @i = 0 %>
@@ -388,9 +407,9 @@ border-radius: 0px;
              <%@day =  @startdate + @i.days %> 
             <% if @day == Date.today %>
             <% @aktuellerstatus = @i%>
-            <th style="color:blue; font-weight:bold; text-align:center" > <%=  @day %>  </th>
+            <th style="color:blue; font-weight:bold; text-align:center;font-family: FontAwesome;font-weight: bold;" > <%=  @day %>  </th>
             <% else %>
-            <th  style="text-align:center" > <%=  @day %>  </th>
+            <th  style="text-align:center;font-family: FontAwesome;font-weight: bold;" > <%=  @day %>  </th>
             
             <% end %>
             <% @i = @i + 1 %> 
@@ -438,13 +457,13 @@ border-radius: 0px;
                                       <div class="bar bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                      <span class="sr-only " style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only " style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                        <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                       <% end %>
                                                 </div>
                                               </div>          
@@ -504,13 +523,13 @@ border-radius: 0px;
                                       <div class="bar bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                      <span class="sr-only " style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only " style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                        <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                       <% end %>
                                                 </div>
                                               </div>          
@@ -567,13 +586,13 @@ border-radius: 0px;
                                       <div class="bar bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="20" aria-valuemax="100" style="width: 100%">
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Standard" %>
-                                      <span class="sr-only " style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only " style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                        <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
-                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only icon-map-marker"style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                       <% end %>
                                       <% if arbeitspaket.arbeitspakettyp == "Release" %>
-                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle"> <%= arbeitspaket.arbeitspaketname %></span>
+                                      <span class="sr-only icon-star-empty" style=" vertical-align:middle;font-family: FontAwesome;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %></span>
                                       <% end %>
                                                 </div>
                                               </div>          
@@ -607,10 +626,10 @@ border-radius: 0px;
 <% end %>
 </table>
 </div>
+</div>
+</div>
 
-
-
-
+<%end%>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 
         <script src="./js/bootstrap.js"></script>

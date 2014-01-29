@@ -30,11 +30,12 @@ class ProduktkategoriesController < ApplicationController
 
     respond_to do |format|
       if @produktkategorie.save
-        format.html { redirect_to @produktkategorie, notice: 'Produktkategorie was successfully created.' }
+
+        format.html { redirect_to produkts_path(:projekt => @produktkategorie.projekt_id), notice: 'Produktkategorie was successfully created.' }
         format.json { render action: 'show', status: :created, location: @produktkategorie }
       else
-        format.html { render action: 'new' }
-        format.json { render json: @produktkategorie.errors, status: :unprocessable_entity }
+        format.html { redirect_to new_produktkategory_path(:projektid => @produktkategorie.projekt_id), alert: 'Name muss angegeben werden.'}
+        format.json { render json: produkts_path(:projekt => @produktkategorie.projekt_id), status: :unprocessable_entity }
       end
     end
   end
@@ -57,9 +58,10 @@ class ProduktkategoriesController < ApplicationController
   # DELETE /produktkategories/1.json
   def destroy
     @produktkategorie = Produktkategorie.find(params[:id])
+    @projektid = @produktkategorie.projekt_id
     @produktkategorie.destroy
     respond_to do |format|
-      format.html { redirect_to produktkategories_url }
+      format.html { redirect_to produkts_path(:projekt => @projektid), alert: 'Produktkategorie was successfully deleted.'}
       format.json { head :no_content }
     end
   end

@@ -1,4 +1,13 @@
-<h1>Vorgaenger editieren</h1><br>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Vorgaenger bearbeiten</h2>
+  </div>
+  <div class="panel-body">
+
+
+
+<br>
 <table>
 	<% @vlist    = Array.new %>
 
@@ -7,7 +16,7 @@
 	  <!-- Prüfen ob AP VOrgänger hat-->
 	  <% if arbeitspaketvorgaenger.apid.to_s== @apid.to_s %>
 		  <tr>
-		    <td> 
+		    <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> 
 		    	<% @vid=  arbeitspaketvorgaenger.apvorgaengerid %> <!-- Vorgänger ID ermittlen -->
 		    	<% @vlist.push(@vid) %>
 		    	<!-- Namen des AP ermittlen -->
@@ -16,9 +25,9 @@
 		    		<%= @v.first.arbeitspaketname %>
 		    	<% end %>
 		    </td>
-		    <td>
+		    <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;">
 		    	<% if @v.first != nil %>
-		    		<%= link_to 'Entfernen', arbeitspaketvorgaenger, method: :delete, data: { confirm: 'Are you sure?' } %>
+		    		<%= link_to '', arbeitspaketvorgaenger, method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger icon-trash" %>
 		    	<% end %>
 		    </td>
 		  </tr>
@@ -27,4 +36,5 @@
 </table><br>
 <%= render 'form' %>
 
-<%= link_to 'Back', arbeitspaketvorgaengers_path %>
+	</div>
+<%= link_to 'Zurück', verantwortlichkeitens_path(:id=>params[:pid] ) , 'data-no-turbolink' => true%>

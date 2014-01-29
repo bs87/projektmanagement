@@ -10,27 +10,22 @@
       </ul>
     </div>
   <% end %>
+<br>
     <div class="field">
-    <%= f.label :aufgabenname %><br>
-    <%= f.text_field :aufgabenname %>
+    <%= f.label :aufgabenname %>
+    <%= f.text_field :aufgabenname, :id=>'aufgabenname' %>
   </div>
   <div class="field">
-    <%= f.label :aufgabenbeschreibung %><br>
+    <%= f.label :aufgabenbeschreibung %>
     <%= f.text_field :aufgabenbeschreibung %>
   </div>
-    <div class="field">
-    <%= f.label :aufgabennr %><br>
-    <%= f.number_field :aufgabennr %>
+   <div class="field">
+    <%= f.hidden_field :aufgabenvorgaenger, :value=>@ebene, :readonly=>true %>
   </div>
   <div class="field">
-    <%= f.label :aufgabenvorgaenger %><br>
-    <%= f.number_field :aufgabenvorgaenger, :value=>@ebene, :readonly=>true %>
+    <%= f.hidden_field :projektsid, :value=>@pid, :readonly=>true %>
   </div>
   <div class="field">
-    <%= f.label :projektsid %><br>
-    <%= f.number_field :projektsid, :value=>@pid, :readonly=>true %>
-  </div>
-  <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>

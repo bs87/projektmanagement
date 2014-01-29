@@ -30,7 +30,7 @@ class RoadmapsController < ApplicationController
         @projekt = Projekt.find(:all, :conditions => [ "id = ?", params[:id]]).first 
       end
     end
-
+@gantt = params[:view]
 
     @projekts = Projekt.all
     @aufgaben = Aufgaben.all

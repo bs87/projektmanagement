@@ -33,8 +33,14 @@ class RessourcensController < ApplicationController
   # POST /ressourcens
   # POST /ressourcens.json
   def create
+      
     @ressourcen = Ressourcen.new(ressourcen_params)
+    @ressourcenart = ressourcen_params[:ressourceart]
+    if @ressourcenart == "Material"
+      @ressourcen.update_attribute(:ressourcefunktion,"Materialressource") 
+   
 
+    end
       if @ressourcen.save
         redirect_to ressourcens_path
         #format.html { redirect_to @ressourcen, notice: 'Ressourcen was successfully created.' }

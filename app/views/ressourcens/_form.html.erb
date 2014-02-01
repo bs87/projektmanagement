@@ -1,3 +1,5 @@
+
+
 <%= form_for(@ressourcen) do |f| %>
   <% if @ressourcen.errors.any? %>
     <div id="error_explanation">
@@ -12,31 +14,31 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :Ressourcename %><br>
+    <%= f.label :Ressourcename , "Ressourcename (* Pflichfeld)"%>
     <%= f.text_field :ressourcename %>
   </div>
   <div>
-    <%= f.label :Funktion %><br>
-    <%= f.collection_select :ressourcefunktion, Ressourcefunction.all, :id, :name, :include_blank => true   %>
+    <%= f.label :Ressourceart , "Ressourceart (* Pflichfeld)"%>
+    <%= f.select :ressourceart, [['Arbeit','Arbeit'],['Material','Material'] ], :id => "ressourceart" %>
+  </div>
+  <div><br>
+    <%= f.label :Funktion, "Funktion (* Pflichfeld) " %>
+    <%= f.collection_select :ressourcefunktion, Ressourcefunction.all, :id , :name , :include_blank => true   %>
   </div>
   <div class="field">
-    <%= f.label :Ressourcebeschreibung %><br>
-    <%= f.text_field :ressourcebeschreibung %>
+    <%= f.label :Ressourcebeschreibung %>
+    <%= f.text_field :ressourcebeschreibung,:id=> "ressourcebeschreibung" %>
   </div> 
-  <div>
-    <%= f.label :Ressourceart %><br>
-    <%= f.select :ressourceart, [['Arbeit','Arbeit'],['Material','Material'] ] %>
+  <div class="field">
+    <%= f.label :Ressourcekuerzel %>
+    <%= f.text_field :ressourcekuerzel, id: 'ressourcekuerzel' %>
   </div>
   <div class="field">
-    <%= f.label :Ressourcekuerzel %><br>
-    <%= f.text_field :ressourcekuerzel %>
-  </div>
-  <div class="field">
-    <%= f.label :Ressourcegenerisch %><br>
+    <%= f.label :Ressourcegenerisch %>
     <%= f.check_box :ressourcegenerisch %>
   </div>
   <div class="field">
-    <%= f.label :Ressourcemax %><br>
+    <%= f.label :Ressourcemax , "Ressourcemax (* Pflichfeld)"%>
     <%= f.text_field :ressourcemax %>
   </div>
   <div class="fields">

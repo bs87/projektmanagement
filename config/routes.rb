@@ -34,7 +34,7 @@ Projektmanagement::Application.routes.draw do
 
   get "users/show"
   devise_for :users
-  resources :users 
+   
   root to: 'startsite#startsite'
 
 

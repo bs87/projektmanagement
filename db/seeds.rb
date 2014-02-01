@@ -73,6 +73,7 @@ Ressourcefunction.create!(id:3, name: "Statiker")
 Ressourcefunction.create!(id:4, name: "Bauarbeiter")
 Ressourcefunction.create!(id:5, name: "Kranführer")
 Ressourcefunction.create!(id:6, name: "Programmierer")
+Ressourcefunction.create!(id:7, name: "Materialressource")
 
 Produktkategorie.delete_all
 Produktkategorie.create!(id:1, name: "Metallprodukte", projekt_id: 1, vorgaenger_id: nil )

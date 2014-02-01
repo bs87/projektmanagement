@@ -73,20 +73,24 @@ margin-top: 0px;
 
           <span class="brand" style ="font-family: FontAwesome;font-weight: bold;color:black">Projektmanger2014 </span>
            <% if current_user %>
-              <ul class="nav">
+             <ul class="nav">
+           <%if current_user.email == "admin@pm.de"%>
+
+               <li><%= link_to ' Ressourcenverwaltung', ressourcens_path, :id=>'Aufgaben',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-cog "%></li>
+               <% else %>
+              
               <li ><%= link_to ' Home', root_path, 'data-no-turbolink' => true ,:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-home "%></li> 
               <li ><%= link_to ' Projekte', projekts_path ,'data-no-turbolink' => true,:id=> 'Projekte',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-cogs "%></li>
               <li ><%= link_to ' WBS', aufgabens_path,'data-no-turbolink' => true, :id=> 'Aufgaben',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => " icon-sitemap "%></li>
               <li ><%= link_to ' RAM', verantwortlichkeitens_path ,'data-no-turbolink' => true,:id=> 'RAM',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-group "%></li>
               <li ><%= link_to ' Roadmap', roadmaps_path,'data-no-turbolink' => true,:id=> 'Roadmap',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-road "%></li>
-              <%if current_user.email == "admin@pm.de"%>
-               <li><%= link_to ' Ressourcenverwaltung', ressourcens_path, :id=>'Aufgaben',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-cog "%></li>
-               <% end %>
+              
               <li><%= link_to ' Einstellungen', edit_user_registration_path,:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => " icon-wrench " %></li> 
               <li>  </li> 
               <li>  </li> 
+              <% end %>
+              <li  > <%= link_to  " Logout", destroy_user_session_path, :class => "btn  btn-danger icon-share-alt ",:style=>"font-family: FontAwesome;font-weight: bold;color:black"  %> </li>
 
-              <li  > <%= link_to  " Logout", destroy_user_session_path(:id2 => current_user.id), :class => "btn  btn-danger icon-share-alt ",:style=>"font-family: FontAwesome;font-weight: bold;color:black", :method => :delete  %> </li>
               </ul>
 
                 <% else %>

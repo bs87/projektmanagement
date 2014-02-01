@@ -1,7 +1,9 @@
 
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     
+       <script src="/assets/prettify.js"></script>
 
+    <script src="/assets/jquery.jOrgChart.js"></script>
 
 <script>
     jQuery(document).bind('page:change', function() {
@@ -148,7 +150,6 @@
           <!-- Projektname mit Optionen -->
           <span style="background-color:#071346; color:#EEEEEE;" title="collapse this branche"><i class="icon-folder-open"></i><b><%= @projekt.projektname %></b></span>
             <!-- Projektoptionen -->
-            <%= link_to '', @projekt, :class=>"icon-list-alt" %>
             <%= link_to('', edit_projekt_path(@projekt,:projektid => @projekt.id), :class => "icon-wrench") %>
             <%= link_to('', @projekt, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
         
@@ -161,7 +162,6 @@
                   <li class="parent_li" role="treeitem">
                      <span style="background-color:#586baf;" title="collapse this branche"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %></span>
                      <!-- Aufgaben Optionen -->
-                     <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
                      <%= link_to '', edit_aufgaben_path(aufgabe,:projektid => @projekt.id,:ebene =>aufgabe.aufgabenvorgaenger), :class=>"icon-wrench" %>
                      <%= link_to('', aufgabe, :method => :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
                     
@@ -174,7 +174,6 @@
                            <span style="background-color:#95abea" title="collapse this branche"><i class="icon-minus-sign"></i>
                              <%= aufgabe.aufgabenname %></span>
                            <!-- Aufgaben Optionen -->
-                           <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
                            <%= link_to '', edit_aufgaben_path(aufgabe,:projektid => @projekt.id,:ebene =>aufgabe.aufgabenvorgaenger), :class=>"icon-wrench" %>
                            <%= link_to('', aufgabe, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
 
@@ -186,7 +185,6 @@
                                   <li class="parent_li" role="treeitem">
                                       <span style="background-color:#b7cdfc;"><i class="icon-minus-sign"></i><%= aufgabe.aufgabenname %> </span>
                                       <!-- Aufgaben Optionen -->
-                                      <%= link_to '', aufgabe, :class=>"icon-list-alt" %>
                                       <%= link_to '', edit_aufgaben_path(aufgabe,:projektid => @projekt.id,:ebene =>aufgabe.aufgabenvorgaenger), :class=>"icon-wrench" %>
                                       <%= link_to('', aufgabe, method: :delete, data: { confirm: 'Are you sure?' }, :class => "icon-remove") %>
                                   </li>

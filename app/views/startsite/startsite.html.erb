@@ -80,6 +80,9 @@
   </div>
  </div>
  <br>
+ <%if current_user.email == "admin@pm.de"%>
+
+ <% else %>
 <div class="panel panel-info">
   <div class="panel-heading">
     <h3 style ="font-family: FontAwesome;font-weight: bold;" ,class="panel-title"> Liste ihrer aktuell zugewiesenen Arbeitspakete
@@ -149,6 +152,7 @@
 </div>
 </div>
       <br>
+      <% end %>
     <% else %>
 
          <div style="vertical-align:middle; align=center ; position:auto"  >

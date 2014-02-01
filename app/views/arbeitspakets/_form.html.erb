@@ -1,5 +1,4 @@
 <script type="text/javascript" src="/assets/jquery.js"></script>
-<script type="text/javascript" src="/assets/bootstrap.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -15,13 +14,32 @@ $(document).ready(function(){
       for (var i = 1; i <= anzahlwerte; i++) {
         varsum = varsum + (parseFloat( $("#".concat(i)).val()-mittelwert))*
                           (parseFloat( $("#".concat(i)).val()-mittelwert));
-      }
-      
+      }    
 
       var varianz = varsum/anzahlwerte;
       $("#arbeitspaketdauer").val(mittelwert);
       $("#varianz").val(varianz);
     });
+
+    $(".schaetzwerte").click(function(){
+      
+      var summe = 0;
+      for (var i = 1; i <= anzahlwerte; i++) {
+        summe = summe + parseFloat( $("#".concat(i)).val() );
+      }
+      var mittelwert = Math.round(summe / anzahlwerte);
+      var varsum = 0;
+      for (var i = 1; i <= anzahlwerte; i++) {
+        varsum = varsum + (parseFloat( $("#".concat(i)).val()-mittelwert))*
+                          (parseFloat( $("#".concat(i)).val()-mittelwert));
+      }    
+
+      var varianz = varsum/anzahlwerte;
+      $("#arbeitspaketdauer").val(mittelwert);
+      $("#varianz").val(varianz);
+    });
+
+
 })
 
 function getParam(variable){ 
@@ -85,7 +103,7 @@ function getParam(variable){
         <%= number_field_tag (i+1), nil, class: 'schaetzwerte', value: 0 %><br>
       <% end %>
       <%= "Varianz"  %>
-        <%= number_field_tag ("varianz") %>  <br>
+        <%= text_field_tag ("varianz") %>  <br>
     <%end%>
 
     <br>

@@ -102,7 +102,6 @@ border-radius: 0px;
       <% end %>
 
 
-
       <% @ap_mapvorgaenger = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
 
 <% @projektdauer = 0 %>
@@ -258,7 +257,6 @@ border-radius: 0px;
  <tbody>
 <tr>
             
-      <% @startdate = @projekt.projektstart %>
       <% if @projekt.projektleiter != nil %>
      
             <% @aufgaben.each do |aufgabe| %>
@@ -291,9 +289,13 @@ border-radius: 0px;
                                       <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
                                     
                                        <% @faz = @ap_map.values_at(arbeitspaket.id) %>
-                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
-                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
-                                </tr>
+                                       <% if @faz[0] == nil%>
+                                       <% @faz[0] = 0 %>
+                                       <% end%>
+
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @projekt.projektstart + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @projekt.projektstart + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                </tr> 
                         <% end %>
                       <% end %>
                 
@@ -329,8 +331,11 @@ border-radius: 0px;
                                       <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
                                      
                                        <% @faz = @ap_map.values_at(arbeitspaket.id) %>
-                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
-                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                       <% if @faz[0] == nil%>
+                                       <% @faz[0] = 0 %>
+                                       <% end%>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @projekt.projektstart  + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @projekt.projektstart  + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
                                       </tr>
                                   <% end %>
                                 <% end %>
@@ -369,8 +374,11 @@ border-radius: 0px;
                                       <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
                                      
                                        <% @faz = @ap_map.values_at(arbeitspaket.id) %>
-                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
-                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                       <% if @faz[0] == nil%>
+                                       <% @faz[0] = 0 %>
+                                       <% end%>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @projekt.projektstart  + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%= @projekt.projektstart  + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
                                                  </tr>
                                           <% end %>
                                         <% end %>
@@ -401,10 +409,9 @@ border-radius: 0px;
 <thead>
           <tr>
           <% @i = 0 %>
-          <% @startdate = @projekt.projektstart  %>
 
           <% while @i < @projektdauer %> 
-             <%@day =  @startdate + @i.days %> 
+             <%@day =  @projekt.projektstart + @i.days %> 
             <% if @day == Date.today %>
             <% @aktuellerstatus = @i%>
             <th style="color:blue; font-weight:bold; text-align:center;font-family: FontAwesome;font-weight: bold;" > <%=  @day %>  </th>

@@ -1,4 +1,13 @@
-<h1>Ressoure hinzufügen</h1>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Ressoure hinzufügen</h2>
+  </div>
+  <div class="panel-body">
+
+
+
+
 
 <%if @useraccount!='true' %>
 	<%= render 'form' %>
@@ -44,10 +53,11 @@
     <%= f.label :Ressourcemax %><br>
     <%= f.text_field :ressourcemax %>
   </div>
-  <div class="actions">
+  <div class="field ">
     <%= f.submit %>
   </div>
  <% end %>
 <%end%>
 
 <%= link_to 'Back', ressourcens_path %>
+ </div>

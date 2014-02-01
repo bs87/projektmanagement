@@ -95,7 +95,6 @@
                   <li class="parent_li" role="treeitem">  
                      <span style="background-color:#586baf;" title="collapse this branche"><i class="icon-minus-sign"></i><%= kategorie.name %></span>
                      <!-- kategorien Optionen -->
-                     <%= link_to '', kategorie, :class=>"icon-list-alt" %> 
                      <%= link_to '', edit_produktkategory_path(kategorie,:projektid => @projekt.id), :class=>"icon-wrench" %> 
                      <%= link_to('', kategorie, :method => :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
                     
@@ -109,7 +108,6 @@
                            <span style="background-color:#95abea" title="collapse this branche"><i class="icon-minus-sign"></i>
                              <%= kategorie.name %></span>
                            <!-- kategorien Optionen -->
-                           <%= link_to '', kategorie, :class=>"icon-list-alt" %> 
                            <%= link_to '', edit_produktkategory_path(kategorie,:projektid => @projekt.id), :class=>"icon-wrench" %> 
                            <%= link_to('', kategorie, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
 
@@ -120,7 +118,6 @@
                                   <li class="parent_li" role="treeitem">
                                       <span style="background-color:#b7cdfc;"><i class="icon-minus-sign"></i><%= kategorie.name %> </span>
                                       <!-- kategorien Optionen -->
-                                      <%= link_to '', kategorie, :class=>"icon-list-alt" %> 
                                       <%= link_to '', edit_produktkategory_path(kategorie,:projektid => @projekt.id), :class=>"icon-wrench" %> 
                                       <%= link_to('', kategorie, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
                                     

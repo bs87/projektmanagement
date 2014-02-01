@@ -1,7 +1,17 @@
   <link href="../assets/css/bootstrap.css" rel="stylesheet">
          
 
+<style>
 
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  text-decoration: inherit;
+  display: inline;
+  speak: none;
+}
+
+</style>
 
   <!-- Dropdown für Projektauswahl -->
 <% if @projekts.nil? || @projekt.nil? %> 
@@ -85,7 +95,7 @@
               </ul>         
             </td>  
             <!-- Vorgaenger-->      
-            <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= link_to ' Edit Vorgaenger',new_arbeitspaketvorgaenger_path(:apid=>arbeitspaket.id, :pid => @projekt.id ), :class=>"btn btn-info icon-edit" %></td>
+            <td ><%= link_to ' Edit Vor',new_arbeitspaketvorgaenger_path(:apid=>arbeitspaket.id, :pid => @projekt.id ), :class=>"btn btn-small btn-info " %></td>
        
             <!-- Alle AP/Ress Beziehungen von AP -->
             <% @ressourcen = Verantwortlichkeiten.find( :all, :conditions => [ "arbeitspaketid = ?", arbeitspaket.id]) %>
@@ -114,8 +124,8 @@
             <% if !@ressourcen.present?%>
               <i> <%= "keine" %>  </i> 
             <% end %>
-            <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"> <%=  link_to ' Edit Ressource', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id, :pid => @projekt.id), :class=>"btn btn-info icon-edit" %>  </td>     
-            <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= link_to '', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger icon-trash" %>  </td>
+            <td > <%=  link_to ' Edit Res', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id, :pid => @projekt.id), :class=>"btn btn-small btn-info " %>  </td>     
+            <td ><%= link_to '', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger icon-trash" %>  </td>
           </tr>
         <% end %>
       <% end %>

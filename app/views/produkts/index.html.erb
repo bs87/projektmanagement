@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+
+<style>
+
+.tree {
+    min-height:20px;
+    max-height: 1000px ;
+    padding:19px;
+    margin-bottom:20px;
+    background-color:#fbfbfb;
+    border:1px solid #999;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:10px 5px 0 5px;
+    position:relative
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1px solid #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+}
+.tree li::after {
+    border-top:1px solid #999;
+    height:20px;
+    top:25px;
+    width:25px
+}
+.tree li span {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #999;
+    border-radius:5px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none
+}
+.tree li.parent_li>span {
+    cursor:pointer
+}
+.tree>ul>li::before, .tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:30px
+}
+.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+    background:#eee;
+    border:1px solid #94a0b4;
+    color:#000
+}
+</style>
+
+
+<% javascript_include_tag 'jquery_ujs' %>
+<% @projekt = Projekt.find(:all, :conditions=>["id=?", @projektid]).first %>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title"><%= @projekt.projektname + " Produktliste"%></h2>
+  </div>
+  <div class="panel-body">
+
+
+  <tbody>
+      
+      <div class="tree well">
+        <ul role="tree">       
+        <li class="parent_li" role="treeitem"> 
+
+          <!-- Produktbaum Kopf  -->
+          <span style="background-color:#071346; color:#EEEEEE;" title="collapse this branche"><i class="icon-folder-open"></i><b><%= "Produktbaum" %></b></span>  
+        
+            <!-- kategorie Unterebene 1 -->
+            <ul role"tree">
+              <% @produktkats.each do |kategorie| %>
+                <% if kategorie.vorgaenger_id ==nil %>  
+                  <% @vorgaenger1 = kategorie.id %>
+                  <li class="parent_li" role="treeitem">  
+                     <span style="background-color:#586baf;" title="collapse this branche"><i class="icon-minus-sign"></i><%= kategorie.name %></span>
+                     <!-- kategorien Optionen -->
+                     <%= link_to '', edit_produktkategory_path(kategorie,:projektid => @projekt.id), :class=>"icon-wrench" %> 
+                     <%= link_to('', kategorie, :method => :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                    
+                    <!-- kategorie Unterebene 2 -->
+                     <ul role"tree">
+                      <% @produktkats.each do |kategorie| %>
+                        <% if kategorie.vorgaenger_id==@vorgaenger1 %> 
+                          <% @vorgaenger2 = kategorie.id %>
+                          <% @nachfolger2 = Produkt.find(:all, :conditions => [ "kat_id = ?", kategorie.id]) %>
+                          <li class="parent_li" role="treeitem">
+                           <span style="background-color:#95abea" title="collapse this branche"><i class="icon-minus-sign"></i>
+                             <%= kategorie.name %></span>
+                           <!-- kategorien Optionen -->
+                           <%= link_to '', edit_produktkategory_path(kategorie,:projektid => @projekt.id), :class=>"icon-wrench" %> 
+                           <%= link_to('', kategorie, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+
+                            <!-- kategorie Unterebene 3 -->
+                            <ul>
+                              <% @produktkats.each do |kategorie| %>
+                                <% if  kategorie.vorgaenger_id==@vorgaenger2 %> 
+                                  <li class="parent_li" role="treeitem">
+                                      <span style="background-color:#b7cdfc;"><i class="icon-minus-sign"></i><%= kategorie.name %> </span>
+                                      <!-- kategorien Optionen -->
+                                      <%= link_to '', edit_produktkategory_path(kategorie,:projektid => @projekt.id), :class=>"icon-wrench" %> 
+                                      <%= link_to('', kategorie, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                    
+
+                                    <ul>
+                                      <!-- Produkte für Kategorie der Ebene 3-->
+                                      <% @produkte.each do |produkt| %>
+                                        <% @nachfolger = false %>
+                                        <% if produkt.kat_id == kategorie.id %>   
+                                          <% @nachfolger = true %>  
+                                          <li style= "border-color: green"> 
+                                             <span  style="color:blue; font-weight:bold"><%= produkt.name %> </span>
+                                             <%= link_to('', edit_produkt_path(produkt,:projektid => @projekt.id,:katid=>kategorie.id), :class => "icon-wrench") %>
+                                             <%= link_to('', produkt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                          </li>               
+                                        <% end %>
+                                      <% end %>
+                                      <li> <%= link_to('Neues Produkt', new_produkt_path(:katid=>kategorie.id, :projektid=>@projektid),:class => "btn btn-small icon-plus-sign")%> </li>
+                                    </ul>
+
+                                  </li>
+                                <% end %>
+                              <% end %>
+
+                  
+                              <!-- Produkte für Kategorie der Ebene 2-->
+                              <% @produkte.each do |produkt| %>
+                                <% if produkt.kat_id == kategorie.id %>     
+                                    <li style= "border-color: green"> 
+                                       <span  style="color:blue; font-weight:bold"><%= produkt.name %> </span>
+                                       <%= link_to('', edit_produkt_path(produkt,:projektid => @projekt.id,:katid=>kategorie.id), :class => "icon-wrench") %>
+                                       <%= link_to('', produkt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                                    </li>                        
+                                <% end %>
+                              <% end %>
+                              <li> <%= link_to('Neues Produkt', new_produkt_path(:katid=>kategorie.id, :projektid=>@projektid),:class => "btn btn-small icon-plus-sign")%> </li>
+
+                              <li> <%= link_to ' Neue kategorie', new_produktkategory_path(:vorgaenger=>@vorgaenger2, :projektid=>@projektid),:class => "btn btn-small icon-plus-sign"  %> 
+                              </li>
+                   
+                            </ul>
+                          </li>
+                        <% end %>
+                      <%end%>
+                 
+                      <!-- Produkte für Kategorie der Ebene 1 -->
+                        <% @produkte.each do |produkt| %>
+                          <% if produkt.kat_id == kategorie.id %>     
+                              <li style= "border-color: green"> 
+                                 <span  style="color:blue; font-weight:bold"><%= produkt.name %> </span>
+                                 <%= link_to('', edit_produkt_path(produkt,:projektid => @projekt.id, :katid=>kategorie.id), :class => "icon-wrench") %>
+                                 <%= link_to('', produkt, method: :delete, data:  { confirm: 'Are you sure?' }, :class => "icon-remove") %>
+                              </li>                        
+                          <% end %>
+                        <% end %>
+                        <li> <%= link_to('Neues Produkt', new_produkt_path(:katid=>kategorie.id, :projektid=>@projektid),:class => "btn btn-small icon-plus-sign")%> </li>
+
+                        <li>  <%= link_to  ' Neue kategorie', new_produktkategory_path(:vorgaenger=>@vorgaenger1, :projektid=>@projektid), :class => "btn btn-small icon-plus-sign" %> 
+                        </li>
+                  
+                    </ul>
+                  </li>
+                <% end %>
+              <% end %>
+
+
+              <li > <%= link_to 'Neue kategories', new_produktkategory_path(:vorgaenger=>nil, :projektid=>@projektid), :class=>"btn btn-small icon-plus-sign" %> 
+              </li>
+            </ul>
+        </li>
+    </div>
+  
+</ul>    
+</div>
+</div>
+<script>$(function () {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li ul > li').hide();
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+ </script>
+ <script>
+    $(document).on('page:load',(function() {
+     $(".expand").click(function(e) {
+        $(this).toggleClass("expanded");
+        $(this).children("ul:first").slideToggle("300");
+        e.stopPropagation();
+     }); 
+    }); //$(document).ready
+  </script>
+
+  </tbody>
+</table>
+
+<br>
+
+

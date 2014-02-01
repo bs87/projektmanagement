@@ -1,0 +1,59 @@
+
+
+  <div class="container">
+    <% flash.each do |name, msg| %>
+      <div class="alert alert-<%= name == :notice ? "success" : "error" %>">
+      <a class="close" data-dismiss="alert">x</a>
+      <%= msg  %>
+      </div>
+    <% end %>
+  </div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Ressourcenverwaltung</h2>
+  </div>
+  <div class="panel-body">
+
+<table class="table table-bordered table-hover ">
+  <thead>
+    <tr>
+      <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Name</th>
+      <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Funktion</th>
+      <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Beschreibung</th>
+      <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Art</th>
+      <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Kuerzel</th>
+      <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Gen.</th>
+      <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Kapazität</th>
+      <th> </th>
+ 
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ressourcens.each do |ressourcen| %>
+      <tr >
+        <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= link_to ressourcen.ressourcename, ressourcen %></td>
+        <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;">
+          <% @funktion = Ressourcefunction.find(:all, :conditions=>["name = ?", ressourcen.ressourcefunktion ]).first %>
+          <% if !@funktion.nil? %>
+            <%= @funktion.name %>
+          <% end %>
+        </td>
+        <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= ressourcen.ressourcebeschreibung %></td>
+        <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= ressourcen.ressourceart %></td>
+        <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= ressourcen.ressourcekuerzel %></td>
+        <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= ressourcen.ressourcegenerisch %></td>
+        <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= ressourcen.ressourcemax %></td>
+        <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= link_to '', ressourcen, method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger icon-trash" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Ressource anlegen', new_ressourcen_path, :class =>'btn btn-lg btn-success ' %>
+<%= link_to 'Benutzerkonto zuordnen', new_ressourcen_path(:useraccount=>'true'), :class => 'btn btn-lg btn-success ' %>
+
+</div>

@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  arbeitspaketname: MyString
+  arbeitspaketbeschreibung: MyString
+  arbeitspaketverantwortlicher: MyString
+  arbeitspaketbeginn: 2014-01-04
+  arbeitspaketdauer: 2014-01-04
+  arbeitspaketende: 2014-01-04
+  arbeitspaketnr: 1
+  arbeitspaketkuerzel: MyString
+  eingangsdokumente: MyString
+  ausgangsdokumente: MyString
+  aufgabeid: 1
+  verantwortlichkeitenid: 1
+
+two:
+  arbeitspaketname: MyString
+  arbeitspaketbeschreibung: MyString
+  arbeitspaketverantwortlicher: MyString
+  arbeitspaketbeginn: 2014-01-04
+  arbeitspaketdauer: 2014-01-04
+  arbeitspaketende: 2014-01-04
+  arbeitspaketnr: 1
+  arbeitspaketkuerzel: MyString
+  eingangsdokumente: MyString
+  ausgangsdokumente: MyString
+  aufgabeid: 1
+  verantwortlichkeitenid: 1

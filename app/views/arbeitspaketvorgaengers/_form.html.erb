@@ -1,0 +1,31 @@
+<%= form_for(@arbeitspaketvorgaenger) do |f| %>
+  <% if @arbeitspaketvorgaenger.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@arbeitspaketvorgaenger.errors.count, "error") %> prohibited this arbeitspaketvorgaenger from being saved:</h2>
+
+      <ul>
+      <% @arbeitspaketvorgaenger.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.hidden_field :apid, :value=>@apid%>
+  </div>
+  <div class="field">
+
+    <% if @vlist %>
+      <% @vorg = Arbeitspaket.find(:all, :conditions => [ "ID != ?", @apid]) %> 
+    <% else %>
+      <% @vorg = Arbeitspaket.find(:all, :conditions => [ "id NOT IN (?) AND ID != ?", @vlist, @apid]) %> 
+    <% end %>
+    <%= f.label :Vorgänger %><br>
+    <%= f.collection_select(:apvorgaengerid, @vorg, :id, :arbeitspaketname, :include_blank => true) %>
+
+  </div>
+  <div class="field">
+    <%= f.submit "Hinzufügen"%>
+  </div>
+<% end %>

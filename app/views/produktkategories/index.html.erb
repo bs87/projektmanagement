@@ -1,0 +1,31 @@
+<h1>Listing produktkategories</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Projekt</th>
+      <th>Vorgaenger</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @produktkategories.each do |produktkategory| %>
+      <tr>
+        <td><%= produktkategory.name %></td>
+        <td><%= produktkategory.projekt_id %></td>
+        <td><%= produktkategory.vorgaenger_id %></td>
+        <td><%= link_to 'Show', produktkategory %></td>
+        <td><%= link_to 'Edit', edit_produktkategory_path(produktkategory) %></td>
+        <td><%= link_to 'Destroy', produktkategory, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Produktkategorie', new_produktkategory_path %>

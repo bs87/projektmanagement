@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Arbeitspaketname:</strong>
+  <%= @arbeitspaket.arbeitspaketname %>
+</p>
+
+<p>
+  <strong>Arbeitspaketbeschreibung:</strong>
+  <%= @arbeitspaket.arbeitspaketbeschreibung %>
+</p>
+
+<p>
+  <strong>ArbeitspaketTyp:</strong>
+  <%= @arbeitspaket.arbeitspakettyp %>
+</p>
+
+<p>
+  <strong>Arbeitspaketdauer:</strong>
+  <%= @arbeitspaket.arbeitspaketdauer %>
+</p>
+
+<p>
+  <strong>Eingangsdokumente:</strong>
+  <%= @arbeitspaket.arbeitspaketeingangsdokumente %>
+</p>
+
+<p>
+  <strong>Ausgangsdokumente:</strong>
+  <%= @arbeitspaket.arbeitspaketausgangsdokumente %>
+</p>
+
+<p>
+  <strong>Aufgabeid:</strong>
+  <%= @arbeitspaket.aufgabeid %>
+</p>
+
+
+<%= link_to 'Edit', edit_arbeitspaket_path(@arbeitspaket) %> |
+<%= link_to 'Back', arbeitspakets_path %>

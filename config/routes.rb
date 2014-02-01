@@ -1,4 +1,43 @@
-Projektmanagement::Application.routes.draw do
+
+Projektmanagement::Application.routes.draw do 
+  resources :tests
+
+  resources :produktkategories
+
+  resources :produkts
+
+    get "roadmap/new"
+  get "roadmap/create"
+  get "roadmap/show"
+  get "roadmap/index"
+ get "projekts/pdfuebersicht"
+
+  resources :ressourcefunctions
+
+  resources :arbeitspaketvorgaengers
+
+  resources :arbeitspaketvorgaengers
+
+  resources :arbeitspakets
+
+  resources :projekts
+
+  resources :roadstops
+
+  resources :aufgabens
+
+  resources :roadmaps
+
+  resources :verantwortlichkeitens
+
+  resources :ressourcens
+
+  get "users/show"
+  devise_for :users
+   
+  root to: 'startsite#startsite'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

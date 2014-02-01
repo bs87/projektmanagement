@@ -1,0 +1,10 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Arbeitspaket bearbeiten</h2>
+  </div>
+  <div class="panel-body">
+
+<%= render 'form' %>
+
+<%= link_to 'Zurück', aufgabens_path(:id=>params[:pid] ) , 'data-no-turbolink' => true%>
+</div>

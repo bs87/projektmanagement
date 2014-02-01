@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+
+<head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    
+
+
+<%=wicked_pdf_stylesheet_link_tag 'application', :media => "all"%>
+    <head>
+
+
+<style> 
+table.table-collapsed{
+  width:auto;
+}
+.table-bordered {
+border: 1px solid #dddddd;
+border-collapse: separate;
+border-left: 0;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+    table-layout: fixed;
+    
+}
+.table th, .table td {
+    border: 1px solid #dddddd;
+    overflow: hidden;
+    text-align: left;
+    width: 140px;
+    height: 40px;
+    padding: 3px;
+}
+
+  
+.centered{
+    margin: 0 auto;
+
+}
+.page-break { display:block; clear:both; page-break-after:always; }
+
+.logo {
+  background: url(<%= Rails.root.join('assets','images','shutterstock.jpg').to_s %>);
+}
+@media print {
+  body {
+    background-color: #FFF;
+  }
+
+  #container {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+  
+  #line_items {
+    page-break-before: always;
+  }
+  
+  #pdf_link {
+    display: none;
+  }
+}
+
+}
+</style>
+    </head>
+
+
+
+
+
+<% if @projekts == nil || @projekt==nil %>
+       <% flash[:notice] ="Sie sind noch keinen Projekt zugeordnet oder haben kein Projekt erstellt" %>
+<% else %>
+
+
+
+    <!-- Projektliste -->
+      <% @ap_map = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
+      <% @aplist = Array.new %><!-- AP Liste zum Bearbeten wenn AP-FAZ gesetzt wird -->
+      <% @aplist_it = Array.new %><!-- AP Liste für Schleife (Wird nicht bearbeitet) -->
+
+      <!-- Liste aller APs befüllen-->
+      <% @arbeitspakets.each do |ap| %>
+        <% @aplist.push( ap.id ) %>
+        <% @aplist_it.push( ap.id ) %>
+      <%end%>
+
+ 
+      <!-- Ermittlung des/der ersten APs ( ID und FAZ) -->
+      <% @aplist.each do |ap| %>
+        <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
+        <% if @vorgaenger.empty? %> <!-- Wenn kein Vorgaenger, dann Erste AP -->
+            <% @erste_ap = Arbeitspaket.find(:all, :conditions => [ "id = ?", ap]) %>
+            <% @ap_map[ap] = 0 %>
+            <% @aplist.delete(ap) %> <!-- Entfernen des APs aus Array, da FAZ festgelegt -->
+        <% end %>
+      <%end%>
+
+      <!-- Ermittlung der anderen APs ( ID und FAZ in hashmap)-->
+      <% @aplist_it.each do |aps| %>
+        <% @aplist_it.each do |ap| %>
+          <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
+          
+          <!-- Prüfen ob alle Vorgänger schon gesetzt sind -->
+          <% @alle_vorgaenger_gesetzt = true %>
+          <% @vorgaenger.each do |vrg| %> <!-- Prüfen ob alle Vorgaenger bereits gesetzt sind -->
+
+            <% if @aplist.include? vrg.apvorgaengerid %>
+              <% @alle_vorgaenger_gesetzt = false %>
+            <% end %>
+          <% end %>
+
+          <!-- Wenn alle Vorgaenger bereits gesetzt sind, dann berechnung FAZ -->
+          <% if @alle_vorgaenger_gesetzt == true%>
+            <% @faz = 0 %>
+
+            <!-- Über alle Vorgänger iterieren und FAZ berechnen -->
+            <% @vorgaenger.each do |vrg| %>
+              <% @fazVorgaenger = @ap_map[vrg.apvorgaengerid] %>
+              <% @apdauer = Arbeitspaket.find(:all, :conditions => [ "id = ?", vrg.apvorgaengerid]) %>
+              <%if !@apdauer.first.nil? %>
+                <% @faz_temp = @fazVorgaenger + @apdauer.first.arbeitspaketdauer %>
+              
+                <%if @faz_temp > @faz %>
+                  <% @faz = @faz_temp %>
+                <% end %>
+              <% end %>
+            <% end %>
+
+            <% @ap_map[ap] = @faz %>
+            <% @aplist.delete(ap) %>
+
+          <% end %>
+        <% end %>
+      <% end %>
+
+
+
+      <% @ap_mapvorgaenger = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
+
+<% @projektdauer = 0 %>
+<% if @projekt.projektleiter != nil %>
+            <% @aufgaben.each do |aufgabe| %>
+              <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
+                <% @vorgaenger1 = aufgabe.id %>
+                <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                   <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                      <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
+                    
+                      <% @arbeitspakets.each do |arbeitspaket| %>
+                        <% if aufgabe.id == arbeitspaket.aufgabeid %>
+
+                                    <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                    <% if @ap_mapvorgaenger.has_key? @faz %>
+                                      <% if @ap_mapvorgaenger[@faz] < arbeitspaket.arbeitspaketdauer %>
+                                          <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                      <% end %>
+                                    <% else %>
+                                            <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                  <% end %>
+                                 
+                       
+                        <% end %>
+                        <% end %>
+                     
+                
+                  <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+                    <!-- Ebene 2 -->
+                    
+                      <% @aufgaben.each do |aufgabe| %>
+                        <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger == @vorgaenger1 %>
+                          <% @vorgaenger2 = aufgabe.id %>
+                          <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                        
+                            <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                            <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
+                              
+                                <% @arbeitspakets.each do |arbeitspaket| %>
+                                  <% if aufgabe.id == arbeitspaket.aufgabeid %>
+                                  <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                    <% if @ap_mapvorgaenger.has_key? @faz %>
+                                      <% if @ap_mapvorgaenger[@faz] < arbeitspaket.arbeitspaketdauer %>
+                                          <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                      <% end %>
+                                    <% else %>
+                                            <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                  <% end %>
+                                      <% end %>
+                                  <% end %>
+                            
+                            <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                              <!-- Ebene 3 -->
+                              
+                                <% @aufgaben.each do |aufgabe| %>
+                                  <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
+                                    <% @vorgaenger3 = aufgabe.id %>
+                                    <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                            
+
+                                      <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
+                                      
+                                        <% @arbeitspakets.each do |arbeitspaket| %>
+                                          <% if aufgabe.id == arbeitspaket.aufgabeid %>
+                                            <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                    <% if @ap_mapvorgaenger.has_key? @faz %>
+                                      <% if @ap_mapvorgaenger[@faz] < arbeitspaket.arbeitspaketdauer %>
+                                          <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                      <% end %>
+                                    <% else %>
+                                            <% @ap_mapvorgaenger[@faz] = arbeitspaket.arbeitspaketdauer %>
+                                  <% end %>
+    
+                                      <% end %>
+                                          <% end %>
+                                        <% end %>
+                                    
+                                <% end %>
+                            <% end %>
+                         <% end %>
+                      <%end%>
+                  <% end %>
+    <%end%>
+                  <% end %>
+               
+
+<% @ap_mapvorgaenger.each_value do |value| %>
+  <% if value != nil %>
+    <% @projektdauer = @projektdauer + value%>
+  <% end %>
+<% end %>
+
+
+
+
+
+  
+<% @day =  @projekt.projektstart + @projektdauer.days %> 
+
+<h2 >Projektname: <%=@projekt.projektname%></h2>
+<h3 >Projektleiter: <%=@projekt.projektleiter%></h3>
+<h3 >Projektstart: <%=@projekt.projektstart%></h3>
+<h3 >Projektende: <%=@day %></h3>
+<h3 >Gesamtdauer: <%=@projektdauer%></h3>
+
+<div style="vertical-align:middle; align=center ; position:auto"  >
+   
+   <p align="center"><%= wicked_pdf_image_tag("shutterstock.jpg", height: '400', width: '400', :align=> "middle") %></p> 
+</div>
+
+
+<div class="page-break"></div>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title" style ="font-weight: bold;">Projektname: <%= @projekt.projektname %> </h3>
+  </div>
+  <div class="panel-body">
+<span class="sr-only icon-map-marker"style="text-align: center;vertical-align: middle;font-weight: bold;"> Milestone</span>
+<br>
+<span class="sr-only icon-star-empty"style="text-align: center;vertical-align: middle;font-weight: bold;"> Release</span>
+<br>
+</div>
+
+<div class="panel-body">
+
+<table class="table table-hover table-bordered">
+<thead>
+          <tr>
+            <th style="text-align: center;vertical-align: middle;font-weight: bold;" >Projektteil</th>
+            <th style="text-align: center;vertical-align: middle;font-weight: bold;">Dauer</th>
+            <th style="text-align: center;vertical-align: middle;font-weight: bold;">Startdatum</th>
+            <th style="text-align: center;vertical-align: middle;font-weight: bold;">Zieldatum</th>
+          </tr>
+ </thead>
+
+ <tbody>
+<tr>
+            
+      <% @startdate = @projekt.projektstart %>
+      <% if @projekt.projektleiter != nil %>
+     
+            <% @aufgaben.each do |aufgabe| %>
+              <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==nil %>
+                <% @vorgaenger1 = aufgabe.id %>
+                <% @nachfolger1 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+               <tr class="success">
+                 <td style="vertical-align: middle;font-weight: bold;" > <span style=" font-weight: bold;"> <%= aufgabe.aufgabenname %> </span></td>
+                 <td></td>
+                 <td></td>
+                 <td></td>
+                 </tr>
+                  <% if !@nachfolger1.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                      <!-- Arbeitspakete für Aufgaben der Ebene 1 -->
+                    <tr>
+                      <% @arbeitspakets.each do |arbeitspaket| %>
+                        <% if aufgabe.id == arbeitspaket.aufgabeid %>
+                        <tr class="error">
+                            <td style="vertical-align: middle;font-weight: bold;;">  <% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                  <span style="color:blue;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span>
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
+                                      <span  style="color:blue;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Release" %>
+                                      <span  style="color:blue;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      
+                                      <% end %>
+                                      </td>
+                                      <td style="text-align: center;vertical-align: middle;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
+                                    
+                                       <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                   <td style="text-align: center;vertical-align: middle;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                </tr>
+                        <% end %>
+                      <% end %>
+                
+                  <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+                    <!-- Ebene 2 -->
+                    
+                      <% @aufgaben.each do |aufgabe| %>
+                        <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger1 %>
+                          <% @vorgaenger2 = aufgabe.id %>
+                          <% @nachfolger2 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                        <tr class="success">
+                            <td style="vertical-align: middle;font-weight: bold;" ><span style=" font-weight:bold"> <%= aufgabe.aufgabenname %> </span></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            </tr >
+                            <% if !@nachfolger2.present? %> <!-- Keine Aufgabe als Nachfolger vorhanden (APs anzeigen)-->
+                            <!-- Arbeitspakete für Aufgaben der Ebene 2 -->
+                              
+                                <% @arbeitspakets.each do |arbeitspaket| %>
+                                  <% if aufgabe.id == arbeitspaket.aufgabeid %>
+                                  <tr class="error">
+                                        <td><% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                     <span style="color:blue;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span>
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
+                                      <span  style="color:blue;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Release" %>
+                                      <span  style="color:blue;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                       <% end %>
+                                      </td>
+                                      <td style="text-align: center;vertical-align: middle;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
+                                     
+                                       <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                   <td style="text-align: center;vertical-align: middle;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                      </tr>
+                                  <% end %>
+                                <% end %>
+                            <% else %> <!-- Aufgabe als Nachfolger vorhanden -->
+
+                              <!-- Ebene 3 -->
+                              
+                                <% @aufgaben.each do |aufgabe| %>
+                                  <% if @projekt.id == aufgabe.projektsid && aufgabe.aufgabenvorgaenger ==@vorgaenger2%>
+                                    <% @vorgaenger3 = aufgabe.id %>
+                                    <% @nachfolger3 = Aufgaben.find(:all, :conditions => [ "aufgabenvorgaenger = ?", aufgabe.id]) %>
+                                    <tr class="success">
+                                      <td style="vertical-align: middle;font-weight: bold;"> <span style=" font-weight: bold;"> <%= aufgabe.aufgabenname %> </span></td>
+                                      <td></td>
+                                       <td></td>
+                                       <td></td>
+                                      </tr>
+                                      <!-- Arbeitspakete für Aufgaben der Ebene 3 -->
+                                      
+                                        <% @arbeitspakets.each do |arbeitspaket| %>
+                                          <% if aufgabe.id == arbeitspaket.aufgabeid %>
+                                              <tr class="error">
+                                                 <td><% if arbeitspaket.arbeitspakettyp == "Standard" %>
+                                     <span style="color:blue;font-weight: bold;"><%= arbeitspaket.arbeitspaketname %> </span>
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Milestone" %>
+                                      <span  style="color:blue;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      <% end %>
+                                      <% if arbeitspaket.arbeitspakettyp == "Release" %>
+                                      <span  style="color:blue;font-weight: bold;"> <%= arbeitspaket.arbeitspaketname %> </span>
+                                      
+                                      <% end %>
+
+   
+                                      </td>
+                                      <td style="text-align: center;vertical-align: middle;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %> </td>
+                                     
+                                       <% @faz = @ap_map.values_at(arbeitspaket.id) %>
+                                   <td style="text-align: center;vertical-align: middle;font-weight: bold;"><%= @startdate + @faz[0].days %> </td>
+                                   <td style="text-align: center;vertical-align: middle;font-weight: bold;"> <%= @startdate + arbeitspaket.arbeitspaketdauer.days + @faz[0].days - 1.days %> </td>
+                                                 </tr>
+                                          <% end %>
+                                        <% end %>
+                                      <% end %>
+                                <% end %>
+                            <% end %>
+                         <% end %>
+                      <%end%>
+                  <% end %>
+              <%end%>
+            <%end%>
+      <% end %>
+ 
+ </tbody>
+ </tr>
+</table>
+</div>
+
+    
+
+
+
+
+
+
+<div class="page-break"></div>
+
+
+
+    <div class="page-break"></div>
+  
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title" style ="font-weight: bold;">Projektname: <%= @projekt.projektname %> </h3>
+  </div>
+  <div class="panel-body">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr >
+        <th style="text-align: center;vertical-align: middle;font-weight: bold;">Name</th>
+        <th style="text-align: center;vertical-align: middle;font-weight: bold;">Lieferobjekt</th>
+        <th style="text-align: center;vertical-align: middle;font-weight: bold;">Dauer</th>
+        <th style="text-align: center;vertical-align: middle;font-weight: bold;">Vorgaenger</th>
+        <th style="text-align: center;vertical-align: middle;font-weight: bold;" width="25%">Ressourcenname</th>
+        <th style="text-align: center;vertical-align: middle;font-weight: bold;" >Kapazität</th>
+      </tr>
+    </thead>
+
+    <tbody>     
+      <% @arbeitspakets.each do |arbeitspaket| %>
+        <!-- Nur APs listen die in Projekt sind -->
+        <% @aufgabeid= arbeitspaket.aufgabeid %>
+        <% @aufgabe = Aufgaben.find(:all, :conditions=>["id=?", @aufgabeid]).first %>
+        <% if @projekt.id == @aufgabe.projektsid %>   
+          <tr>
+            <td style="vertical-align: middle;font-weight: bold;"><%= arbeitspaket.arbeitspaketname  %></td>
+            <!-- Lieferobjekt --> 
+            <td style="text-align: center;vertical-align: middle;font-weight: bold;">
+              <% @lieferobjekt = Produkt.find(:all, :conditions=> ["id = ?", arbeitspaket.produkt_id]).first %>
+              <% if @lieferobjekt.nil? %>
+                <%= "keins" %>
+              <% else %>
+                <%= @lieferobjekt.name %>
+              <% end %>
+            </td>
+            <td style="text-align: center;vertical-align: middle;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %></td>         
+            <td style="vertical-align: middle;font-weight: bold;">            
+              <!--Vorgängername -->           
+              <% @vorgaenger = Arbeitspaketvorgaenger.find(:all,:conditions => [ "apid = ?", arbeitspaket.id]) %>           
+              <ul>           
+                  <%@vorgaenger.each do |v| %>             
+                    <% @vorgaengername =Arbeitspaket.find(:all, :conditions => [ "id = ?", v.apvorgaengerid]) %>
+                    <% if @vorgaengername.first  %>
+                      <li   style="vertical-align: middle;font-weight: bold;"><%= @vorgaengername.first.arbeitspaketname %></li>    
+                    <% end %>       
+                <% end %>
+              </ul>         
+            </td>  
+            <!-- Vorgaenger-->      
+            
+            <!-- Alle AP/Ress Beziehungen von AP -->
+            <% @ressourcen = Verantwortlichkeiten.find( :all, :conditions => [ "arbeitspaketid = ?", arbeitspaket.id]) %>
+            
+
+            <!-- Ressourcenname und Funktion -->
+            <td style="vertical-align: middle;font-weight: bold;" >
+            <% @ressourcen.each do |res| %> 
+              <% @reso = Ressourcen.find(:all, :conditions=> ["id =?", res.ressourceid]) %>
+              <% if @reso.present? %>
+                <%= "- "+ @reso.first.ressourcename + " (" + @reso.first.ressourcefunktion + ")" %><br>
+              <% end %> 
+            <% end %>
+            <% if !@ressourcen.present?%>
+              <i> <%= "keine" %>  </i>
+            <% end %>
+            </td>
+
+            <!-- Ressourcenname und Funktion -->
+            <td style="text-align: center;vertical-align: middle;font-weight: bold;">
+            <% @ressourcen.each do |res| %> 
+              <% if @ressourcen.present? %>
+                    <%= res.intensitaet %><br>
+              <% end %>
+            <% end %>
+            <% if !@ressourcen.present?%>
+              <i> <%= "keine" %>  </i> 
+            <% end %>
+            
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+<% end %>
+
+
+<br>
+
+

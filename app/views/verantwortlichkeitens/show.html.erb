@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Arbeitspaketid:</strong>
+  <%= @verantwortlichkeiten.arbeitspaketid %>
+</p>
+
+<p>
+  <strong>Ressourceid:</strong>
+  <%= @verantwortlichkeiten.ressourceid %>
+</p>
+
+<p>
+  <strong>Intensitaet:</strong>
+  <%= @verantwortlichkeiten.intensitaet %>
+</p>
+
+<p>
+  <strong>Beschreibung:</strong>
+  <%= @verantwortlichkeiten.beschreibung %>
+</p>
+
+
+<%= link_to 'Edit', edit_verantwortlichkeiten_path(@verantwortlichkeiten) %> |
+<%= link_to 'Back', verantwortlichkeitens_path %>

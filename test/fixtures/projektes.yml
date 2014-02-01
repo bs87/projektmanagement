@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  status: MyString
+  kosten: 1.5
+  projektstart: 2013-12-22
+  projektende: 2013-12-22
+
+two:
+  name: MyString
+  status: MyString
+  kosten: 1.5
+  projektstart: 2013-12-22
+  projektende: 2013-12-22

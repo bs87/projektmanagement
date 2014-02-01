@@ -11,7 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140119163439) do
+
+ActiveRecord::Schema.define(version: 20140126150930) do
+
 
   create_table "arbeitspakets", force: true do |t|
     t.string   "arbeitspaketname",                 limit: 45
@@ -31,6 +33,10 @@ ActiveRecord::Schema.define(version: 20140119163439) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "arbeitspakettyp"
+
+
+    t.integer  "produkt_id"
+
   end
 
   create_table "arbeitspaketvorgaengers", force: true do |t|
@@ -50,14 +56,34 @@ ActiveRecord::Schema.define(version: 20140119163439) do
     t.datetime "updated_at"
   end
 
+
   create_table "projekts", force: true do |t|
     t.string   "projektname"
     t.string   "projektleiter"
     t.string   "projektstart"
-    t.string   "projektende"
-    t.string   "projektbeschreibung"
-    t.integer  "roadstops_roadstopsid"
-    t.integer  "aufgaben_aufgabenid"
+end 
+
+  create_table "produktkategories", force: true do |t|
+    t.string   "name"
+    t.integer  "projekt_id"
+    t.integer  "vorgaenger_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "produkts", force: true do |t|
+    t.string   "name"
+    t.string   "typ"
+    t.integer  "ap_id"
+    t.integer  "kat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "projekts", force: true do |t|
+    t.string   "projektname"
+    t.string   "projektleiter"
+    t.date     "projektstart"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -78,7 +104,6 @@ ActiveRecord::Schema.define(version: 20140119163439) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "gruppen_id"
-    t.float    "kosten"
     t.string   "ressourcefunktion"
   end
 
@@ -100,6 +125,9 @@ ActiveRecord::Schema.define(version: 20140119163439) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
   add_index "roles", ["name"], name: "index_roles_on_name", using: :btree
+
+
+
 
   create_table "users", force: true do |t|
     t.string   "email",                       default: "", null: false

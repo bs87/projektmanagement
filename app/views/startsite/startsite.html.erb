@@ -1,0 +1,186 @@
+      <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+
+    <!-- Jumbotron -->
+    <% if current_user %>
+     
+
+
+      <!-- ########################## Hashmap erstellen ##################### -->
+      <!-- ###################################################################-->
+      <% @ap_map    = Hash.new %> <!-- Key = APID, Value = Anfangszeitpunkt -->
+      <% @aplist    = Array.new %><!-- AP Liste zum Bearbeten wenn AP-FAZ gesetzt wird -->
+      <% @aplist_it = Array.new %><!-- AP Liste für Schleife (Wird nicht bearbeitet) -->
+
+      <!-- Liste aller APs befüllen-->
+      <% @arbeitspakets.each do |ap| %>
+        <% @aplist.push( ap.id ) %>
+        <% @aplist_it.push( ap.id ) %>
+      <%end%>
+
+ 
+      <!-- Ermittlung des/der ersten APs ( ID und FAZ) -->
+      <% @aplist.each do |ap| %>
+        <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
+        <% if @vorgaenger.empty? %> <!-- Wenn kein Vorgaenger, dann Erste AP -->
+            <% @erste_ap = Arbeitspaket.find(:all, :conditions => [ "id = ?", ap]) %>
+            <% @ap_map[ap] = 0 %>
+            <% @aplist.delete(ap) %> <!-- Entfernen des APs aus Array, da FAZ festgelegt -->
+        <% end %>
+      <%end%>
+
+      <!-- Ermittlung der anderen APs ( ID und FAZ in hashmap)-->
+      <% @aplist_it.each do |aps| %>
+        <% @aplist_it.each do |ap| %>
+          <% @vorgaenger = Arbeitspaketvorgaenger.find(:all, :conditions => [ "apid = ?", ap]) %>
+          
+          <!-- Prüfen ob alle Vorgänger schon gesetzt sind -->
+          <% @alle_vorgaenger_gesetzt = true %>
+          <% @vorgaenger.each do |vrg| %>  <!-- Prüfen ob alle Vorgaenger bereits gesetzt sind -->
+
+            <% if @aplist.include? vrg.apvorgaengerid %>
+              <% @alle_vorgaenger_gesetzt = false %>
+            <% end %>
+          <% end %>
+
+          <!-- Wenn alle Vorgaenger bereits gesetzt sind, dann berechnung FAZ -->
+          <% if @alle_vorgaenger_gesetzt == true%>
+            <% @faz = 0 %>
+
+            <!-- Über alle Vorgänger iterieren und FAZ berechnen -->
+            <% @vorgaenger.each do |vrg| %> 
+              <% @fazVorgaenger = @ap_map[vrg.apvorgaengerid] %>
+              <% @apdauer = Arbeitspaket.find(:all, :conditions => [ "id = ?", vrg.apvorgaengerid]) %>
+              <% if @apdauer.first %>
+                <% @faz_temp = @fazVorgaenger + @apdauer.first.arbeitspaketdauer %>
+              <% else %>
+                <% @faz_temp = 0 %>
+              <% end %>
+              <%if @faz_temp > @faz %>
+                <% @faz = @faz_temp %>
+              <% end %>
+            <% end %>
+
+            <% @ap_map[ap] = @faz %>
+            <% @aplist.delete(ap) %>
+
+          <% end %>
+        <% end %>
+      <% end %>
+      <!-- ###################################################################-->
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 style ="font-family: FontAwesome;font-weight: bold;", class="panel-title">Willkommen => <%= current_user.email %></h2>
+  </div>
+ </div>
+ <br>
+ <%if current_user.email == "admin@pm.de"%>
+
+ <% else %>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 style ="font-family: FontAwesome;font-weight: bold;" ,class="panel-title"> Liste ihrer aktuell zugewiesenen Arbeitspakete
+ </h3>
+  </div>
+<div class="panel-body">
+      <br>
+      <table class="table table-bordered table-hover">
+        <tr>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Projekt </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Arbeitspaketname </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Vorgaenger </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Beginn </th>
+          <th style ="font-family: FontAwesome;font-weight: bold;"> Ende </th>
+        </tr>
+
+        <% if !@eigene_verant.empty? %>
+          <% @eigene_verant.each do |ev| %>
+          <% @aufgabe = Aufgaben.find(:all, :conditions=> ["id=?", @eigenes_ap.first.id]) %>
+              <% @projekt = Projekt.find(:all, :conditions=> ["id=?", @aufgabe.first.projektsid]).first %>
+              <% @startdate = @projekt.projektstart  %>
+              <% @enddate = @startdate + @ap_map.fetch( @eigenes_ap.first.id)+@eigenes_ap.first.arbeitspaketdauer%>
+              <% if  @enddate - Date.now < 10 %>
+            <tr class="error">
+            <% else %>
+             <tr>
+            <% end %>
+              <% @eigenes_ap = Arbeitspaket.find(:all, :conditions=> [" id = ?", ev.arbeitspaketid]) %>
+              <!--------------- Projekt -->
+              <td>
+                <% @aufgabeid= @eigenes_ap.first.aufgabeid %>
+                <% @aufgabe = Aufgaben.find(:all, :conditions=>["id", @aufgabeid]).first %>
+                <% @projekt = Projekt.find(:all, :conditions=>["id = ?", @aufgabe.projektsid]) %>  
+                <%= @projekt.first.projektname %> 
+              </td>
+              <!--------------- Arbeitspaketname -->
+              <td style ="font-family: FontAwesome;font-weight: bold;"> <%= @eigenes_ap.first.arbeitspaketname %> </td>
+              <td style ="font-family: FontAwesome;font-weight: bold;"> 
+                
+                <!------------- Vorgänger ------>           
+                <% @vorgaenger = Arbeitspaketvorgaenger.find(:all,:conditions => [ "apid = ?", ev.arbeitspaketid]) %>           
+                <ul>           
+                  <%@vorgaenger.each do |v| %>             
+                    <% @vorgaengername =Arbeitspaket.find(:all, :conditions => [ "id = ?", v.apvorgaengerid]) %>
+                    <li><%= @vorgaengername.first.arbeitspaketname %></li>           
+                  <% end %>
+                </ul>         
+              </td> 
+              
+              <!------------ Beginn des AP -->
+              <td style ="font-family: FontAwesome;font-weight: bold;"> <%= @startdate + @ap_map.fetch( @eigenes_ap.first.id)%> </td>
+              <!------------ Ende  des AP ---->
+              <td style ="font-family: FontAwesome;font-weight: bold;">    <%=   @enddate      %>      </td>
+            </tr>
+          <% end %> 
+        <% else %>
+          <tr> 
+            <td style ="font-family: FontAwesome;font-weight: bold;"><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"><i> <%= "keine" %> </i></td>
+            <td style ="font-family: FontAwesome;font-weight: bold;"> <i> <%= "keine" %> </i></td>
+          </tr>
+        <% end %>
+      </table>
+</div>
+</div>
+</div>
+      <br>
+      <% end %>
+    <% else %>
+
+         <div style="vertical-align:middle; align=center ; position:auto"  >
+    
+    <p align="center"><%= image_tag("shutterstock.jpg", height: '400', width: '400', :align=> "middle") %></p> 
+        </div>
+
+      <hr>
+      <!-- Example row of columns -->
+      <div class="row-fluid">
+        <div class="span4 well">
+          <h3>Über Uns</h3>
+          <p>Wir sind ein junges Team aus Wirtschaftsinformatikern von der FH- Münster, die die Welt ein bisschen einfacher machen wollen.</p>
+        </div>
+        <div class="span4 well">
+          <h3>Projektmanagement</h3>
+          <p>Mit Projektmanagement können Sie ganz einfach Projekte erstellen. </p>
+       </div>
+        <div class="span4 well">
+          <h3>Kontakt</h3>
+          <p>Fachhochschule Münster<br>Johann-Krane-Weg 21-27<br>48149 Münster</p>
+        </div>
+      </div>
+      <hr>
+    <% end %>
+    <div class="footer-fluid">
+      <!-- <p>&copy; Projektmanagement 2013</p> -->
+    </div>
+
+
+

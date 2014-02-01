@@ -1,14 +1,124 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Projektmanagement</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "Projektmanger2014" %></title>
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<%= yield %>
+    <!-- Le styles -->
+    <link href = "/assets/bootstrap.css" rel="stylesheet">
+                    <link href = "/assets/bootstrap-combined.min.css" rel="stylesheet">
+
+
+        <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+
+
+
+<style>
+.navbar-inner2 {
+min-height: 40px;
+padding-left: 20px;
+padding-right: 20px;
+background-color: #fafafa;
+background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+background-repeat: repeat-x;
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+border: 3px solid #C2C2C2;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+
+}
+
+
+.navbar .nav > li > a {
+float: none;
+padding: 12px 25px 10px;
+color: #777777;
+
+}
+.navbar .nav>li>a {
+float: none;
+padding: 10px 15px 10px;
+color: #777;
+
+}
+.navbar .nav>li>a {
+float: none;
+padding: 10px 15px 10px;
+color: #777;
+
+}
+.navbar .btn, .navbar .btn-group {
+margin-top: 0px;
+}
+</style>
+
+
+ </head>
+  <body>
+    <div class="navbar navbar-fluid-top">
+      <div class="navbar-inner2">
+        <div class="container-fluid">
+
+
+          <span class="brand" style ="font-family: FontAwesome;font-weight: bold;color:black">Projektmanger2014 </span>
+           <% if current_user %>
+             <ul class="nav">
+           <%if current_user.email == "admin@pm.de"%>
+
+               <li><%= link_to ' Ressourcenverwaltung', ressourcens_path, :id=>'Aufgaben',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-cog "%></li>
+               <% else %>
+              
+              <li ><%= link_to ' Home', root_path, 'data-no-turbolink' => true ,:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-home "%></li> 
+              <li ><%= link_to ' Projekte', projekts_path ,'data-no-turbolink' => true,:id=> 'Projekte',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-cogs "%></li>
+              <li ><%= link_to ' WBS', aufgabens_path,'data-no-turbolink' => true, :id=> 'Aufgaben',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => " icon-sitemap "%></li>
+              <li ><%= link_to ' RAM', verantwortlichkeitens_path ,'data-no-turbolink' => true,:id=> 'RAM',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-group "%></li>
+              <li ><%= link_to ' Roadmap', roadmaps_path,'data-no-turbolink' => true,:id=> 'Roadmap',:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => "icon-road "%></li>
+              
+              <li><%= link_to ' Einstellungen', edit_user_registration_path,:style=>"font-family: FontAwesome;font-weight: bold;color:black", :class => " icon-wrench " %></li> 
+              <li>  </li> 
+              <li>  </li> 
+              <% end %>
+              <li  > <%= link_to  " Logout", destroy_user_session_path, :class => "btn  btn-danger icon-share-alt ",:style=>"font-family: FontAwesome;font-weight: bold;color:black"  %> </li>
+
+              </ul>
+
+                <% else %>
+                   <ul class="nav">
+              <li ><%= link_to 'Anmelden', new_user_session_path ,:style=>"font-family: FontAwesome;font-weight: bold;color:black" %></li>
+              <li><%= link_to 'Registrieren', new_user_registration_path  ,:style=>"font-family: FontAwesome;font-weight: bold;color:black" %></li>
+              </ul>
+
+               <%end%>
+       </div>
+      </div>
+    </div>
+
+    
+        <!-- <div class="span9">-->
+
+    
+       
+    <div class="center-block" style="margin-left:20px; margin-right:20px">
+
+
+     <%= bootstrap_flash %>
+        <%= yield %>
+    </div>
+  </div>
+</div>
+
+</div> <!-- /container -->
 
 </body>
 </html>

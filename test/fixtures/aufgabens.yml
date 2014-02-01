@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  aufgabenname: MyString
+  aufgabenbeschreibung: MyString
+  aufgabenrang: 1
+  aufgabennr: 1
+  projektsid: 1
+
+two:
+  aufgabenname: MyString
+  aufgabenbeschreibung: MyString
+  aufgabenrang: 1
+  aufgabennr: 1
+  projektsid: 1

@@ -1,0 +1,140 @@
+  <link href="../assets/css/bootstrap.css" rel="stylesheet">
+         
+
+<style>
+
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  text-decoration: inherit;
+  display: inline;
+  speak: none;
+}
+
+</style>
+
+  <!-- Dropdown für Projektauswahl -->
+<% if @projekts.nil? || @projekt.nil? %> 
+ <% flash[:notice] ="Sie leiten keine eigenen Projekte" %>
+<% else %>
+
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">RAM</h2>
+  </div>
+  <div class="panel-body">
+   
+  <div class="dropdown">
+  <button class="btn dropdown-toggle sr-only" type="button" id="dropdownMenu1" data-toggle="dropdown">
+    Projekt auswählen ...
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+        <% @projekts.each do |projekte| %>
+        <li>
+               <li > 
+                <%= link_to  projekte.projektname, 
+                verantwortlichkeitens_path(:id=>projekte.id),'data-no-turbolink' => true%>
+              </li> 
+
+        <% end %>
+      </ul>
+    </div>
+  </div>
+   </div>
+  
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title" style ="font-family: FontAwesome;font-weight: bold;">Projektname: <%= @projekt.projektname %> </h3>
+  </div>
+  <div class="panel-body">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr >
+        <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Name</th>
+        <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Lieferobjekt</th>
+        <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Dauer</th>
+        <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">Vorgaenger</th>
+        <th><!-- Edit Vorgaenger Button --></th>
+        <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;" width="25%">Ressourcenname</th>
+        <th style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;" >Kapazität</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>     
+      <% @arbeitspakets.each do |arbeitspaket| %>
+        <!-- Nur APs listen die in Projekt sind -->
+        <% @aufgabeid= arbeitspaket.aufgabeid %>
+        <% @aufgabe = Aufgaben.find(:all, :conditions=>["id=?", @aufgabeid]).first %>
+        <% if @projekt.id == @aufgabe.projektsid %>   
+          <tr>
+            <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketname  %></td>
+            <!-- Lieferobjekt --> 
+            <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">
+              <% @lieferobjekt = Produkt.find(:all, :conditions=> ["id = ?", arbeitspaket.produkt_id]).first %>
+              <% if @lieferobjekt.nil? %>
+                <%= "keins" %>
+              <% else %>
+                <%= @lieferobjekt.name %>
+              <% end %>
+            </td>
+            <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= arbeitspaket.arbeitspaketdauer %></td>         
+            <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;">            
+              <!--Vorgängername -->           
+              <% @vorgaenger = Arbeitspaketvorgaenger.find(:all,:conditions => [ "apid = ?", arbeitspaket.id]) %>           
+              <ul>           
+                  <%@vorgaenger.each do |v| %>             
+                    <% @vorgaengername =Arbeitspaket.find(:all, :conditions => [ "id = ?", v.apvorgaengerid]) %>
+                    <% if @vorgaengername.first  %>
+                      <li   style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;"><%= @vorgaengername.first.arbeitspaketname %></li>    
+                    <% end %>       
+                <% end %>
+              </ul>         
+            </td>  
+            <!-- Vorgaenger-->      
+            <td ><%= link_to ' Edit Vor',new_arbeitspaketvorgaenger_path(:apid=>arbeitspaket.id, :pid => @projekt.id ), :class=>"btn btn-small btn-info " %></td>
+       
+            <!-- Alle AP/Ress Beziehungen von AP -->
+            <% @ressourcen = Verantwortlichkeiten.find( :all, :conditions => [ "arbeitspaketid = ?", arbeitspaket.id]) %>
+            
+
+            <!-- Ressourcenname und Funktion -->
+            <td style="vertical-align: middle;font-family: FontAwesome;font-weight: bold;" >
+            <% @ressourcen.each do |res| %> 
+              <% @reso = Ressourcen.find(:all, :conditions=> ["id =?", res.ressourceid]) %>
+              <% if @reso.present? %>
+                <%= "- "+ @reso.first.ressourcename + " (" + @reso.first.ressourcefunktion + ")" %><br>
+              <% end %> 
+            <% end %>
+            <% if !@ressourcen.present?%>
+              <i> <%= "keine" %>  </i>
+            <% end %>
+            </td>
+
+            <!-- Ressourcenname und Funktion -->
+            <td style="text-align: center;vertical-align: middle;font-family: FontAwesome;font-weight: bold;">
+            <% @ressourcen.each do |res| %> 
+              <% if @ressourcen.present? %>
+                    <%= res.intensitaet %><br>
+              <% end %>
+            <% end %>
+            <% if !@ressourcen.present?%>
+              <i> <%= "keine" %>  </i> 
+            <% end %>
+            <td > <%=  link_to ' Edit Res', new_verantwortlichkeiten_path(:apid=>arbeitspaket.id, :pid => @projekt.id), :class=>"btn btn-small btn-info " %>  </td>     
+            <td ><%= link_to '', arbeitspaket, method: :delete, data: { confirm: 'Are you sure?' },:class => "btn btn-danger icon-trash" %>  </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+
+
+<br>
+
+<!-- <%=  link_to 'New Verantwortlichkeiten', new_verantwortlichkeiten_path %> -->

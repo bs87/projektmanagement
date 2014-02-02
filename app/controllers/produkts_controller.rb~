@@ -21,16 +21,14 @@ class ProduktsController < ApplicationController
   end
 
   # GET /produkts/new
- def new
+  def new
     @produkt = Produkt.new
     @pid = params[:projektid]
-    @kat_id = params[:katid]
   end
 
   # GET /produkts/1/edit
   def edit
-      @pid = params[:projektid]
-
+  
     @kat_id = params[:katid]
   end
 
